@@ -33,7 +33,7 @@ front-deploy:
   stage: deploy
   before_script: ['cd Front/compare-tout']
   script:
-  - docker build -t $IMAGE .
+  - docker build -t $IMAGE -f Dockerfile.front .
   - docker login --username=_ --password=$HEROKU_API_KEY registry.heroku.com
   - docker push $IMAGE
   - IMAGE_ID=$(docker inspect ${IMAGE} --format={{.Id}})
