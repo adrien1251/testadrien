@@ -21,6 +21,7 @@ back-build:
 
 front-build:
   image: trion/ng-cli
+  stage: build
   script: "cd Front/compareTout && npm install && ng build --prod"
   artifacts:
     paths:
