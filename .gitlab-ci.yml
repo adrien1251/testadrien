@@ -17,4 +17,4 @@ maven-build:
   script: "cd Back && mvn clean install"
   artifacts:
     paths:
-      - target/*.jar
+      - Back/target/*.jar
