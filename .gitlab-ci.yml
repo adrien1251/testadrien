@@ -11,10 +11,17 @@ stages:
   - package
   - deploy
 
-maven-build:
+back-build:
   image: maven:3-jdk-8
   stage: build
   script: "cd Back && mvn clean install"
   artifacts:
     paths:
       - Back/target/*.jar
+
+front-build:
+  image: trion/ng-cli
+  script: "cd Front/compareTout && npm install && ng build --prod"
+  artifacts:
+    paths:
+      - Front/compareTout/dist/*
