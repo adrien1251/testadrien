@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "validation":" ng lint && ng serve"
+    "validation":" ng lint && ng build"
   },
   "private": true,
   "dependencies": {
