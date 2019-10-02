@@ -1,9 +1,4 @@
-// .subscribe(res => {
-//     this.user = res[0];
-//     this.users = res;
-// });
-
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { TestService } from '../shared/services/test.service';
 
@@ -13,8 +8,9 @@ import { TestService } from '../shared/services/test.service';
   templateUrl: './test.component.html',
   styleUrls: ['./test.component.scss'],
 })
-export class TestComponent implements OnInit {
+export class TestComponent implements OnInit, OnDestroy {
   users: any;
+  testSubscription: Subscription;
 
   constructor(
       private testService: TestService,
@@ -24,7 +20,13 @@ export class TestComponent implements OnInit {
     this.display();
   }
 
+  ngOnDestroy(): void {
+    if (this.testSubscription) {
+      this.testSubscription.unsubscribe();
+    }
+  }
+
   public display(): void {
-    this.testService.displayBack().subscribe(res => this.users = res);
+    this.testSubscription = this.testService.displayBack().subscribe(res => this.users = res);
   }
 }
