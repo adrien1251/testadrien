@@ -37,3 +37,12 @@ Vous devriez voir les noms suivants s'afficher :
 
 Adrien - Deblock
 Lukas - Ramus
+
+5 Valider le build
+------------------
+Pour vérifier le build de l'application, Saisir : 
+<pre>npm run validation</pre>
+Cela lancera la commande ng lint (qui vérifie la syntaxe du code), puis la commande ng build
+
+Présentation d'Angular
+======================
