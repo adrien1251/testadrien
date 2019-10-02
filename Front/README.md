@@ -24,3 +24,12 @@ Puis une fois terminée, saisir <pre>ng serve</pre> ou <pre>npm start</pre>
 Cela va lancer l'appli sur le port 4200
 
 Il suffit ensuite de se rendre sur un navigateur et saisir l'adresse localhost:4200 pour voir l'application
+
+4 Test de l'application 
+-----------------------
+Afin de vérifier que l'application tourne bien et communique bien avec le back,
+Vous pouvez vous rendre à l'URL localhost:4200/test
+Vous devriez voir les noms suivants s'afficher : 
+
+Adrien - Deblock
+Lukas - Ramus
