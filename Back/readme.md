@@ -9,6 +9,10 @@ DATABASE_NAME=compareTout
 DATABASE_USERNAME=postgres
 DATABASE_PASSWORD=compareTout@postgres
 
+Dans intelliJ, installer Lombok sur IntelliJ :
+	File > Settings > Plugins
+Chercher Lombok et l'installer
+
 
 Télécharger et installer docker en version .exe:
 https://github.com/docker/toolbox/releases
@@ -22,3 +26,4 @@ Aller dans la racine du projet
 
 http://localhost:8080/users
 Pour tester si ca fonctionne correctement
+
