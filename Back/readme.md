@@ -18,3 +18,7 @@ Aller dans la racine du projet
 
 
     docker-compose up -d
+
+
+http://localhost:8080/users
+Pour tester si ca fonctionne correctement
