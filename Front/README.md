@@ -19,6 +19,10 @@ de là, taper dans un terminal :
 <pre>npm install</pre>
 
 Cela permet d'installer tous les modules et dépendances nécessaire.
+Si cette commande retourne des erreurs, il est possible qu'il faille redémarrer le PC.
+Si après le redémarrage, la commande renvoie encore des erreurs, saisir la commande :
+<pre>npm login</pre>
+Puis relancer <pre>npm install</pre>
 
 Puis une fois terminée, saisir <pre>ng serve</pre> ou <pre>npm start</pre>
 Cela va lancer l'appli sur le port 4200
