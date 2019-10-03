@@ -53,5 +53,6 @@ deploy:
   script:
   - pwd
   - ls
-  - ssh -i $PROD_PEM -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ec2-user@ec2-18-188-123-185.us-east-2.compute.amazonaws.com './start_project'
+  - chmod 600 ../comparetout.tmp/PROD_PEM
+  - ssh -i $PROD_PEM -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null ec2-user@18.220.189.227 './start_project'
 
