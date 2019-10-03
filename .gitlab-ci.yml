@@ -48,6 +48,9 @@ front-push-image:
   - echo $TREESCALE_PASS | docker login repo.treescale.com --username=deblocka --password-stdin
   - docker build -t $FRONT_IMAGE .
   - docker push $FRONT_IMAGE
+  only:
+    changes:
+      - $FRONT_DIR/*
 
 back-push-image:
   stage: images
@@ -56,6 +59,9 @@ back-push-image:
   - echo $TREESCALE_PASS | docker login repo.treescale.com --username=deblocka --password-stdin
   - docker build -t $BACK_IMAGE .
   - docker push $BACK_IMAGE
+  only:
+    changes:
+      - $BACK_DIR/*
 
 deploy-prod:
   image: rastasheep/ubuntu-sshd
