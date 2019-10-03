@@ -9,6 +9,8 @@ variables:
   BACK_IMAGE: repo.treescale.com/deblocka/back
   PROD_SERVER_ADDRESS: ec2-user@18.220.189.227
   DEV_SERVER_ADDRESS: ec2-user@18.220.189.227
+  BACK_DIR: Back
+  FRONT_DIR: Front/compare-tout
 
 stages:
   - build
@@ -18,11 +20,14 @@ stages:
 back-build:
   image: maven:3-jdk-8
   stage: build
-  before_script: ['cd Back']
+  before_script: ['cd $BACK_DIR']
   script: "mvn clean install"
   artifacts:
     paths:
-      - Back/target/*.jar
+      - $BACK_DIR/target/*.jar
+  only:
+    changes:
+      - $BACK_DIR/*
 
 front-build:
   image: trion/ng-cli
@@ -31,11 +36,14 @@ front-build:
   script: "npm install && ng build --prod"
   artifacts:
     paths:
-      - Front/compare-tout/dist/*
+      - $FRONT_DIR/dist/*
+  only:
+    changes:
+      - $FRONT_DIR/*
 
 front-push-image:
   stage: images
-  before_script: ['cd Front/compare-tout']
+  before_script: ['cd $FRONT_DIR']
   script:
   - echo $TREESCALE_PASS | docker login repo.treescale.com --username=deblocka --password-stdin
   - docker build -t $FRONT_IMAGE .
@@ -43,7 +51,7 @@ front-push-image:
 
 back-push-image:
   stage: images
-  before_script: ['cd Back']
+  before_script: ['cd $BACK_DIR']
   script:
   - echo $TREESCALE_PASS | docker login repo.treescale.com --username=deblocka --password-stdin
   - docker build -t $BACK_IMAGE .
