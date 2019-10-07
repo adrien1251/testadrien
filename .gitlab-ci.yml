@@ -39,7 +39,7 @@ front-push-image:
   stage: images
   before_script: ['cd $FRONT_DIR']
   script:
-  - echo $TREESCALE_PASS | docker login repo.treescale.com --username=deblocka --password-stdin
+  - docker login repo.treescale.com --username=deblocka -p $TREESCALE_PASS
   - docker build -t $FRONT_IMAGE .
   - docker push $FRONT_IMAGE
 
@@ -47,7 +47,7 @@ back-push-image:
   stage: images
   before_script: ['cd $BACK_DIR']
   script:
-  - echo $TREESCALE_PASS | docker login repo.treescale.com --username=deblocka --password-stdin
+  - docker login repo.treescale.com --username=deblocka -p $TREESCALE_PASS
   - docker build -t $BACK_IMAGE .
   - docker push $BACK_IMAGE
 
