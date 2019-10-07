@@ -17,28 +17,30 @@ stages:
   - images
   - deploy
 
-back-build:
-  image: maven:3-jdk-8
-  stage: build
-  before_script: ['cd $BACK_DIR']
-  script: "mvn clean install"
-  artifacts:
-    paths:
-      - $BACK_DIR/target/*.jar
+# back-build:
+#   image: maven:3-jdk-8
+#   stage: build
+#   before_script: ['cd $BACK_DIR']
+#   script: "mvn clean install"
+#   artifacts:
+#     paths:
+#       - $BACK_DIR/target/*.jar
 
-front-build:
-  image: trion/ng-cli
-  stage: build
-  before_script: ['cd Front/compare-tout']
-  script: "npm install && ng build --prod"
-  artifacts:
-    paths:
-      - $FRONT_DIR/dist/*
+# front-build:
+#   image: trion/ng-cli
+#   stage: build
+#   before_script: ['cd Front/compare-tout']
+#   script: "npm install && ng build --prod"
+#   artifacts:
+#     paths:
+#       - $FRONT_DIR/dist/*
 
 front-push-image:
   stage: images
   before_script: ['cd $FRONT_DIR']
   script:
+  - echo mdp
+  - echo $TREESCALE_PASS
   - docker login repo.treescale.com --username=deblocka -p $TREESCALE_PASS
   - docker build -t $FRONT_IMAGE .
   - docker push $FRONT_IMAGE
@@ -47,6 +49,8 @@ back-push-image:
   stage: images
   before_script: ['cd $BACK_DIR']
   script:
+  - echo mdp
+  - echo $TREESCALE_PASS
   - docker login repo.treescale.com --username=deblocka -p $TREESCALE_PASS
   - docker build -t $BACK_IMAGE .
   - docker push $BACK_IMAGE
