@@ -25,9 +25,6 @@ back-build:
   artifacts:
     paths:
       - $BACK_DIR/target/*.jar
-  only:
-    changes:
-      - $BACK_DIR/*
 
 front-build:
   image: trion/ng-cli
@@ -37,9 +34,6 @@ front-build:
   artifacts:
     paths:
       - $FRONT_DIR/dist/*
-  only:
-    changes:
-      - $FRONT_DIR/*
 
 front-push-image:
   stage: images
