@@ -1,6 +1,11 @@
 # Installation 
 
-Installer Maven et Java dans les variable d'environnement
+Installer Maven et Java dans les variable d'environnement :  
+Java :  
+https://docs.oracle.com/javase/10/install/installation-jdk-and-jre-microsoft-windows-platforms.htm#JSJIG-GUID-A7E27B90-A28D-4237-9383-A58B416071CA  
+
+Maven :  
+https://docs.wso2.com/display/IS323/Installing+Apache+Maven+on+Windows  
 
 Dans intelliJ, définir les variable d'environnement du projet :
 DATABASE_HOST=192.168.99.100
