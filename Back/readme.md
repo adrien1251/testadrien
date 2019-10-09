@@ -1,4 +1,4 @@
-# Installation 
+# Installation
 
 Installer Maven et Java dans les variable d'environnement :  
 Java :  
@@ -22,7 +22,7 @@ Chercher Lombok et l'installer
 Télécharger et installer docker en version .exe:
 https://github.com/docker/toolbox/releases
 
-docker ligne de commande : 
+docker ligne de commande :
 Aller dans la racine du projet  
 
 
@@ -32,3 +32,30 @@ Aller dans la racine du projet
 http://localhost:8080/users
 Pour tester si ca fonctionne correctement
 
+
+
+Pour programmer avec Hibernate :  
+--------------------------------
+
+Vous pouvez utiliser DBeaver afin de visualiser les tables en temps réel  :
+DBeaver   
+--------
+Télécharger et installer DBeaver:  
+https://dbeaver.io/download/  
+
+Créer une connexion postgreSQL et indiquer les élements suivants :  
+Host : 192.168.99.100 (à utiliser avec docker en service)  
+Port : 5432   
+Database : compareTout  
+User : postgres  
+Password : compareTout@postgres
+
+
+Exécuter le Back dans intelliJ.
+  - S'il y a des erreurs lors de la compilation  :
+   - Aller dans le dossier src/main/resources depuis l'ide.
+   - Ouvrir le fichier application.properties et remplacer le ou les champs en "create" par "update".
+   - Recompiler et c'est bon.
+
+Dans DBeaver, les tables se trouvent à :  
+ Schemas > public > Tables
