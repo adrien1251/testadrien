@@ -23,6 +23,7 @@ public class User implements Cloneable {
     private String email;
     private String password;
     private String resetToken;
+    private String role;
 
     public String getRandomPassword() {
         char[] chars = new char[26 + 26 + 10]; //
