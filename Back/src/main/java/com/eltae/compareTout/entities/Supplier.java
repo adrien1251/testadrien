@@ -20,7 +20,7 @@ public class Supplier implements Cloneable{
 
     @OneToOne(fetch = FetchType.LAZY)
     //@JoinColumn(name="id")
-    private User idProduct;
+    private User user;
 
     private String webSite;
 
