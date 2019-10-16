@@ -6,6 +6,7 @@ import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { TestService } from './shared/services/test.service';
 import { TestComponent } from './test/test.component';
+import { SearchResultModule } from './search-result/search-result.module';
 
 @NgModule({
   declarations: [
@@ -16,9 +17,10 @@ import { TestComponent } from './test/test.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    SearchResultModule,
   ],
   exports: [
-    TestComponent
+    TestComponent,
   ],
   providers: [
     TestService

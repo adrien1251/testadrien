@@ -1,0 +1,8 @@
+search page
+<app-search-bar></app-search-bar>
+<div *ngIf="criteriaList != null">
+    <app-filters (valueHasChanged)="reloadProducts($event)" [criteriaList]="criteriaList"></app-filters>
+</div>
+<div *ngIf="productList != null">
+    <app-product-list [productList]="productList"></app-product-list>
+</div>
