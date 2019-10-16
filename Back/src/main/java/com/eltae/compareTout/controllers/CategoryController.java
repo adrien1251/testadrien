@@ -23,7 +23,7 @@ public class CategoryController extends ExceptionCatcher {
     }
 
     @PostMapping(consumes = "multipart/form-data")
-    public ResponseEntity<Boolean> createUser(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<Integer> createUser(@RequestParam("file") MultipartFile file) {
         return ResponseEntity.status(201).body(this.categoryService.create(file));
     }
 }

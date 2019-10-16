@@ -13,6 +13,7 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,33 +29,27 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
-    public boolean create(MultipartFile multipartFile) {
+    public int create(MultipartFile multipartFile) {
         try {
             return this.readCSV(multipartFile.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return false;
+        return 0;
     }
 
-    private boolean readCSV(InputStream inputStream) throws IOException {
-        CSVReader csvReader = new CSVReader(new InputStreamReader(inputStream));
-
+    private int readCSV(InputStream inputStream) throws IOException {
+        CSVReader csvReader = new CSVReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8), ';');
         String[] nextRecord;
+        int nbLineAdd = 0;
         while ((nextRecord = csvReader.readNext()) != null) {
-            try {
-                this.saveCategorie(nextRecord, 1);
-            } catch (BadCsvLine e){
-                e.printStackTrace();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            if(this.saveCategorie(nextRecord, 1)) nbLineAdd++;
         }
-        return true;
+        return nbLineAdd;
     }
 
     private boolean saveCategorie(String[] records, int idx) {
-        if (idx > records.length || records[idx].isEmpty()) return true;
+        if (!(idx < records.length) || records[idx].isEmpty()) return true;
         String actualCategoryName = records[idx];
         String childCategoryName = idx + 1 < records.length && !records[idx + 1].isEmpty() ? records[idx + 1] : null;
         idx++;
