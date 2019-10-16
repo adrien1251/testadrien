@@ -1,0 +1,3 @@
+#!/bin/bash
+echo eltae@ts | docker login repo.treescale.com -udeblocka --password-stdin
+docker-compose up -d

@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = Tables.CATEGORY, uniqueConstraints = @UniqueConstraint(columnNames = "name"))
+@Table(name = Tables.CATEGORY, uniqueConstraints = @UniqueConstraint(columnNames = "name", name="category_unique_name"))
 @Builder
 @Data
 @EqualsAndHashCode
@@ -20,11 +20,10 @@ public class Category implements Cloneable {
 
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name="child_id")
+    @ManyToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
     private List<Category> childList;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
     @JoinColumn(name = "parent_id")
     private Category parent;
 
@@ -36,5 +35,10 @@ public class Category implements Cloneable {
 
     public Category clone() throws CloneNotSupportedException {
         return (Category) super.clone();
+    }
+
+    @Override
+    public String toString(){
+        return id + ": " + name;
     }
 }
