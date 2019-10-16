@@ -4,7 +4,9 @@ import com.eltae.compareTout.constants.Tables;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = Tables.CRITERIA)
@@ -22,8 +24,6 @@ public class Criteria implements Cloneable {
 
     private String type;
 
-    private String value;
-
     private String unit;
 
     private boolean isMandatory;
@@ -34,11 +34,9 @@ public class Criteria implements Cloneable {
             inverseJoinColumns = { @JoinColumn(name = "fk_category") })
     private List<Category> categoryList;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "criteria_product",
-            joinColumns = { @JoinColumn(name = "fk_criteria") },
-            inverseJoinColumns = { @JoinColumn(name = "fk_product") })
-    private List<Product> productList;
+    @OneToMany(mappedBy = "product")
+    private Set<CriteriaProduct> employerDeliveryAgent = new HashSet<CriteriaProduct>();
+
 
     public Criteria clone() throws CloneNotSupportedException {
         return (Criteria) super.clone();

@@ -12,3 +12,4 @@ INSERT INTO public.users
 (id, dtype, email, first_name, last_name, password, reset_token, role, phone_num)
 VALUES(3, 'ADMIN', 'admin@comparetout.fr', 'Pierre', 'Paul', '$2a$12$gPhTV2TjgEreC0L8sjZWqe.dg48cPXdiHTt95GgKei9fcBBO7ZTx2', NULL,'ADMIN', '1234567844' )
 ON CONFLICT DO NOTHING;
+
