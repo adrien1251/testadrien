@@ -22,7 +22,8 @@ public class Criteria implements Cloneable {
 
     private String name;
 
-    private String type;
+    @Enumerated(EnumType.ORDINAL)
+    private TypeCriteria type;
 
     private String unit;
 
