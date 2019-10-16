@@ -7,20 +7,16 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = Tables.SUPPLIER)
-@Builder
 @Data
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class Supplier implements Cloneable{
+public class Supplier extends User implements Cloneable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    //@JoinColumn(name="id")
-    private User user;
 
     private String webSite;
 

@@ -14,6 +14,8 @@ import java.util.Random;
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+
 public class User implements Cloneable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

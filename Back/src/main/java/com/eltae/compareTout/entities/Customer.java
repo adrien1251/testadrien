@@ -8,21 +8,17 @@ import java.util.Date;
 
 @Entity
 @Table(name = Tables.CUSTOMER)
-@Builder
 @Data
 @EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-public class Customer implements Cloneable{
+public class Customer extends User implements Cloneable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String phoneNum;
-
-    @OneToOne
-    private User user;
 
     private String sexe;
 
