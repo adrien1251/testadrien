@@ -28,9 +28,26 @@ insert into public.product
 values (3, 'Un jolie téléphone', 'Galaxy S0 noir', 'https://samsung.com/galaxyS10', 10)
 ON CONFLICT DO NOTHING;
 
+insert into public.product
+(id, description, name, supplier_link, category_id)
+values (4, 'Un iphone classique', 'Iphone XX', 'https://apple.com/IphoneXX', 10)
+ON CONFLICT DO NOTHING;
+
 insert into public.criteria_product
 (criteria_id, product_id, value)
 values (1, 3, '700')
 ON CONFLICT DO NOTHING;
 
+insert into public.criteria_product
+(criteria_id, product_id, value)
+values (1, 4, '1200')
+ON CONFLICT DO NOTHING;
+
+insert into public.compare_hist (customer_id, product_id)
+values (1,3)
+ON CONFLICT DO NOTHING;
+
+insert into public.compare_hist (customer_id, product_id)
+values (1,4)
+ON CONFLICT DO NOTHING;
 

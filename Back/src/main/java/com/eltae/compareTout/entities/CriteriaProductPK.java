@@ -12,4 +12,8 @@ public class CriteriaProductPK implements Serializable {
 
     @Column(name = "CRITERIA_ID")
     private Long criteria_id;
+
+    public CriteriaProductPK clone() throws CloneNotSupportedException {
+        return (CriteriaProductPK) super.clone();
+    }
 }

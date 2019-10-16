@@ -29,4 +29,8 @@ public class CriteriaProduct implements Cloneable {
 
     private String value;
 
+    public CriteriaProduct clone() throws CloneNotSupportedException {
+        return (CriteriaProduct) super.clone();
+    }
+
 }
