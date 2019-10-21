@@ -56,12 +56,11 @@ back-push-image:
   stage: images
   before_script: ['cd $BACK_DIR']
   script:
+  - echo mdp
+  - echo $TREESCALE_PASS
   - echo $TREESCALE_PASS | docker login repo.treescale.com --username=deblocka --password-stdin
   - docker build -t $BACK_IMAGE .
   - docker push $BACK_IMAGE
-  only:
-    changes:
-      - $BACK_DIR/*
 
 deploy-prod:
   image: rastasheep/ubuntu-sshd
