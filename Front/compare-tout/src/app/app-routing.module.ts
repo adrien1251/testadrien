@@ -8,7 +8,7 @@ const routes: Routes = [
   // @Path définit ce que va être l'url ex /test donne localhost:4200/test
   // @component précise le nom du component à afficher ex TestComponent
   {
-    path: '/',
+    path: '',
     component: TestComponent,
   },
 ];
