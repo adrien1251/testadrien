@@ -1,8 +1,13 @@
 # Installation
 
-Maven & Java :
-==============
 Installer Maven et Java dans les variable d'environnement
+=======
+Installer Maven et Java dans les variable d'environnement :  
+Java :  
+https://docs.oracle.com/javase/10/install/installation-jdk-and-jre-microsoft-windows-platforms.htm#JSJIG-GUID-A7E27B90-A28D-4237-9383-A58B416071CA  
+
+Maven :  
+https://docs.wso2.com/display/IS323/Installing+Apache+Maven+on+Windows  
 
 
 IntelliJ :
@@ -28,8 +33,8 @@ Docker :
 Télécharger et installer docker en version .exe:  
 https://github.com/docker/toolbox/releases
 
-Une fois installer, lancer le "Docker Quickstart Terminal" que vous venez d'installer.   
-Laissez le s'installer entièrement puis aller dans le répertoire à la racine du projet depuis ce même terminal. Puis éxecuter la commande si-dessous.
+docker ligne de commande :
+Aller dans la racine du projet  
 
     docker-compose up -d  
 
@@ -38,8 +43,30 @@ Il est possible de vérifier que Docker se soit correctement lancer en éxecutan
     docker ps
 
 
-Vérification Installation :  
----------------------------
 
-Pour cela, il faut executer l'application depuis intelliJ via le triangle vert qui se trouve en haut à droite de la fenetre (il est nécessaire que Docker soit en cours d'éxecution). Puis rendez-vous à l'adresse suivante :  
-http://localhost:8080/users
+
+Pour programmer avec Hibernate :  
+--------------------------------
+
+Vous pouvez utiliser DBeaver afin de visualiser les tables en temps réel  :
+DBeaver   
+--------
+Télécharger et installer DBeaver:  
+https://dbeaver.io/download/  
+
+Créer une connexion postgreSQL et indiquer les élements suivants :  
+Host : 192.168.99.100 (à utiliser avec docker en service)  
+Port : 5432   
+Database : compareTout  
+User : postgres  
+Password : compareTout@postgres
+
+
+Exécuter le Back dans intelliJ.
+  - S'il y a des erreurs lors de la compilation  :
+   - Aller dans le dossier src/main/resources depuis l'ide.
+   - Ouvrir le fichier application.properties et remplacer le ou les champs en "create" par "update".
+   - Recompiler et c'est bon.
+
+Dans DBeaver, les tables se trouvent à :  
+ Schemas > public > Tables
