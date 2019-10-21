@@ -1,8 +1,14 @@
-search page
 <app-search-bar></app-search-bar>
-<div *ngIf="criteriaList != null">
-    <app-filters (valueHasChanged)="reloadProducts($event)" [criteriaList]="criteriaList"></app-filters>
+<div class="content-result">
+    <div *ngIf="criteriaList != null" class="criterias">
+        <app-filters (valueHasChanged)="reloadProducts($event)" [criteriaList]="criteriaList"></app-filters>
+    </div>
+    <div class="display">
+        <div class="result-title">Résultats : {{productList.length}} produits</div>
+        <div *ngIf="productList != null">
+            <app-product-list [productList]="productList"></app-product-list>
+        </div>
+    </div>
+
 </div>
-<div *ngIf="productList != null">
-    <app-product-list [productList]="productList"></app-product-list>
-</div>
+

@@ -1,8 +1,8 @@
-filters 
+
 <div *ngIf="uniqueCriteria != null">
     <div *ngFor="let criteria of uniqueCriteria">
-        <div>
-            {{ criteria.name }}
+        <div class="criteria">
+            <p class="title">{{ criteria.name }}</p>
             <div *ngFor="let value of criteria.values">
                     <app-filters-value [value]="value" [unit]="criteria.unit" (valueChecked)="updateCriteria($event)"></app-filters-value>
             </div>
