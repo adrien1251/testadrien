@@ -15,7 +15,7 @@ export class TestService {
         private httpClient: HttpClient,
     ) { }
 
-    env = 'http://localhost:8080/';
+    env = '18.190.104.245:8080/';
 
     public displayBack(): Observable<any> {
         return this.httpClient.get<any>(`${this.env}${apiEndpoints.getUsers}`);
