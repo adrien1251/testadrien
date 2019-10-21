@@ -20,7 +20,7 @@ public class Image implements Cloneable{
 
     @OneToOne(fetch = FetchType.LAZY)
     //@JoinColumn(name="id")
-    private Product idProduct;
+    private Product Product;
 
     private String url;
 
