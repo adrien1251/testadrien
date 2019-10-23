@@ -6,6 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
+@DiscriminatorValue("ADMIN")
 @Table(name = Tables.ADMIN)
 @Data
 @EqualsAndHashCode

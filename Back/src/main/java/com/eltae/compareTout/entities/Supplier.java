@@ -6,6 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
+@DiscriminatorValue("SUPPLIER")
 @Table(name = Tables.SUPPLIER)
 @Data
 @EqualsAndHashCode
