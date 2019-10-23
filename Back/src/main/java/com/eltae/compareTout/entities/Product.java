@@ -29,14 +29,8 @@ public class Product implements Cloneable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
 
-    /*
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "productList")
-    private List<CriteriaProduct> criteriaList;
-
-     */
-
-    @OneToMany(mappedBy = "criteria")
-    private Set<CriteriaProduct> employerDeliveryAgent = new HashSet<CriteriaProduct>();
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<Criteria> criteriaList;
 
     public Product clone() throws CloneNotSupportedException {
         return (Product) super.clone();

@@ -35,8 +35,8 @@ public class Criteria implements Cloneable {
             inverseJoinColumns = { @JoinColumn(name = "fk_category") })
     private List<Category> categoryList;
 
-    @OneToMany(mappedBy = "product")
-    private Set<CriteriaProduct> employerDeliveryAgent = new HashSet<CriteriaProduct>();
+    @ManyToMany(fetch = FetchType.LAZY)
+    private List<Product> productList;
 
 
     public Criteria clone() throws CloneNotSupportedException {
