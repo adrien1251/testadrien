@@ -2,8 +2,10 @@ package com.eltae.compareTout.services;
 
 import com.eltae.compareTout.converter.UserConverter;
 import com.eltae.compareTout.dto.UserDto;
+import com.eltae.compareTout.entities.Customer;
 import com.eltae.compareTout.entities.User;
 import com.eltae.compareTout.exceptions.NotFoundException;
+import com.eltae.compareTout.repositories.CustomerRepository;
 import com.eltae.compareTout.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -67,9 +69,6 @@ public class UserService implements UserDetailsService {
     }
 
     public List<UserDto> getAllUsers() {
-        List<User> users = userRepository.findAll();
-        List<UserDto> userDto = new ArrayList<>();
-        users.forEach(user -> userDto.add(this.userConverter.entityToDtoMinimumParams(user)));
-        return userDto;
+        return userConverter.entityListToDtoList(userRepository.findAll());
     }
 }
