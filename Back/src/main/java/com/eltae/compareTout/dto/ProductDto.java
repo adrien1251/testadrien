@@ -16,7 +16,7 @@ import java.util.List;
 public class ProductDto implements Cloneable {
     private Long id;
     private String name;
-    private List<Long> criteriaIds;
+    private List<CriteriaProductDto> criteriaProducts;
 
     public ProductDto clone() throws CloneNotSupportedException {
         return (ProductDto) super.clone();

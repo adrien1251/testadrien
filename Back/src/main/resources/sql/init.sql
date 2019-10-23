@@ -18,8 +18,13 @@ VALUES(3, 'ADMIN', 'admin@comparetout.fr', 'Pierre', 'Paul', '$2a$12$gPhTV2TjgEr
 ON CONFLICT DO NOTHING;
 
 insert into public.criteria
-(id, is_mandatory, name, type, unit)
+(criteria_id, is_mandatory, name, type, unit)
 values (1, true, 'price', 0, 'euros')
+ON CONFLICT DO NOTHING;
+
+insert into public.criteria
+(criteria_id, is_mandatory, name, type, unit)
+values (2, false, 'colors', 1, NULL)
 ON CONFLICT DO NOTHING;
 
 insert into public.category
@@ -28,14 +33,17 @@ values (10, 'Téléphonie', null)
 ON CONFLICT DO NOTHING;
 
 insert into public.product
-(id, description, name, supplier_link, category_id)
+(product_id, description, name, supplier_link, category_id)
 values (1, 'Un jolie téléphone', 'Galaxy S10 noir', 'https://samsung.com/galaxyS10', 10)
 ON CONFLICT DO NOTHING;
 
 insert into public.product
-(id, description, name, supplier_link, category_id)
+(product_id, description, name, supplier_link, category_id)
 values (2, 'Un iphone classique', 'Iphone XX', 'https://apple.com/IphoneXX', 10)
 ON CONFLICT DO NOTHING;
 
-insert into public.product_criteria_list(product_id, criteria_list_id)
-values (1, 1)
+insert into public.criteria_product(product_id, criteria_id, value)
+values (1, 1, '700') ON CONFLICT DO NOTHING;
+
+insert into public.criteria_product(product_id, criteria_id, value)
+values (1, 2, 'ROUGE') ON CONFLICT DO NOTHING;

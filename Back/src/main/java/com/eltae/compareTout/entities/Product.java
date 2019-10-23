@@ -18,6 +18,7 @@ import java.util.Set;
 public class Product implements Cloneable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "product_id")
     private Long id;
 
     private String name;
@@ -29,8 +30,8 @@ public class Product implements Cloneable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    private List<Criteria> criteriaList;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.product")
+    private List<CriteriaProduct> criteriaProducts;
 
     public Product clone() throws CloneNotSupportedException {
         return (Product) super.clone();
