@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@DiscriminatorValue("CUSTOMER")
 @Table(name = Tables.CUSTOMER)
 @Data
 @EqualsAndHashCode
