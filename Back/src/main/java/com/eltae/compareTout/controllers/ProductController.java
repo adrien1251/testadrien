@@ -25,8 +25,17 @@ public class ProductController extends ExceptionCatcher {
         this.productService = productService;
     }
 
+    @GetMapping("/{idCategory}")
+    public ResponseEntity<List<ProductDto>> getAllProductByCategory(@PathVariable long idCategory) {
+        return ResponseEntity.status(201).body(this.productService.getAllProductsByCategory(idCategory));
+    }
+
     @GetMapping
     public ResponseEntity<List<ProductDto>> getAllProduct() {
         return ResponseEntity.status(201).body(this.productService.getAll());
     }
+
+
+
+
 }

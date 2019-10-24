@@ -25,4 +25,8 @@ public class ProductService {
     public List<ProductDto> getAll() {
         return productConverter.entityListToDtoList(this.productRepository.findAll());
     }
+
+    public List<ProductDto> getAllProductsByCategory(long idCategory) {
+        return productConverter.entityListToDtoList(this.productRepository.findAllByCategoryId(idCategory));
+    }
 }
