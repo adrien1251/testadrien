@@ -13,4 +13,5 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
     List<Category> findAll();
     List<Category> findByParent_idIsNull();
     Optional<Category> findByName(String name);
+
 }

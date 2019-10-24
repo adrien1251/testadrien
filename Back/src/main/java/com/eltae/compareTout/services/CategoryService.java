@@ -26,6 +26,10 @@ public class CategoryService {
         this.categoryRepository = categoryRepository;
     }
 
+    private void updateCategory(Category category){
+        Optional<Category> previous=categoryRepository.findById(category.getId());
+
+    }
     public int create(MultipartFile multipartFile) {
         try {
             return this.readCSV(multipartFile.getInputStream());
@@ -39,10 +43,66 @@ public class CategoryService {
         CSVReader csvReader = new CSVReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8), ';');
         String[] nextRecord;
         int nbLineAdd = 0;
+        System.out.println("debut de lecture");
         while ((nextRecord = csvReader.readNext()) != null) {
-            if(this.saveCategorie(nextRecord, 1)) nbLineAdd++;
+            //if(this.saveCategorie(nextRecord, 1)) nbLineAdd++;
+            if(this.saveCat(nextRecord)) nbLineAdd++;
         }
         return nbLineAdd;
+    }
+
+
+    private boolean saveCat(String[] records){
+        String actualCategoryName = "";
+        Category parent=null;
+        Category child=null;
+        List<Category> childList=null;
+        for(int i=1;i<records.length;i++){
+            actualCategoryName=records[i];
+            System.out.println(actualCategoryName + "  "+i);
+            Optional<Category> ActCat = this.categoryRepository.findByName(actualCategoryName);
+            if(actualCategoryName.trim().length()==0)return false;
+            if(i==1) {
+                if (!ActCat.isPresent()) {
+                    parent=Category.builder().name(actualCategoryName).childList(new ArrayList<>()).build();
+                    childList = new ArrayList<>();
+                    parent.setChildList(childList);
+                    this.categoryRepository.save(parent);
+                }
+                else
+                    parent=ActCat.get();
+            }
+            else{
+                if(ActCat.isPresent()) {
+                    if(ActCat.get().getParent()!=null && ActCat.get().getParent().getId()!=parent.getId() ) {
+                        throw new BadCsvLine(HttpStatus.resolve(566), "Child category `" + ActCat.get().getName() + "` has already parent[`" + ActCat.get().getParent().getName() + "`]");
+                    }
+                        if(ActCat.get().getParent()==null){
+                             ActCat.get().setParent(parent);
+                             childList=ActCat.get().getChildList();
+                             childList.add(ActCat.get());
+                             parent.setChildList(childList);
+                             this.categoryRepository.save(parent);
+                             this.categoryRepository.save(ActCat.get());
+                             parent=ActCat.get();
+                            }
+                         else{
+                             parent=ActCat.get();
+                            }
+                }
+                else{
+                    child=Category.builder().name(actualCategoryName).childList(new ArrayList<>()).parent(parent).build();
+                    childList = parent.getChildList();
+                    childList.add(child);
+                    parent.setChildList(childList);
+                    //this.categoryRepository.save(parent);
+                    this.categoryRepository.save(child);
+                    parent=child;
+                }
+
+                }
+        }
+        return true;
     }
 
     private boolean saveCategorie(String[] records, int idx) {
@@ -146,8 +206,6 @@ public class CategoryService {
             parcoursProfondeur(s, pathcate,c);
         }
     }
-
-
     private void writeInCsv(Category g, String pathcate,CSVWriter c){
         List<Criteria> crit=null;
         crit=g.getCriteriaList();
@@ -166,7 +224,6 @@ public class CategoryService {
         String[] row=pathcate.split("/");
         c.writeNext(row);
     }
-
     private  CSVWriter writeDataLineByLine(String filePath) {
         // first create file object for file placed at location
         // specified by filepath
