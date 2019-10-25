@@ -1,7 +1,7 @@
 package com.eltae.compareTout.converter;
-import com.eltae.compareTout.dto.CriteriaDto;
 import com.eltae.compareTout.dto.CriteriaProductDto;
 import com.eltae.compareTout.entities.Criteria;
+import com.eltae.compareTout.repositories.CriteriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

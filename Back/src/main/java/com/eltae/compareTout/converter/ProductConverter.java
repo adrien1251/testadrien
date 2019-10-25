@@ -2,6 +2,7 @@ package com.eltae.compareTout.converter;
 
 import com.eltae.compareTout.dto.CriteriaProductDto;
 import com.eltae.compareTout.dto.ProductDto;
+import com.eltae.compareTout.dto.ShortProductDto;
 import com.eltae.compareTout.entities.CriteriaProduct;
 import com.eltae.compareTout.entities.Product;
 import com.eltae.compareTout.repositories.ProductRepository;
@@ -24,6 +25,15 @@ public class ProductConverter extends GenericsConverter<Product, ProductDto> {
         return dtoList;
     }
 
+
+    public  List<ShortProductDto> ListEntityToShortDto(List<Product> productList) {
+        List<ShortProductDto> dtoList=new ArrayList<ShortProductDto>();
+        for(Product p : productList)
+            dtoList.add(this.entityToShortDto(p));
+        return dtoList;
+    }
+
+
     @Override
     public ProductDto entityToDto(Product product) {
         return ProductDto.builder()
@@ -33,6 +43,17 @@ public class ProductConverter extends GenericsConverter<Product, ProductDto> {
                 .criteriaProducts(getCriteria(product.getCriteriaProducts()))
                 .build();
     }
+
+
+    public ShortProductDto entityToShortDto(Product product) {
+        return ShortProductDto.builder()
+                .id(product.getId())
+                .name(product.getName())
+                .category(product.getCategory().getId())
+                .criteriaProducts(getCriteria(product.getCriteriaProducts()))
+                .build();
+    }
+
 
     private List<CriteriaProductDto> getCriteria(List<CriteriaProduct> criteriaProducts) {
         List<CriteriaProductDto> critereIds = new ArrayList<>();

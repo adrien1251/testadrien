@@ -3,6 +3,7 @@ package com.eltae.compareTout.controllers;
 import com.eltae.compareTout.constants.Routes;
 import com.eltae.compareTout.dto.CriteriaProductDto;
 import com.eltae.compareTout.dto.ProductDto;
+import com.eltae.compareTout.dto.ShortProductDto;
 import com.eltae.compareTout.entities.Product;
 import com.eltae.compareTout.exceptionHandler.ExceptionCatcher;
 import com.eltae.compareTout.services.CategoryService;
@@ -28,7 +29,7 @@ public class ProductController extends ExceptionCatcher {
     }
 
     @GetMapping("/category/{idCategory}")
-    public ResponseEntity<List<ProductDto>> getAllProductByCategory(@PathVariable long idCategory) {
+    public ResponseEntity<List<ShortProductDto>> getAllProductByCategory(@PathVariable long idCategory) {
         return ResponseEntity.status(201).body(this.productService.getAllProductsByCategory(idCategory));
     }
 
@@ -37,7 +38,7 @@ public class ProductController extends ExceptionCatcher {
         return ResponseEntity.status(201).body(this.productService.getAllCriteriaByProduct(idProduct));
     }
     @GetMapping
-    public ResponseEntity<List<ProductDto>> getAllProduct() {
+    public ResponseEntity<List<ShortProductDto>> getAllProduct() {
         return ResponseEntity.status(201).body(this.productService.getAll());
     }
 
