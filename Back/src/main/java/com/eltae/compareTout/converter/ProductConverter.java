@@ -27,7 +27,9 @@ public class ProductConverter extends GenericsConverter<Product, ProductDto> {
     @Override
     public ProductDto entityToDto(Product product) {
         return ProductDto.builder()
+                .id(product.getId())
                 .name(product.getName())
+                .category(product.getCategory())
                 .criteriaProducts(getCriteria(product.getCriteriaProducts()))
                 .build();
     }

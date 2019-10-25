@@ -1,6 +1,7 @@
 package com.eltae.compareTout.services;
 
 import com.eltae.compareTout.converter.ProductConverter;
+import com.eltae.compareTout.dto.CriteriaProductDto;
 import com.eltae.compareTout.dto.ProductDto;
 import com.eltae.compareTout.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,5 +29,9 @@ public class ProductService {
 
     public List<ProductDto> getAllProductsByCategory(long idCategory) {
         return productConverter.entityListToDtoList(this.productRepository.findAllByCategoryId(idCategory));
+    }
+
+    public List<CriteriaProductDto> getAllCriteriaByProduct(long idProduct) {
+        return productConverter.entityListToDtoList(this.productRepository.findProductById(idProduct)).get(0).getCriteriaProducts();
     }
 }
