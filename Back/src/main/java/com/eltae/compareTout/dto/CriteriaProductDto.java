@@ -14,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @EqualsAndHashCode
 public class CriteriaProductDto implements Cloneable {
+    private Long id;
     private String value;
     private String criteriaName;
     private String criteriaUnit;

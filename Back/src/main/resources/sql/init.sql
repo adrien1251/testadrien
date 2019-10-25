@@ -47,3 +47,13 @@ values (1, 1, '700') ON CONFLICT DO NOTHING;
 
 insert into public.criteria_product(product_id, criteria_id, value)
 values (1, 2, 'ROUGE') ON CONFLICT DO NOTHING;
+
+insert into public.criteria_category(fk_criteria, fk_category)
+values (1,10) ON CONFLICT DO NOTHING;
+insert into public.criteria_category(fk_criteria, fk_category)
+values (2,10) ON CONFLICT DO NOTHING;
+
+insert into public.category_product_list(category_id, product_list_product_id)
+values (10,1) ON CONFLICT DO NOTHING;
+insert into public.category_product_list(category_id, product_list_product_id)
+values (10,2) ON CONFLICT DO NOTHING;

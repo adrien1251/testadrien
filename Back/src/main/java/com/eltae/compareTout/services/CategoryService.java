@@ -1,6 +1,13 @@
 package com.eltae.compareTout.services;
+import com.eltae.compareTout.converter.CriteriaConverter;
+import com.eltae.compareTout.converter.ProductConverter;
+import com.eltae.compareTout.dto.CategoryDto;
+import com.eltae.compareTout.dto.CriteriaProductDto;
+import com.eltae.compareTout.dto.ProductDto;
+import com.eltae.compareTout.dto.ShortCategoryDto;
 import com.eltae.compareTout.entities.Category;
 import com.eltae.compareTout.entities.Criteria;
+import com.eltae.compareTout.converter.CategoryConverter;
 import com.eltae.compareTout.exceptions.BadCsvLine;
 import com.eltae.compareTout.repositories.CategoryRepository;
 import com.opencsv.CSVReader;
@@ -19,11 +26,17 @@ import java.util.*;
 public class CategoryService {
 
     private final CategoryRepository categoryRepository;
+    private final CategoryConverter categoryConverter;
+    private final CriteriaConverter criteriaConverter;
+    private final ProductConverter productConverter;
     private File cat_file;
 
     @Autowired
-    public CategoryService(CategoryRepository categoryRepository) {
+    public CategoryService(CategoryRepository categoryRepository,CategoryConverter catConv,CriteriaConverter critConv,ProductConverter prodConv) {
         this.categoryRepository = categoryRepository;
+        this.categoryConverter = catConv;
+        this.criteriaConverter=critConv;
+        this.productConverter=prodConv;
     }
 
     public int create(MultipartFile multipartFile) {
@@ -93,7 +106,6 @@ public class CategoryService {
         }
         return true;
     }
-
     private boolean saveCategorie(String[] records, int idx) {
         if (!(idx < records.length) || records[idx].isEmpty()) return true;
         String actualCategoryName = records[idx];
@@ -155,8 +167,6 @@ public class CategoryService {
         return this.saveCategorie(records, idx);
 
     }
-
-
     public File getCategories(){
 
         List<Category> mother;
@@ -244,10 +254,20 @@ public class CategoryService {
     }
 
 
+    public List<CategoryDto> getMainCategories() {
+            return categoryConverter.entityListToDtoList(categoryRepository.findByParent_idIsNull());
+    }
 
+    public List<ShortCategoryDto> getChildCategories(long id) {
+        return  categoryConverter.entityListToShortDtoList(categoryRepository.findById(id).get().getChildList());
+            }
 
+    public List<CriteriaProductDto> getCriteriadCategories(Long id) {
+        return criteriaConverter.entityListToDtoList(categoryRepository.findById(id).get().getCriteriaList());
 
+    }
 
-
-
+    public List<ProductDto> getProductsCategory(Long id) {
+        return productConverter.ListEntityToDto(categoryRepository.findById(id).get().getProductList());
+    }
 }
