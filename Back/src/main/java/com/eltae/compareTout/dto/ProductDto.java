@@ -1,5 +1,6 @@
 package com.eltae.compareTout.dto;
 
+import com.eltae.compareTout.entities.Category;
 import com.eltae.compareTout.entities.Criteria;
 import com.eltae.compareTout.entities.CriteriaProduct;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -16,6 +17,7 @@ import java.util.List;
 public class ProductDto implements Cloneable {
     private Long id;
     private String name;
+    private Category category;
     private List<CriteriaProductDto> criteriaProducts;
 
     public ProductDto clone() throws CloneNotSupportedException {
