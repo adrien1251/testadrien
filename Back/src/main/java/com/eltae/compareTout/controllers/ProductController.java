@@ -28,11 +28,14 @@ public class ProductController extends ExceptionCatcher {
         this.productService = productService;
     }
 
+
+    @ApiOperation(value = "Liste des produits d'une catégorie ")
     @GetMapping("/category/{idCategory}")
     public ResponseEntity<List<ShortProductDto>> getAllProductByCategory(@PathVariable long idCategory) {
         return ResponseEntity.status(201).body(this.productService.getAllProductsByCategory(idCategory));
     }
 
+    @ApiOperation(value = "Liste des critères d'un produit ")
     @GetMapping("/criteria/{idProduct}")
     public ResponseEntity<List<CriteriaProductDto>> getAllCriteriaByProduct(@PathVariable long idProduct) {
         return ResponseEntity.status(201).body(this.productService.getAllCriteriaByProduct(idProduct));
