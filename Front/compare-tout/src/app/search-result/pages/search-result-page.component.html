@@ -1,4 +1,8 @@
-<app-search-bar></app-search-bar>
+<app-search-bar 
+    [productList]="productList"
+    (searchValue)="toggleSearchPropositions($event)"
+    (eraseEvent)="inputErase($event)"
+    ></app-search-bar>
 <div class="content-result">
     <div *ngIf="criteriaList != null" class="criterias">
         <app-filters (valueHasChanged)="reloadProducts($event)" [criteriaList]="criteriaList"></app-filters>

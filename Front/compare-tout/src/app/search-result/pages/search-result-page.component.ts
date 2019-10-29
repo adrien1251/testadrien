@@ -55,4 +55,15 @@ export class SearchResultPageComponent implements OnInit, OnDestroy {
 
   }
 
+  toggleSearchPropositions(value) {
+    // this.inputValue = '';
+    console.log(value);
+    this.productList = this.productList.filter(p => p.name.includes(value));
+    console.log(this.productList);
+  }
+
+  inputErase(event) {
+    this.fetchProducts();
+  }
+
 }
