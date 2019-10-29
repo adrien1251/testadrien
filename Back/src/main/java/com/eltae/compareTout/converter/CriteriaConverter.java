@@ -14,6 +14,7 @@ public class CriteriaConverter extends GenericsConverter<Criteria, CriteriaProdu
     @Override
     public CriteriaProductDto entityToDto(Criteria criteria) {
         return CriteriaProductDto.builder()
+                .id(criteria.getId())
                 .criteriaName(criteria.getName())
                 .criteriaUnit(criteria.getUnit())
                 .isMandatory(criteria.isMandatory())
