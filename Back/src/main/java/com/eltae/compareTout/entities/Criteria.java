@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = Tables.CRITERIA)
+@Table(name = Tables.CRITERIA, uniqueConstraints = @UniqueConstraint(columnNames = "name"))
 @Builder
 @Data
 @EqualsAndHashCode
@@ -42,5 +42,11 @@ public class Criteria implements Cloneable {
 
     public Criteria clone() throws CloneNotSupportedException {
         return (Criteria) super.clone();
+    }
+
+    public void addCategory(Category category){
+        List<Category> list = this.getCategoryList();
+        list.add(category);
+        this.setCategoryList(list);
     }
 }

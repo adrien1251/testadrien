@@ -5,10 +5,8 @@ import com.eltae.compareTout.exceptionHandler.ExceptionCatcher;
 import com.eltae.compareTout.services.CriteriaService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -37,5 +35,13 @@ public class CriteriaController   extends ExceptionCatcher {
 
         return ResponseEntity.status(201).body(this.criteriaService.getProductsStrictCriteria(id,idCrit,valuesCrit));
     }
+
+    @ApiOperation(value = "Ajout de critères par fichier csv (delimiter: ';')")
+    @PostMapping(consumes = "multipart/form-data")
+    public ResponseEntity<Integer> createCriterias(@RequestParam("file") MultipartFile file) {
+        return ResponseEntity.status(201).body(this.criteriaService.create(file));
+    }
+
+
 
 }
