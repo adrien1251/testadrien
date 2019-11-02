@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { TestComponent } from './test/test.component';
+import { MainPageComponent } from './main-page/pages/main-page.component';
 
 
 const routes: Routes = [
@@ -9,7 +10,7 @@ const routes: Routes = [
   // @component précise le nom du component à afficher ex TestComponent
   {
     path: '',
-    component: TestComponent,
+    component: MainPageComponent,
   },
 ];
 

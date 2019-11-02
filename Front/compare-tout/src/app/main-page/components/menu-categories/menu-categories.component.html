@@ -1,0 +1,10 @@
+<div  class="category-list">
+    <div *ngFor="let category of categories">
+        <div (click)="goToSubcategory(category)"> {{ category.name }}</div>
+    </div>
+    <div class="subcategory-list">
+        <div *ngFor="let sub of subCategories">
+            <div (click)="goToSubcategory(sub)"> {{ sub.name }}</div>
+        </div>
+    </div>
+</div>

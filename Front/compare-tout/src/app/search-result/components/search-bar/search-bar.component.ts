@@ -40,6 +40,7 @@ export class SearchBarComponent implements OnInit, OnDestroy {
       this.searchValue.emit(value);
     }
     if (value.length === 0) {
+      this.emptySearch();
       this.productList = null;
     }
   }
@@ -49,6 +50,8 @@ export class SearchBarComponent implements OnInit, OnDestroy {
       this.searchValue.emit(value);
       this.searchInput.nativeElement.value = '';
       this.productList = null;
+    } else {
+      this.emptySearch();
     }
   }
 
