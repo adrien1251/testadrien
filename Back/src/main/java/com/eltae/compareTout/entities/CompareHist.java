@@ -15,16 +15,22 @@ import java.util.List;
 @NoArgsConstructor
 public class CompareHist implements Cloneable{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    private Customer idCustomer;
 
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Product> productsToCompare;
+    @EmbeddedId
+    private CompareHistPK id;
+
+
+    @ManyToOne
+    @MapsId("Customer_id")
+    @JoinColumn(name = "CUSTOMER_ID")
+    private Customer user;
+
+
+    @ManyToOne
+    @MapsId("Product_id")
+    @JoinColumn(name = "PRODUCT_ID")
+    private Product product;
 
     public CompareHist clone() throws CloneNotSupportedException {
         return (CompareHist) super.clone();

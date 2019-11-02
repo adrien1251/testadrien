@@ -1,15 +1,23 @@
 package com.eltae.compareTout.entities;
 
+import lombok.Data;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.ManyToOne;
 import java.io.Serializable;
 
 @Embeddable
+@Data
 public class CriteriaProductPK implements Serializable {
 
-    @Column(name = "PRODUCT_ID")
-    private Long product_id;
+    @ManyToOne
+    private Product product;
 
-    @Column(name = "CRITERIA_ID")
-    private Long criteria_id;
+    @ManyToOne
+    private Criteria criteria;
+
+    public CriteriaProductPK clone() throws CloneNotSupportedException {
+        return (CriteriaProductPK) super.clone();
+    }
 }

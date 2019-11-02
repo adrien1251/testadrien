@@ -2,6 +2,7 @@ package com.eltae.compareTout.controllers;
 
 import com.eltae.compareTout.constants.Routes;
 import com.eltae.compareTout.dto.UserDto;
+import com.eltae.compareTout.entities.Customer;
 import com.eltae.compareTout.exceptionHandler.ExceptionCatcher;
 import com.eltae.compareTout.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

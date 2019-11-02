@@ -41,6 +41,8 @@ front-push-image:
   script:
   - echo mdp
   - echo $TREESCALE_PASS
+  - echo $env:TREESCALE_PASS
+  - echo %TREESCALE_PASS%
   - docker login repo.treescale.com --username=deblocka -p $TREESCALE_PASS
   - docker build -t $FRONT_IMAGE .
   - docker push $FRONT_IMAGE
@@ -51,6 +53,8 @@ back-push-image:
   script:
   - echo mdp
   - echo $TREESCALE_PASS
+  - echo $env:TREESCALE_PASS
+  - echo %TREESCALE_PASS%
   - docker login repo.treescale.com --username=deblocka -p $TREESCALE_PASS
   - docker build -t $BACK_IMAGE .
   - docker push $BACK_IMAGE
