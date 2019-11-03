@@ -24,8 +24,10 @@ public class Product implements Cloneable {
 
     private String name;
 
+    @Column(length = 1500)
     private String description;
 
+    @Column(length = 750)
     private String supplierLink;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -47,4 +49,11 @@ public class Product implements Cloneable {
     public Product clone() throws CloneNotSupportedException {
         return (Product) super.clone();
     }
+
+    public void addCriteriaProduct(CriteriaProduct criteria){
+        List<CriteriaProduct> list = this.getCriteriaProducts();
+        list.add(criteria);
+        this.setCriteriaProducts(list);
+    }
+
 }
