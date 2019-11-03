@@ -32,9 +32,13 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   fetchCurrentCategory(event): void {
-    console.log('oui oui');
-    this.currentCategory = event;
-    this.currentCategory.criteriaList = criteriaMock1;
+    if (event != null) {
+      this.currentCategory = event;
+      this.currentCategory.criteriaList = criteriaMock1;
+    } else {
+      this.currentCategory = null;
+    }
+
   }
 
 }

@@ -28,6 +28,8 @@ export class MenuCategoriesComponent implements OnInit, OnDestroy {
     this.isTopCategory = true;
     this.categoriesDisplay = this.categories;
     this.subCategories = null;
+    this.currentCategory.emit(null);
+
   }
 
   goToSubcategory(category: Category): void {
@@ -35,7 +37,6 @@ export class MenuCategoriesComponent implements OnInit, OnDestroy {
       this.categoriesDisplay = [category];
       this.subCategories = category.childList;
       this.isTopCategory = false;
-      console.log('là');
       this.currentCategory.emit(category);
     }
   }
