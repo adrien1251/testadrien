@@ -45,6 +45,11 @@ public class ProductController extends ExceptionCatcher {
         return ResponseEntity.status(201).body(this.productService.getAll());
     }
 
+    @ApiOperation(value = "Ajout de produits par fichier csv (delimiter: ';')")
+    @PostMapping(consumes = "multipart/form-data")
+    public ResponseEntity<Integer> insertProductsFromFile(@RequestParam("file") MultipartFile file) {
+        return ResponseEntity.status(201).body(this.productService.insertProductsFromFile(file));
+    }
 
 
 
