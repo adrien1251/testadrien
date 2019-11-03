@@ -90,7 +90,7 @@ public class ProductService {
                 cp = null;
                 Criteria criteria = criteriaService.getCriteriaProductWithIdCriteria(Long.parseLong(actualColumn));
                 if (criteria == null) {
-                    System.out.println("Le crit n'a pas été trouvé");
+                    System.out.println("Le critère n'a pas été trouvé lors de l'jout du produit " + product.getName());
                     return false; // criteria non trouvé en base
                 } else {
                     CriteriaProductPK primaryKey = new CriteriaProductPK();
