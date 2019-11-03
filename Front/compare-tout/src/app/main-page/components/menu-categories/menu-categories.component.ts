@@ -9,6 +9,7 @@ import { criteriaMock1 } from 'src/app/shared/mocks/critere-mock';
 })
 export class MenuCategoriesComponent implements OnInit, OnDestroy {
   @Input() categories: Category[];
+  categoriesDisplay: Category[];
   isTopCategory = true;
   @Output() currentCategory: EventEmitter<Category> = new EventEmitter<Category>();
   subCategories: Category[];
@@ -17,14 +18,21 @@ export class MenuCategoriesComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this.categoriesDisplay = this.categories;
   }
 
   ngOnDestroy(): void {
   }
 
+  goBack(): void {
+    this.isTopCategory = true;
+    this.categoriesDisplay = this.categories;
+    this.subCategories = null;
+  }
+
   goToSubcategory(category: Category): void {
     if (category.childList) {
-      this.categories = [category];
+      this.categoriesDisplay = [category];
       this.subCategories = category.childList;
       this.isTopCategory = false;
       console.log('là');

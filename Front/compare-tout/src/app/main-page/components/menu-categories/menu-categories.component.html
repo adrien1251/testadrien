@@ -1,5 +1,6 @@
 <div  class="category-list">
-    <div *ngFor="let category of categories">
+        <div *ngIf="!isTopCategory" class="back" (click)="goBack()"> Retour </div> 
+    <div *ngFor="let category of categoriesDisplay">
         <div (click)="goToSubcategory(category)"> {{ category.name }}</div>
     </div>
     <div class="subcategory-list">

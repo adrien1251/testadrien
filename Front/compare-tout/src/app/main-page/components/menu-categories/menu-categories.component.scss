@@ -3,6 +3,10 @@
     padding: 0 20px;
     justify-content: space-around;
     font-size: 16px;
+    .back {
+        font-size:12px;
+        text-decoration: underline;
+    }
     .subcategory-list {
         display: block;
         font-size: 12px;
