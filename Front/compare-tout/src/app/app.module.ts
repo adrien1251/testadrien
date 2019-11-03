@@ -12,6 +12,8 @@ import { HeaderComponent } from './shared/header/header.component';
 import { CategoryService } from './shared/services/category.service';
 import { MainPageModule } from './main-page/main-page.module';
 import { MenuCategoriesComponent } from './main-page/components/menu-categories/menu-categories.component';
+import { FiltersComponent } from './main-page/components/filters/filters.component';
+import { FiltersValueComponent } from './main-page/components/filters-value/filters-value.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +21,8 @@ import { MenuCategoriesComponent } from './main-page/components/menu-categories/
     MainPageComponent,
     HeaderComponent,
     MenuCategoriesComponent,
+    FiltersComponent,
+    FiltersValueComponent,
   ],
   imports: [
     BrowserModule,

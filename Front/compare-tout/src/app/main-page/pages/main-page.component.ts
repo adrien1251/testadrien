@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Category } from 'src/app/shared/models/category.interface';
 import { CategoryService } from 'src/app/shared/services/category.service';
 import { categoryMock1, categoryMock2 } from 'src/app/shared/mocks/category-mock';
+import { criteriaMock1 } from 'src/app/shared/mocks/critere-mock';
 
 @Component({
   selector: 'app-main-page',
@@ -10,6 +11,7 @@ import { categoryMock1, categoryMock2 } from 'src/app/shared/mocks/category-mock
 })
 export class MainPageComponent implements OnInit, OnDestroy {
   public categories: Category[];
+  private currentCategory: Category;
 
   constructor(
     private categoryService: CategoryService,
@@ -27,6 +29,12 @@ export class MainPageComponent implements OnInit, OnDestroy {
     this.categories = [categoryMock1];
     this.categories.push(categoryMock2);
     // this.categoryService.getMainCategories().subscribe(res => this.categories = res);
+  }
+
+  fetchCurrentCategory(event): void {
+    console.log('oui oui');
+    this.currentCategory = event;
+    this.currentCategory.criteriaList = criteriaMock1;
   }
 
 }
