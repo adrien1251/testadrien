@@ -20,7 +20,7 @@ public class Category implements Cloneable {
 
     private String name;
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
     private List<Category> childList;
 
     @OneToOne(fetch = FetchType.LAZY, cascade=CascadeType.ALL)
