@@ -3,10 +3,8 @@ package com.eltae.compareTout.services;
 import com.eltae.compareTout.converter.ProductConverter;
 import com.eltae.compareTout.dto.CriteriaProductDto;
 import com.eltae.compareTout.dto.ShortProductDto;
-import com.eltae.compareTout.entities.Criteria;
-import com.eltae.compareTout.entities.CriteriaProduct;
-import com.eltae.compareTout.entities.CriteriaProductPK;
-import com.eltae.compareTout.entities.Product;
+import com.eltae.compareTout.entities.*;
+import com.eltae.compareTout.repositories.CategoryRepository;
 import com.eltae.compareTout.repositories.CriteriaProductRepository;
 import com.eltae.compareTout.repositories.ProductRepository;
 import com.opencsv.CSVReader;
@@ -31,14 +29,16 @@ public class ProductService {
     private final CategoryService categoryService;
     private final CriteriaService criteriaService;
     private final CriteriaProductRepository criteriaProductRepository;
+    private final CategoryRepository categoryRepository;
 
     @Autowired
-    public ProductService(ProductRepository productRepository, ProductConverter productConverter, CategoryService categoryService, CriteriaService criteriaService, CriteriaProductRepository criteriaProductRepository) {
+    public ProductService(ProductRepository productRepository, ProductConverter productConverter, CategoryService categoryService, CriteriaService criteriaService, CriteriaProductRepository criteriaProductRepository, CategoryRepository categoryRepository) {
         this.productRepository = productRepository;
         this.productConverter = productConverter;
         this.categoryService = categoryService;
         this.criteriaService = criteriaService;
         this.criteriaProductRepository = criteriaProductRepository;
+        this.categoryRepository = categoryRepository;
     }
 
     public List<ShortProductDto> getAll() {
@@ -75,9 +75,15 @@ public class ProductService {
     private boolean insertProduct(String[] records) {
         String actualColumn;
         CriteriaProduct cp;
+
+        Category category = categoryService.getCategoryWithId(Long.parseLong(records[3]));
+        if (category == null){
+            System.out.println("La catégorie indiquée n'existe pas dans la base (lors de l'ajout du produit " + records[0] + ")");
+        }
+
         Product product = Product.builder()
-                .category(categoryService.getCategoryWithId(Long.parseLong(records[3])))
-                .name(records[0])
+                .category(category)
+                .name(records[0].toLowerCase())
                 .description(records[1])
                 .supplierLink(records[2])
                 .criteriaProducts(new ArrayList<>())
@@ -90,7 +96,7 @@ public class ProductService {
                 cp = null;
                 Criteria criteria = criteriaService.getCriteriaProductWithIdCriteria(Long.parseLong(actualColumn));
                 if (criteria == null) {
-                    System.out.println("Le critère n'a pas été trouvé lors de l'jout du produit " + product.getName());
+                    System.out.println("Le critère indiqué n'existe pas dans la base (lors de l'ajout du produit " + product.getName() + ")");
                     return false; // criteria non trouvé en base
                 } else {
                     CriteriaProductPK primaryKey = new CriteriaProductPK();
@@ -105,6 +111,9 @@ public class ProductService {
                 }
             }
         }
+        category.addProduct(product);
+        categoryRepository.save(category);
+
         productRepository.save(product);
         return true;
     }

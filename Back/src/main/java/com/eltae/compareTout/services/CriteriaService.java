@@ -120,12 +120,12 @@ public class CriteriaService {
             actualColumn = records[i];
             if (actualColumn.trim().length() == 0) return false;
             if (i % 4 == 0 & i != 0) {
-                Optional<Criteria> critInBase = criteriaRepository.findByName(records[i + 1]);
+                Optional<Criteria> critInBase = criteriaRepository.findByName(records[i + 1].toLowerCase());
                 if (!critInBase.isPresent()) { //Si le critère n'existe pas, on l'ajoute
                     if (!actualColumn.isEmpty()) {
                         Criteria newCritere = Criteria.builder()
                                 .isMandatory(Boolean.parseBoolean(actualColumn))
-                                .name(records[i + 1])
+                                .name(records[i + 1].toLowerCase())
                                 .unit(records[i + 2])
                                 .type(TypeCriteria.valueOf(records[i + 3].toUpperCase()))
                                 .categoryList(new ArrayList<>())

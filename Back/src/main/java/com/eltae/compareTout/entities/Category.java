@@ -4,6 +4,7 @@ import com.eltae.compareTout.constants.Tables;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -41,4 +42,13 @@ public class Category implements Cloneable {
     public String toString(){
         return id + ": " + name;
     }
+
+    public void addProduct(Product p){
+        List<Product> productsList = this.getProductList();
+        productsList.add(p);
+        this.setProductList(productsList);
+    }
+
+
+
 }

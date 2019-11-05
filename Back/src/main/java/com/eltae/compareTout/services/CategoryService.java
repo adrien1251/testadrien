@@ -46,7 +46,10 @@ public class CategoryService {
     }
 
     public Category getCategoryWithId(long id){
-        return categoryRepository.findById(id).get();
+        Optional<Category> cat = categoryRepository.findById(id);
+        if (cat.isPresent())
+            return cat.get();
+        return null;
     }
 
     private int readCSV(InputStream inputStream) throws IOException {
