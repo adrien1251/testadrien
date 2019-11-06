@@ -2,12 +2,10 @@ package com.eltae.compareTout.controllers;
 
 import com.eltae.compareTout.constants.Routes;
 import com.eltae.compareTout.dto.CriteriaProductDto;
-import com.eltae.compareTout.dto.ProductDto;
 import com.eltae.compareTout.dto.ShortProductDto;
-import com.eltae.compareTout.entities.Product;
 import com.eltae.compareTout.exceptionHandler.ExceptionCatcher;
-import com.eltae.compareTout.services.CategoryService;
 import com.eltae.compareTout.services.ProductService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(Routes.PRODUCT)
+@Api(value = "Products", description = "Products gesture", tags = {"Products"})
 public class ProductController extends ExceptionCatcher {
 
     private ProductService productService;

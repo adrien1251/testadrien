@@ -2,9 +2,9 @@ package com.eltae.compareTout.controllers;
 
 import com.eltae.compareTout.constants.Routes;
 import com.eltae.compareTout.dto.UserDto;
-import com.eltae.compareTout.entities.Customer;
 import com.eltae.compareTout.exceptionHandler.ExceptionCatcher;
 import com.eltae.compareTout.services.UserService;
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(Routes.USERS)
+@Api(value = "Users", description = "Users gesture", tags = {"Users"})
 public class UserController extends ExceptionCatcher {
 
     private UserService userService;
