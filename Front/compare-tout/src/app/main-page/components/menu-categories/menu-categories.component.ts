@@ -12,7 +12,7 @@ export class MenuCategoriesComponent implements OnInit, OnDestroy {
   categoriesDisplay: Category[];
   isTopCategory = true;
   @Output() currentCategory: EventEmitter<Category> = new EventEmitter<Category>();
-  subCategories: Category[];
+  @Input() subCategories: Category[];
 
   constructor(
   ) { }
@@ -35,7 +35,6 @@ export class MenuCategoriesComponent implements OnInit, OnDestroy {
   goToSubcategory(category: Category): void {
     if (category.childList) {
       this.categoriesDisplay = [category];
-      this.subCategories = category.childList;
       this.isTopCategory = false;
       this.currentCategory.emit(category);
     }

@@ -13,7 +13,7 @@ export class CategoryService {
         private httpClient: HttpClient,
     ) { }
 
-    env = 'http://http://18.190.29.156:8080';
+    env = 'http://18.190.104.245:8080/category';
 
     public getMainCategories(): Observable<any> {
         return this.httpClient.get<any>(`${this.env}${apiEndpoints.getMainCategories}`);

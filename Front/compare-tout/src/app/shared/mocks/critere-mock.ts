@@ -10,10 +10,10 @@ export const criteriaMock1: Criteria[] = [
     },
     {
         isMandatory: false,
-        name: 'Durée de batterie',
-        type: 'Int',
-        unit: 'heures',
-        value: '1000',
+        name: 'Dimensions',
+        type: 'String',
+        unit: 'cm',
+        value: '1000 * 500',
     },
 ];
 export const criteriaMock2: Criteria[] = [

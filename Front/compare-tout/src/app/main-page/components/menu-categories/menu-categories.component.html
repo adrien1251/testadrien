@@ -1,7 +1,7 @@
 <div  class="category-list">
         <div *ngIf="!isTopCategory" class="back" (click)="goBack()"> Retour </div> 
     <div *ngFor="let category of categoriesDisplay">
-        <div (click)="goToSubcategory(category)"> {{ category.name }}</div>
+        <div class="category-title" (click)="goToSubcategory(category)"> {{ category.name }}</div>
     </div>
     <div class="subcategory-list">
         <div *ngFor="let sub of subCategories">

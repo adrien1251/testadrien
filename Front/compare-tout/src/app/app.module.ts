@@ -14,6 +14,7 @@ import { MainPageModule } from './main-page/main-page.module';
 import { MenuCategoriesComponent } from './main-page/components/menu-categories/menu-categories.component';
 import { FiltersComponent } from './main-page/components/filters/filters.component';
 import { FiltersValueComponent } from './main-page/components/filters-value/filters-value.component';
+import { CriteriaService } from './shared/services/criteria.service';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { FiltersValueComponent } from './main-page/components/filters-value/filt
   providers: [
     TestService,
     CategoryService,
+    CriteriaService
   ],
   bootstrap: [AppComponent]
 })
