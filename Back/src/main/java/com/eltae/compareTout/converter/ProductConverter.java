@@ -59,6 +59,7 @@ public class ProductConverter extends GenericsConverter<Product, ProductDto> {
         List<CriteriaProductDto> critereIds = new ArrayList<>();
         for(CriteriaProduct criteriaProduct: criteriaProducts) {
             critereIds.add(CriteriaProductDto.builder()
+                    .id(criteriaProduct.getCriteria().getId())
                     .value(criteriaProduct.getValue())
                     .criteriaName(criteriaProduct.getCriteria().getName())
                     .criteriaUnit(criteriaProduct.getCriteria().getUnit())

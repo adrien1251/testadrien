@@ -17,6 +17,7 @@ INSERT INTO public.users
 VALUES(3, 'ADMIN', 'admin@comparetout.fr', 'Pierre', 'Paul', '$2a$12$gPhTV2TjgEreC0L8sjZWqe.dg48cPXdiHTt95GgKei9fcBBO7ZTx2', NULL, '1234567844' )
 ON CONFLICT DO NOTHING;
 
+/*
 insert into public.criteria
 (criteria_id, is_mandatory, name, type, unit)
 values (1, true, 'price', 0, 'euros')
@@ -57,3 +58,5 @@ insert into public.category_product_list(category_id, product_list_product_id)
 values (10,1) ON CONFLICT DO NOTHING;
 insert into public.category_product_list(category_id, product_list_product_id)
 values (10,2) ON CONFLICT DO NOTHING;
+
+ */

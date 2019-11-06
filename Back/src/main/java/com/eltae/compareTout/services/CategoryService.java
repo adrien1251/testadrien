@@ -45,6 +45,13 @@ public class CategoryService {
         return 0;
     }
 
+    public Category getCategoryWithId(long id){
+        Optional<Category> cat = categoryRepository.findById(id);
+        if (cat.isPresent())
+            return cat.get();
+        return null;
+    }
+
     private int readCSV(InputStream inputStream) throws IOException {
         CSVReader csvReader = new CSVReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8), ';');
         String[] nextRecord;
