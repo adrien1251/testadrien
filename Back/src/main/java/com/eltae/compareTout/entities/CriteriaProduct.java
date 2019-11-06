@@ -38,4 +38,6 @@ public class CriteriaProduct implements Cloneable {
         return (CriteriaProduct) super.clone();
     }
 
+
+
 }

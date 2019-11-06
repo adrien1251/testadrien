@@ -30,13 +30,8 @@ public class Criteria implements Cloneable {
 
     private String unit;
 
-    private boolean isMandatory;
-
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "criteria_category",
-            joinColumns = { @JoinColumn(name = "fk_criteria") },
-            inverseJoinColumns = { @JoinColumn(name = "fk_category") })
-    private List<Category> categoryList;
+    @OneToMany(fetch = FetchType.LAZY , mappedBy = "pk.criteria_cat", cascade=CascadeType.ALL)
+    private List<CategoryCriteria> categoryList;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.criteria", cascade=CascadeType.ALL)
     private List<CriteriaProduct> criteriaProducts = new ArrayList<>();
@@ -45,9 +40,5 @@ public class Criteria implements Cloneable {
         return (Criteria) super.clone();
     }
 
-    public void addCategory(Category category){
-        List<Category> list = this.getCategoryList();
-        list.add(category);
-        this.setCategoryList(list);
-    }
+
 }

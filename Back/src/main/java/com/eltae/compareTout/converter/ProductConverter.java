@@ -63,7 +63,7 @@ public class ProductConverter extends GenericsConverter<Product, ProductDto> {
                     .value(criteriaProduct.getValue())
                     .criteriaName(criteriaProduct.getCriteria().getName())
                     .criteriaUnit(criteriaProduct.getCriteria().getUnit())
-                    .isMandatory(criteriaProduct.getCriteria().isMandatory())
+                 //   .isMandatory(criteriaProduct.getCriteria().isMandatory())
                     .type(criteriaProduct.getCriteria().getType())
                     .build());
         }

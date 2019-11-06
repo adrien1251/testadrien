@@ -221,7 +221,7 @@ public class CategoryService {
                 pathcate=pathcate+"/";
         }
         for(Criteria critete: crit){
-            pathcate=pathcate+"/"+critete.isMandatory();
+//            pathcate=pathcate+"/"+critete.isMandatory();
             pathcate=pathcate+"/"+critete.getName();
             pathcate=pathcate+"/"+critete.getUnit();
             pathcate=pathcate+"/"+critete.getType();

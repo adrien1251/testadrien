@@ -30,8 +30,8 @@ public class Category implements Cloneable {
     @JoinColumn(name = "parent_id")
     private Category parent;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "categoryList")
-    private List<Criteria> criteriaList;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.category")
+    private List<CategoryCriteria> categoryCriteriaList;
 
 
     public Category clone() throws CloneNotSupportedException {
@@ -43,5 +43,20 @@ public class Category implements Cloneable {
         return id + ": " + name;
     }
 
+    public List<Criteria> getCriteriaList(){
+        List<Criteria> criteriaList = new ArrayList<>();
+        for (CategoryCriteria cc : this.categoryCriteriaList){
+            criteriaList.add(cc.getCriteria());
+        }
+        return criteriaList;
+    }
+
+    public CategoryCriteria getCriteriaProductWithCriteriaName(String name){
+        for (CategoryCriteria cc : this.getCategoryCriteriaList()){
+            if (cc.getCriteria().getName().equals(id))
+                return cc;
+        }
+        return null;
+    }
 
 }

@@ -17,7 +17,7 @@ public class CriteriaConverter extends GenericsConverter<Criteria, CriteriaProdu
                 .id(criteria.getId())
                 .criteriaName(criteria.getName())
                 .criteriaUnit(criteria.getUnit())
-                .isMandatory(criteria.isMandatory())
+      //          .isMandatory(criteria.isMandatory())
                 .type(criteria.getType())
                 .build();
     }
