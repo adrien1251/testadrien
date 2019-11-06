@@ -54,7 +54,7 @@ public class CriteriaService {
             if (p.getCrit().containsAll(crit))
                 filterProduct.add(p);
 
-        return productConverter.ListEntityToShortDto(filterProduct);
+        return productConverter.listEntityToShortDto(filterProduct);
 
     }
 

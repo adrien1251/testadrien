@@ -1,10 +1,14 @@
 package com.eltae.compareTout.services;
+
+import com.eltae.compareTout.converter.CategoryConverter;
 import com.eltae.compareTout.converter.CriteriaConverter;
 import com.eltae.compareTout.converter.ProductConverter;
-import com.eltae.compareTout.dto.*;
+import com.eltae.compareTout.dto.CategoryDto;
+import com.eltae.compareTout.dto.CriteriaProductDto;
+import com.eltae.compareTout.dto.ShortCategoryDto;
+import com.eltae.compareTout.dto.ShortProductDto;
 import com.eltae.compareTout.entities.Category;
 import com.eltae.compareTout.entities.Criteria;
-import com.eltae.compareTout.converter.CategoryConverter;
 import com.eltae.compareTout.exceptions.BadCsvLine;
 import com.eltae.compareTout.repositories.CategoryRepository;
 import com.eltae.compareTout.repositories.ProductRepository;
@@ -14,10 +18,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
 import javax.transaction.Transactional;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -275,6 +283,6 @@ public class CategoryService {
     }
 
     public List<ShortProductDto> getProductsCategory(Long id) {
-        return productConverter.ListEntityToShortDto(productRepository.findAllByCategoryId(id));
+        return productConverter.listEntityToShortDto(productRepository.findAllByCategoryId(id));
     }
 }

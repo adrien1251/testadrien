@@ -27,6 +27,14 @@ public class ProductController extends ExceptionCatcher {
         this.productService = productService;
     }
 
+    @ApiOperation(value = "Liste des produits d'une catégorie filtré par critère")
+    @GetMapping("/categories/{idCategory}")
+    public ResponseEntity<List<ShortProductDto>> getAllProductByCategoryAndCriteria(
+            @PathVariable long idCategory,
+            @RequestBody List<Long> idCriteria) {
+        return ResponseEntity.status(200).body(this.productService.getAllProductByCategoryAndCriteria(idCategory, idCriteria));
+    }
+
 
     @ApiOperation(value = "Liste des produits d'une catégorie ")
     @GetMapping("/category/{idCategory}")
