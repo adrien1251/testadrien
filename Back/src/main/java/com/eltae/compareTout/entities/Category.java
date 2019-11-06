@@ -16,7 +16,8 @@ import java.util.List;
 @NoArgsConstructor
 public class Category implements Cloneable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "category_generator")
+    @SequenceGenerator(name="category_generator", sequenceName = "category_seq")
     private Long id;
 
     private String name;

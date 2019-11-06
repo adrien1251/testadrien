@@ -18,7 +18,8 @@ import java.util.Set;
 @NoArgsConstructor
 public class Product implements Cloneable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_generator")
+    @SequenceGenerator(name="product_generator", sequenceName = "product_seq")
     @Column(name = "product_id")
     private Long id;
 

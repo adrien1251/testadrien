@@ -18,7 +18,8 @@ import java.util.Set;
 @NoArgsConstructor
 public class Criteria implements Cloneable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "criteria_generator")
+    @SequenceGenerator(name="criteria_generator", sequenceName = "criteria_seq")
     @Column(name = "criteria_id")
     private Long id;
 
