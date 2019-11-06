@@ -2,6 +2,7 @@ package com.eltae.compareTout.entities;
 
 import com.eltae.compareTout.constants.Tables;
 import lombok.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -32,8 +33,6 @@ public class Category implements Cloneable {
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "categoryList")
     private List<Criteria> criteriaList;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Product> productList;
 
     public Category clone() throws CloneNotSupportedException {
         return (Category) super.clone();
@@ -43,13 +42,6 @@ public class Category implements Cloneable {
     public String toString(){
         return id + ": " + name;
     }
-
-    public void addProduct(Product p){
-        List<Product> productsList = this.getProductList();
-        productsList.add(p);
-        this.setProductList(productsList);
-    }
-
 
 
 }

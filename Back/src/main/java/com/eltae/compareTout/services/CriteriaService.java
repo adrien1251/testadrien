@@ -86,7 +86,9 @@ public class CriteriaService {
                             if (!valuesCrit[i].equals(p.getValue())) {
                                 add = false;
                             }
+
                         }
+
                     }
                 }
                 if (add)

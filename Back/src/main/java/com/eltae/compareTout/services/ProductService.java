@@ -111,10 +111,11 @@ public class ProductService {
                 }
             }
         }
-        category.addProduct(product);
-        categoryRepository.save(category);
+        //category.addProduct(product);
+       // categoryRepository.save(category);
 
         productRepository.save(product);
+        productRepository.flush();
         return true;
     }
 

@@ -7,6 +7,7 @@ import com.eltae.compareTout.entities.Criteria;
 import com.eltae.compareTout.converter.CategoryConverter;
 import com.eltae.compareTout.exceptions.BadCsvLine;
 import com.eltae.compareTout.repositories.CategoryRepository;
+import com.eltae.compareTout.repositories.ProductRepository;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +27,16 @@ public class CategoryService {
     private final CategoryConverter categoryConverter;
     private final CriteriaConverter criteriaConverter;
     private final ProductConverter productConverter;
+    private final ProductRepository productRepository;
     private File cat_file;
 
     @Autowired
-    public CategoryService(CategoryRepository categoryRepository,CategoryConverter catConv,CriteriaConverter critConv,ProductConverter prodConv) {
+    public CategoryService(CategoryRepository categoryRepository, CategoryConverter catConv, CriteriaConverter critConv, ProductConverter prodConv, ProductRepository productRepository) {
         this.categoryRepository = categoryRepository;
         this.categoryConverter = catConv;
         this.criteriaConverter=critConv;
         this.productConverter=prodConv;
+        this.productRepository = productRepository;
     }
 
     public int create(MultipartFile multipartFile) {
@@ -272,6 +275,6 @@ public class CategoryService {
     }
 
     public List<ShortProductDto> getProductsCategory(Long id) {
-        return productConverter.ListEntityToShortDto(categoryRepository.findById(id).get().getProductList());
+        return productConverter.ListEntityToShortDto(productRepository.findAllByCategoryId(id));
     }
 }
