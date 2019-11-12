@@ -1,10 +1,13 @@
 package com.eltae.compareTout.controllers;
 
 import com.eltae.compareTout.constants.Routes;
-import com.eltae.compareTout.dto.*;
-import com.eltae.compareTout.entities.Criteria;
+import com.eltae.compareTout.dto.CategoryDto;
+import com.eltae.compareTout.dto.CriteriaProductDto;
+import com.eltae.compareTout.dto.ShortCategoryDto;
+import com.eltae.compareTout.dto.ShortProductDto;
 import com.eltae.compareTout.exceptionHandler.ExceptionCatcher;
 import com.eltae.compareTout.services.CategoryService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.FileSystemResource;
@@ -14,12 +17,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+
 import java.io.File;
 import java.util.List;
 
 
 @RestController
 @RequestMapping(Routes.CATEGORY)
+@Api(value = "Categories", description = "Categories gesture", tags = {"Categories"})
 public class CategoryController extends ExceptionCatcher {
 
     private CategoryService categoryService;

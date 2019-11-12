@@ -14,5 +14,8 @@ public class Tables {
     public static final String CRITERIA_PRODUCT= "criteria_product";
     public static final String FILTERHIST = "filter_hist";
     public static final String FAVORI  = "favori";
+    public static final String CATEGORY_CRITERIA  = "category_criteria";
+
+
 
 }

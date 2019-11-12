@@ -2,14 +2,11 @@ package com.eltae.compareTout.services;
 
 import com.eltae.compareTout.converter.CriteriaConverter;
 import com.eltae.compareTout.converter.ProductConverter;
-import com.eltae.compareTout.dto.CriteriaDto;
 import com.eltae.compareTout.dto.CriteriaProductDto;
 import com.eltae.compareTout.dto.ShortProductDto;
-import com.eltae.compareTout.entities.Category;
-import com.eltae.compareTout.entities.Criteria;
-import com.eltae.compareTout.entities.Product;
-import com.eltae.compareTout.entities.TypeCriteria;
+import com.eltae.compareTout.entities.*;
 import com.eltae.compareTout.exceptions.WrongParameters;
+import com.eltae.compareTout.repositories.CategoryCriteriaRepository;
 import com.eltae.compareTout.repositories.CriteriaRepository;
 import com.eltae.compareTout.repositories.ProductRepository;
 import com.opencsv.CSVReader;
@@ -34,15 +31,17 @@ public class CriteriaService {
     private final CriteriaRepository criteriaRepository;
     private final CategoryService categoryService;
     private final CriteriaConverter criteriaConverter;
+    private final CategoryCriteriaRepository categoryCriteriaRepository;
 
     @Autowired
-    public CriteriaService(ProductConverter prodConv, ProductRepository prodRep, CriteriaRepository criteriaRepository, CategoryService categoryService, CriteriaConverter criteriaConverter) {
+    public CriteriaService(ProductConverter prodConv, ProductRepository prodRep, CriteriaRepository criteriaRepository, CategoryService categoryService, CriteriaConverter criteriaConverter, CategoryCriteriaRepository categoryCriteriaRepository) {
 
         this.productRepository = prodRep;
         this.productConverter = prodConv;
         this.criteriaRepository = criteriaRepository;
         this.categoryService = categoryService;
         this.criteriaConverter = criteriaConverter;
+        this.categoryCriteriaRepository = categoryCriteriaRepository;
     }
 
     public List<ShortProductDto> getProductsCriteria(Long id, List<Long> crit) {
@@ -55,7 +54,7 @@ public class CriteriaService {
             if (p.getCrit().containsAll(crit))
                 filterProduct.add(p);
 
-        return productConverter.ListEntityToShortDto(filterProduct);
+        return productConverter.listEntityToShortDto(filterProduct);
 
     }
 
@@ -86,7 +85,9 @@ public class CriteriaService {
                             if (!valuesCrit[i].equals(p.getValue())) {
                                 add = false;
                             }
+
                         }
+
                     }
                 }
                 if (add)
@@ -116,6 +117,7 @@ public class CriteriaService {
 
     private boolean saveCrit(String[] records) {
         String actualColumn;
+        Category category = categoryService.getCategoryWithId(Long.parseLong(records[0]));
         for (int i = 0; i < records.length; i++) {
             actualColumn = records[i];
             if (actualColumn.trim().length() == 0) return false;
@@ -124,34 +126,48 @@ public class CriteriaService {
                 if (!critInBase.isPresent()) { //Si le critère n'existe pas, on l'ajoute
                     if (!actualColumn.isEmpty()) {
                         Criteria newCritere = Criteria.builder()
-                                .isMandatory(Boolean.parseBoolean(actualColumn))
+                                //.isMandatory(Boolean.parseBoolean(actualColumn))
                                 .name(records[i + 1].toLowerCase())
                                 .unit(records[i + 2])
                                 .type(TypeCriteria.valueOf(records[i + 3].toUpperCase()))
                                 .categoryList(new ArrayList<>())
                                 .build();
-                        newCritere.addCategory(categoryService.getCategoryWithId(Long.parseLong(records[0])));
                         criteriaRepository.save(newCritere);
+
+                        CategoryCriteriaPK categoryCriteriaPK = new CategoryCriteriaPK();
+                        categoryCriteriaPK.setCategory(category);
+                        categoryCriteriaPK.setCriteria_cat(newCritere);
+                        CategoryCriteria categoryCriteria = CategoryCriteria.builder()
+                                .isMandatory(Boolean.parseBoolean(actualColumn))
+                                .pk(categoryCriteriaPK)
+                                .build();
+                        categoryCriteriaRepository.save(categoryCriteria);
+
+
                     }
 
                 } else { // si le critere existe, il faut ajouter la category qui l'appelle
-                    Criteria crit = critInBase.get();
-                    Boolean contained = false;
-                    for (Category category : crit.getCategoryList()) {
-                        if (category.getId() == Long.parseLong(records[0])) {
-                            contained = true;
-                        }
+                    CategoryCriteria categoryCriteriaToFind = category.getCriteriaProductWithCriteriaName(records[i + 1].toLowerCase());
+                    if (categoryCriteriaToFind!=null)
+                        return false;
+                    else {
+                        CategoryCriteriaPK categoryCriteriaPK = new CategoryCriteriaPK();
+                        categoryCriteriaPK.setCategory(category);
+                        categoryCriteriaPK.setCriteria_cat(critInBase.get());
+                        CategoryCriteria categoryCriteria = CategoryCriteria.builder()
+                                .isMandatory(Boolean.parseBoolean(actualColumn))
+                                .pk(categoryCriteriaPK)
+                                .build();
+                        categoryCriteriaRepository.save(categoryCriteria);
                     }
-                    if (!contained) {
-                        crit.addCategory(categoryService.getCategoryWithId(Long.parseLong(records[0])));
-                        criteriaRepository.save(crit);
+
+
                     }
                 }
+
             }
-
+            return true;
         }
-        return true;
+
+
     }
-
-
-}

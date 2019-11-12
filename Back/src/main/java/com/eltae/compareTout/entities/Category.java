@@ -2,6 +2,7 @@ package com.eltae.compareTout.entities;
 
 import com.eltae.compareTout.constants.Tables;
 import lombok.*;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -16,7 +17,8 @@ import java.util.List;
 @NoArgsConstructor
 public class Category implements Cloneable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "category_generator")
+    @SequenceGenerator(name="category_generator", sequenceName = "category_seq")
     private Long id;
 
     private String name;
@@ -28,11 +30,9 @@ public class Category implements Cloneable {
     @JoinColumn(name = "parent_id")
     private Category parent;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "categoryList")
-    private List<Criteria> criteriaList;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.category")
+    private List<CategoryCriteria> categoryCriteriaList;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    private List<Product> productList;
 
     public Category clone() throws CloneNotSupportedException {
         return (Category) super.clone();
@@ -43,12 +43,20 @@ public class Category implements Cloneable {
         return id + ": " + name;
     }
 
-    public void addProduct(Product p){
-        List<Product> productsList = this.getProductList();
-        productsList.add(p);
-        this.setProductList(productsList);
+    public List<Criteria> getCriteriaList(){
+        List<Criteria> criteriaList = new ArrayList<>();
+        for (CategoryCriteria cc : this.categoryCriteriaList){
+            criteriaList.add(cc.getCriteria());
+        }
+        return criteriaList;
     }
 
-
+    public CategoryCriteria getCriteriaProductWithCriteriaName(String name){
+        for (CategoryCriteria cc : this.getCategoryCriteriaList()){
+            if (cc.getCriteria().getName().equals(id))
+                return cc;
+        }
+        return null;
+    }
 
 }

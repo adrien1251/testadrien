@@ -7,6 +7,8 @@ import com.eltae.compareTout.entities.*;
 import com.eltae.compareTout.repositories.CategoryRepository;
 import com.eltae.compareTout.repositories.CriteriaProductRepository;
 import com.eltae.compareTout.repositories.ProductRepository;
+import com.eltae.compareTout.repositories.product.ProductCriteria;
+import com.eltae.compareTout.repositories.product.ProductSpecification;
 import com.opencsv.CSVReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,15 +44,23 @@ public class ProductService {
     }
 
     public List<ShortProductDto> getAll() {
-        return productConverter.ListEntityToShortDto(this.productRepository.findAll());
+        return productConverter.listEntityToShortDto(this.productRepository.findAll());
     }
 
     public List<ShortProductDto> getAllProductsByCategory(long idCategory) {
-        return productConverter.ListEntityToShortDto(this.productRepository.findAllByCategoryId(idCategory));
+        return productConverter.listEntityToShortDto(this.productRepository.findAllByCategoryId(idCategory));
     }
 
     public List<CriteriaProductDto> getAllCriteriaByProduct(long idProduct) {
         return productConverter.entityListToDtoList(this.productRepository.findProductById(idProduct)).get(0).getCriteriaProducts();
+    }
+
+    public List<ShortProductDto> getAllProductByCategoryAndCriteria(long categoryId, List<Long> idCriteria) {
+        return productConverter.listEntityToShortDto(this.productRepository.findAll(
+                new ProductSpecification(
+                        new ProductCriteria(categoryId, idCriteria)
+                )
+        ));
     }
 
 
@@ -77,7 +87,7 @@ public class ProductService {
         CriteriaProduct cp;
 
         Category category = categoryService.getCategoryWithId(Long.parseLong(records[3]));
-        if (category == null){
+        if (category == null) {
             System.out.println("La catégorie indiquée n'existe pas dans la base (lors de l'ajout du produit " + records[0] + ")");
         }
 
@@ -111,10 +121,11 @@ public class ProductService {
                 }
             }
         }
-        category.addProduct(product);
-        categoryRepository.save(category);
+        //category.addProduct(product);
+        // categoryRepository.save(category);
 
         productRepository.save(product);
+        productRepository.flush();
         return true;
     }
 

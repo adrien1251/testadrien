@@ -23,7 +23,6 @@ public class CategoryConverter extends GenericsConverter<Category, CategoryDto> 
                 .name(category.getName())
                 .parent(category.getParent())
                 .criteriaList(category.getCriteriaList())
-                .productList(category.getProductList())
                 .childList(category.getChildList())
                 .build();
     }
@@ -32,7 +31,6 @@ public class CategoryConverter extends GenericsConverter<Category, CategoryDto> 
                 .id(category.getId())
                 .name(category.getName())
                 .criteriaList(category.getCriteriaList())
-                .productList(category.getProductList())
                 .build();
     }
 

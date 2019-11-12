@@ -26,7 +26,7 @@ public class ProductConverter extends GenericsConverter<Product, ProductDto> {
     }
 
 
-    public  List<ShortProductDto> ListEntityToShortDto(List<Product> productList) {
+    public  List<ShortProductDto> listEntityToShortDto(List<Product> productList) {
         List<ShortProductDto> dtoList=new ArrayList<ShortProductDto>();
         for(Product p : productList)
             dtoList.add(this.entityToShortDto(p));
@@ -63,7 +63,7 @@ public class ProductConverter extends GenericsConverter<Product, ProductDto> {
                     .value(criteriaProduct.getValue())
                     .criteriaName(criteriaProduct.getCriteria().getName())
                     .criteriaUnit(criteriaProduct.getCriteria().getUnit())
-                    .isMandatory(criteriaProduct.getCriteria().isMandatory())
+                 //   .isMandatory(criteriaProduct.getCriteria().isMandatory())
                     .type(criteriaProduct.getCriteria().getType())
                     .build());
         }
