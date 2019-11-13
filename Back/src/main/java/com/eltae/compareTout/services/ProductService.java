@@ -1,17 +1,19 @@
 package com.eltae.compareTout.services;
 
-import com.eltae.compareTout.converter.ProductConverter;
-import com.eltae.compareTout.dto.CriteriaBuilderDto;
+import com.eltae.compareTout.converter.product.ProductConverter;
+import com.eltae.compareTout.converter.product.ProductForFrontConverter;
+import com.eltae.compareTout.dto.CriteriaFilterDto;
 import com.eltae.compareTout.dto.CriteriaProductDto;
-import com.eltae.compareTout.dto.ShortProductDto;
+import com.eltae.compareTout.dto.product.ProductDtoForFront;
+import com.eltae.compareTout.dto.product.ShortProductDto;
 import com.eltae.compareTout.entities.*;
 import com.eltae.compareTout.exceptions.ApplicationException;
 import com.eltae.compareTout.repositories.CategoryRepository;
 import com.eltae.compareTout.repositories.CriteriaProductRepository;
 import com.eltae.compareTout.repositories.CriteriaRepository;
 import com.eltae.compareTout.repositories.ProductRepository;
-import com.eltae.compareTout.repositories.product.ProductCriteria;
-import com.eltae.compareTout.repositories.product.ProductSpecification;
+import com.eltae.compareTout.repositories.product.CriteriaFilter;
+import com.eltae.compareTout.repositories.product.CriteriaFilterSpecification;
 import com.opencsv.CSVReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,7 +31,6 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -37,6 +38,7 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final ProductConverter productConverter;
+    private final ProductForFrontConverter productForFrontConverter;
     private final CategoryService categoryService;
     private final CriteriaService criteriaService;
     private final CriteriaProductRepository criteriaProductRepository;
@@ -45,9 +47,10 @@ public class ProductService {
     private final CriteriaRepository criteriaRepository;
     private final EntityManagerFactory entityManagerFactory;
     @Autowired
-    public ProductService(ProductRepository productRepository, ProductConverter productConverter, CategoryService categoryService, CriteriaService criteriaService, CriteriaProductRepository criteriaProductRepository, CategoryRepository categoryRepository, CriteriaRepository criteriaRepository, EntityManagerFactory entityManagerFactory) {
+    public ProductService(ProductRepository productRepository, ProductConverter productConverter, ProductForFrontConverter productForFrontConverter, CategoryService categoryService, CriteriaService criteriaService, CriteriaProductRepository criteriaProductRepository, CategoryRepository categoryRepository, CriteriaRepository criteriaRepository, EntityManagerFactory entityManagerFactory) {
         this.productRepository = productRepository;
         this.productConverter = productConverter;
+        this.productForFrontConverter = productForFrontConverter;
         this.categoryService = categoryService;
         this.criteriaService = criteriaService;
         this.criteriaProductRepository = criteriaProductRepository;
@@ -68,14 +71,14 @@ public class ProductService {
         return productConverter.entityListToDtoList(this.productRepository.findProductById(idProduct)).get(0).getCriteriaProducts();
     }
 
-    public List<ShortProductDto> getAllProductByCategoryAndCriteria(long categoryId, List<CriteriaBuilderDto> idCriteria) {
-        List<OurCriteriaBuilder> criteriaBuilders = new ArrayList<>();
+    public List<ProductDtoForFront> getAllProductByCategoryAndCriteria(long categoryId, List<CriteriaFilterDto> idCriteria) {
+        List<OurCriteria> criteriaBuilders = new ArrayList<>();
         idCriteria.forEach(cb -> {
             Criteria criteria = criteriaRepository
                     .findById(cb.getIdCriteria())
                     .orElseThrow(() -> new ApplicationException(HttpStatus.NOT_FOUND, "Criteria " + cb.getIdCriteria() + "not found"));
 
-            criteriaBuilders.add(OurCriteriaBuilder.builder()
+            criteriaBuilders.add(OurCriteria.builder()
                     .criteria(criteria)
                     .value(cb.getValue())
                     .minValue(cb.getMinValue())
@@ -94,16 +97,15 @@ public class ProductService {
         Root<Product> productRoot = query.from(Product.class);
         Join<Product, CriteriaProduct> productJoin = productRoot.join("criteriaProducts", JoinType.LEFT);
 
-        query.where(new ProductSpecification(
-                new ProductCriteria(category, criteriaBuilders)
+        query.where(new CriteriaFilterSpecification(
+                new CriteriaFilter(category, criteriaBuilders)
         ).toPredicate(productJoin, criteriaBuilder));
 
         query.groupBy(productRoot.get("id"));
         query.multiselect(productRoot);
         query.having(criteriaBuilder.equal(criteriaBuilder.count(productRoot.get("id")), idCriteria.size()));
         TypedQuery<Product> typedQuery = entityManager.createQuery(query);
-        List<Product> products = typedQuery.getResultList();
-        return products.stream().map(productConverter::entityToShortDto).collect(Collectors.toList());
+        return productForFrontConverter.entityListToDtoList(typedQuery.getResultList());
     }
 
     public int insertProductsFromFile(MultipartFile multipartFile) {
@@ -114,7 +116,6 @@ public class ProductService {
         }
         return 0;
     }
-
 
     private int readProductsCSV(InputStream inputStream) throws IOException {
         CSVReader csvReader = new CSVReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8), ';');

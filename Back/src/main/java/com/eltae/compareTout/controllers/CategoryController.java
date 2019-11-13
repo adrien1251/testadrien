@@ -4,7 +4,7 @@ import com.eltae.compareTout.constants.Routes;
 import com.eltae.compareTout.dto.CategoryDto;
 import com.eltae.compareTout.dto.CriteriaProductDto;
 import com.eltae.compareTout.dto.ShortCategoryDto;
-import com.eltae.compareTout.dto.ShortProductDto;
+import com.eltae.compareTout.dto.product.ShortProductDto;
 import com.eltae.compareTout.exceptionHandler.ExceptionCatcher;
 import com.eltae.compareTout.services.CategoryService;
 import io.swagger.annotations.Api;
@@ -69,7 +69,7 @@ public class CategoryController extends ExceptionCatcher {
     @ApiOperation(value = "Liste des critères d'une catégorie ")
     @GetMapping(value="/category-criteria/{id}")
     public ResponseEntity<List<CriteriaProductDto>> getCriteriaCategory(@PathVariable Long id) {
-        return ResponseEntity.status(201).body(this.categoryService.getCriteriadCategories(id));
+        return ResponseEntity.status(201).body(this.categoryService.getCriteriaCategories(id));
     }
     @ApiOperation(value = "Liste des produits d'une catégorie ")
     @GetMapping(value="/category-products/{id}")

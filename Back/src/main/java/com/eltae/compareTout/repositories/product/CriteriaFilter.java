@@ -1,7 +1,7 @@
 package com.eltae.compareTout.repositories.product;
 
 import com.eltae.compareTout.entities.Category;
-import com.eltae.compareTout.entities.OurCriteriaBuilder;
+import com.eltae.compareTout.entities.OurCriteria;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,10 +15,10 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @Data
-public class ProductCriteria {
+public class CriteriaFilter {
     @NotNull
     Category category;
 
     @NotNull
-    List<OurCriteriaBuilder> criteriaBuilders;
+    List<OurCriteria> criterias;
 }

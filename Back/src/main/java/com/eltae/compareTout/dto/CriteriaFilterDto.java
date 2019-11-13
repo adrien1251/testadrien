@@ -11,7 +11,7 @@ import java.io.Serializable;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CriteriaBuilderDto implements Serializable {
+public class CriteriaFilterDto implements Serializable {
     private Long idCriteria;
     private String value;
     private Double minValue;

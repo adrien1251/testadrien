@@ -2,11 +2,11 @@ package com.eltae.compareTout.services;
 
 import com.eltae.compareTout.converter.CategoryConverter;
 import com.eltae.compareTout.converter.CriteriaConverter;
-import com.eltae.compareTout.converter.ProductConverter;
+import com.eltae.compareTout.converter.product.ProductConverter;
 import com.eltae.compareTout.dto.CategoryDto;
 import com.eltae.compareTout.dto.CriteriaProductDto;
 import com.eltae.compareTout.dto.ShortCategoryDto;
-import com.eltae.compareTout.dto.ShortProductDto;
+import com.eltae.compareTout.dto.product.ShortProductDto;
 import com.eltae.compareTout.entities.Category;
 import com.eltae.compareTout.entities.Criteria;
 import com.eltae.compareTout.exceptions.BadCsvLine;
@@ -42,7 +42,7 @@ public class CategoryService {
     public CategoryService(CategoryRepository categoryRepository, CategoryConverter catConv, CriteriaConverter critConv, ProductConverter prodConv, ProductRepository productRepository) {
         this.categoryRepository = categoryRepository;
         this.categoryConverter = catConv;
-        this.criteriaConverter=critConv;
+        this.criteriaConverter =critConv;
         this.productConverter=prodConv;
         this.productRepository = productRepository;
     }
@@ -277,7 +277,7 @@ public class CategoryService {
         return  categoryConverter.entityListToShortDtoList(categoryRepository.findById(id).get().getChildList());
             }
 
-    public List<CriteriaProductDto> getCriteriadCategories(Long id) {
+    public List<CriteriaProductDto> getCriteriaCategories(Long id) {
         return criteriaConverter.entityListToDtoList(categoryRepository.findById(id).get().getCriteriaList());
 
     }

@@ -1,9 +1,10 @@
 package com.eltae.compareTout.controllers;
 
 import com.eltae.compareTout.constants.Routes;
-import com.eltae.compareTout.dto.CriteriaBuilderDto;
+import com.eltae.compareTout.dto.CriteriaFilterDto;
 import com.eltae.compareTout.dto.CriteriaProductDto;
-import com.eltae.compareTout.dto.ShortProductDto;
+import com.eltae.compareTout.dto.product.ProductDtoForFront;
+import com.eltae.compareTout.dto.product.ShortProductDto;
 import com.eltae.compareTout.exceptionHandler.ExceptionCatcher;
 import com.eltae.compareTout.services.ProductService;
 import io.swagger.annotations.Api;
@@ -31,13 +32,13 @@ public class ProductController extends ExceptionCatcher {
 
     @ApiOperation(value = "Liste des produits d'une catégorie filtré par critère")
     @GetMapping("/test")
-    public ResponseEntity<List<ShortProductDto>> getAllProductByCategoryAndCriteria(
+    public ResponseEntity<List<ProductDtoForFront>> getAllProductByCategoryAndCriteria(
             @RequestParam(name = "idCategory") Long idCategory,
-            @RequestBody(required = false) List<CriteriaBuilderDto> criteriaBuilderDtos) {
+            @RequestBody(required = false) List<CriteriaFilterDto> criteriaFilterDtos) {
 
-        if(criteriaBuilderDtos == null)
-            criteriaBuilderDtos = new ArrayList<>();
-        return ResponseEntity.status(200).body(this.productService.getAllProductByCategoryAndCriteria(idCategory, criteriaBuilderDtos));
+        if(criteriaFilterDtos == null)
+            criteriaFilterDtos = new ArrayList<>();
+        return ResponseEntity.status(200).body(this.productService.getAllProductByCategoryAndCriteria(idCategory, criteriaFilterDtos));
     }
 
 

@@ -7,7 +7,7 @@ import lombok.Data;
 @Data
 @Builder
 @AllArgsConstructor
-public class OurCriteriaBuilder {
+public class OurCriteria {
     private Criteria criteria;
     private String value;
     private Double minValue;

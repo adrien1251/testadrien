@@ -1,11 +1,10 @@
-package com.eltae.compareTout.converter;
+package com.eltae.compareTout.converter.product;
 
-import com.eltae.compareTout.dto.CriteriaProductDto;
-import com.eltae.compareTout.dto.ProductDto;
-import com.eltae.compareTout.dto.ShortProductDto;
-import com.eltae.compareTout.entities.CriteriaProduct;
+import com.eltae.compareTout.converter.CriteriaProductConverter;
+import com.eltae.compareTout.converter.GenericsConverter;
+import com.eltae.compareTout.dto.product.ProductDto;
+import com.eltae.compareTout.dto.product.ShortProductDto;
 import com.eltae.compareTout.entities.Product;
-import com.eltae.compareTout.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,9 +13,12 @@ import java.util.List;
 
 @Component
 public class ProductConverter extends GenericsConverter<Product, ProductDto> {
+    private final CriteriaProductConverter criteriaProductConverter;
 
     @Autowired
-    private ProductRepository productRepository;
+    public ProductConverter(CriteriaProductConverter criteriaProductConverter) {
+        this.criteriaProductConverter = criteriaProductConverter;
+    }
 
     public  List<ProductDto> ListEntityToDto(List<Product> productList) {
         List<ProductDto> dtoList=new ArrayList<ProductDto>();
@@ -25,7 +27,6 @@ public class ProductConverter extends GenericsConverter<Product, ProductDto> {
         return dtoList;
     }
 
-
     public  List<ShortProductDto> listEntityToShortDto(List<Product> productList) {
         List<ShortProductDto> dtoList=new ArrayList<ShortProductDto>();
         for(Product p : productList)
@@ -33,14 +34,13 @@ public class ProductConverter extends GenericsConverter<Product, ProductDto> {
         return dtoList;
     }
 
-
     @Override
     public ProductDto entityToDto(Product product) {
         return ProductDto.builder()
                 .id(product.getId())
                 .name(product.getName())
                 .category(product.getCategory())
-                .criteriaProducts(getCriteria(product.getCriteriaProducts()))
+                .criteriaProducts(criteriaProductConverter.entityListToDtoList(product.getCriteriaProducts()))
                 .build();
     }
 
@@ -50,24 +50,8 @@ public class ProductConverter extends GenericsConverter<Product, ProductDto> {
                 .id(product.getId())
                 .name(product.getName())
                 .category(product.getCategory().getId())
-                .criteriaProducts(getCriteria(product.getCriteriaProducts()))
+                .criteriaProducts(criteriaProductConverter.entityListToDtoList(product.getCriteriaProducts()))
                 .build();
-    }
-
-
-    private List<CriteriaProductDto> getCriteria(List<CriteriaProduct> criteriaProducts) {
-        List<CriteriaProductDto> critereIds = new ArrayList<>();
-        for(CriteriaProduct criteriaProduct: criteriaProducts) {
-            critereIds.add(CriteriaProductDto.builder()
-                    .id(criteriaProduct.getCriteria().getId())
-                    .value(criteriaProduct.getValue())
-                    .criteriaName(criteriaProduct.getCriteria().getName())
-                    .criteriaUnit(criteriaProduct.getCriteria().getUnit())
-                 //   .isMandatory(criteriaProduct.getCriteria().isMandatory())
-                    .type(criteriaProduct.getCriteria().getType())
-                    .build());
-        }
-        return critereIds;
     }
 
     @Override

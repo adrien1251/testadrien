@@ -1,9 +1,8 @@
 package com.eltae.compareTout.services;
 
-import com.eltae.compareTout.converter.CriteriaConverter;
-import com.eltae.compareTout.converter.ProductConverter;
+import com.eltae.compareTout.converter.product.ProductConverter;
 import com.eltae.compareTout.dto.CriteriaProductDto;
-import com.eltae.compareTout.dto.ShortProductDto;
+import com.eltae.compareTout.dto.product.ShortProductDto;
 import com.eltae.compareTout.entities.*;
 import com.eltae.compareTout.exceptions.WrongParameters;
 import com.eltae.compareTout.repositories.CategoryCriteriaRepository;
@@ -30,17 +29,14 @@ public class CriteriaService {
     private final ProductRepository productRepository;
     private final CriteriaRepository criteriaRepository;
     private final CategoryService categoryService;
-    private final CriteriaConverter criteriaConverter;
     private final CategoryCriteriaRepository categoryCriteriaRepository;
 
     @Autowired
-    public CriteriaService(ProductConverter prodConv, ProductRepository prodRep, CriteriaRepository criteriaRepository, CategoryService categoryService, CriteriaConverter criteriaConverter, CategoryCriteriaRepository categoryCriteriaRepository) {
-
+    public CriteriaService(ProductConverter prodConv, ProductRepository prodRep, CriteriaRepository criteriaRepository, CategoryService categoryService, CategoryCriteriaRepository categoryCriteriaRepository) {
         this.productRepository = prodRep;
         this.productConverter = prodConv;
         this.criteriaRepository = criteriaRepository;
         this.categoryService = categoryService;
-        this.criteriaConverter = criteriaConverter;
         this.categoryCriteriaRepository = categoryCriteriaRepository;
     }
 
