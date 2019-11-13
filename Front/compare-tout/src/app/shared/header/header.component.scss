@@ -1,0 +1,18 @@
+.header-content {
+    padding: 5px;
+    margin-top: 5px;
+    display:flex;
+    width: 100vw;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom:20px;
+    .main-title {
+        font-size: 24px;
+        vertical-align: middle;
+        display: flex;
+
+    }
+    img {
+        height: 30px;
+    }
+}
