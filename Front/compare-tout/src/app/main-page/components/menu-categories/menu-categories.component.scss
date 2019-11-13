@@ -14,5 +14,15 @@
         display: block;
         font-size: 12px;
     }
+    .category-title {
+        display: flex;
+        padding: 5px;
+        align-content: center;
+        vertical-align: middle;
+        img{
+            margin-right:5px;
+            height: 20px;
+        }
+    }
 }
 

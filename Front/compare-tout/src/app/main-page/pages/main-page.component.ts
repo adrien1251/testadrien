@@ -42,6 +42,9 @@ export class MainPageComponent implements OnInit, OnDestroy {
 
   fetchCurrentCategory(event): void {
     if (event != null) {
+      this.categoryService.getChildCategories(event.id).subscribe((res) => {
+        this.subCategories = res;
+      });
       this.subCategories = event.childList;
       this.currentCategory = event;
       this.currentCategory.criteriaList = criteriaMock1;

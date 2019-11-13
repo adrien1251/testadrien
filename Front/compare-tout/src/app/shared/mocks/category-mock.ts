@@ -35,6 +35,7 @@ export const categoryMock1: Category = {
     id: '1',
     name: 'Jeux et Jouets',
     childList: subCategoryMock1,
+    image: './assets/icons/puzzle.png'
 };
 
 
@@ -57,4 +58,5 @@ export const categoryMock2: Category = {
     id: '2',
     name: 'Logiciels',
     childList: subCategoryMock2,
+    image: './assets/icons/cms.png'
 };

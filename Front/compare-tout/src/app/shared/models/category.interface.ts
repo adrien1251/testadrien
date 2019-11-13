@@ -8,4 +8,5 @@ export interface Category {
     childList?: Category[];
     criteriaList?: Criteria[];
     productList?: Product[];
+    image?: string;
 }
