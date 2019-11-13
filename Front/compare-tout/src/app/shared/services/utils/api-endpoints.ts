@@ -1,9 +1,4 @@
 export const apiEndpoints = {
-<<<<<<< HEAD
-  // START Translation
-  getUsers: 'users',
-};
-=======
     // Users
     getUsers: 'users',
 
@@ -11,7 +6,6 @@ export const apiEndpoints = {
     getMainCategories: '/main-categories',
     getChildCategories: (id: string) => `/children/${id}`,
 
-    // Criterias
+    // Criteria
     getCriteriaOfCategory: (idCat: string) =>  `/${idCat}`
   };
->>>>>>> develop
