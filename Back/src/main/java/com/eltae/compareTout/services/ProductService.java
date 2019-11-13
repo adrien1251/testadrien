@@ -63,8 +63,8 @@ public class ProductService {
         return productConverter.listEntityToShortDto(this.productRepository.findAll());
     }
 
-    public List<ShortProductDto> getAllProductsByCategory(long idCategory) {
-        return productConverter.listEntityToShortDto(this.productRepository.findAllByCategoryId(idCategory));
+    public List<ProductDtoForFront> getAllProductsByCategory(long idCategory) {
+        return productForFrontConverter.entityListToDtoList(this.productRepository.findAllByCategoryId(idCategory));
     }
 
     public List<CriteriaProductDto> getAllCriteriaByProduct(long idProduct) {

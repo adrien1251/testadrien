@@ -9,12 +9,12 @@ import com.eltae.compareTout.exceptionHandler.ExceptionCatcher;
 import com.eltae.compareTout.services.ProductService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -24,28 +24,20 @@ public class ProductController extends ExceptionCatcher {
 
     private ProductService productService;
 
-
     @Autowired
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
 
-    @ApiOperation(value = "Liste des produits d'une catégorie filtré par critère")
-    @GetMapping("/test")
+    @ApiOperation(value = "Liste des produits d'une catégorie potentiellement filtré par critère")
+    @GetMapping("/category/{categoryId}")
     public ResponseEntity<List<ProductDtoForFront>> getAllProductByCategoryAndCriteria(
-            @RequestParam(name = "idCategory") Long idCategory,
-            @RequestBody(required = false) List<CriteriaFilterDto> criteriaFilterDtos) {
+            @PathVariable Long categoryId,
+            @ApiParam(name = "criteriaFilters", value = "Criteria list") @RequestBody(required = false) List<CriteriaFilterDto> criteriaFilterDtos) {
 
         if(criteriaFilterDtos == null)
-            criteriaFilterDtos = new ArrayList<>();
-        return ResponseEntity.status(200).body(this.productService.getAllProductByCategoryAndCriteria(idCategory, criteriaFilterDtos));
-    }
-
-
-    @ApiOperation(value = "Liste des produits d'une catégorie ")
-    @GetMapping("/category/{idCategory}")
-    public ResponseEntity<List<ShortProductDto>> getAllProductByCategory(@PathVariable long idCategory) {
-        return ResponseEntity.status(201).body(this.productService.getAllProductsByCategory(idCategory));
+            return ResponseEntity.status(201).body(this.productService.getAllProductsByCategory(categoryId));
+        return ResponseEntity.status(200).body(this.productService.getAllProductByCategoryAndCriteria(categoryId, criteriaFilterDtos));
     }
 
     @ApiOperation(value = "Liste des critères d'un produit ")
