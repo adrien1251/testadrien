@@ -1,0 +1,3 @@
+<div *ngIf="value != null">
+   <mat-checkbox disableRipple [checked]="checked" (change)="updateFilter(value)"> {{ value }} {{ unit }} </mat-checkbox>
+</div>

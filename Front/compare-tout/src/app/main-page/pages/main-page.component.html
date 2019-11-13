@@ -1,0 +1,4 @@
+<div class="category-menu">
+    <app-menu-categories *ngIf="categories != null" [categories]="categories" [subCategories]="subCategories" (currentCategory)="fetchCurrentCategory($event)"></app-menu-categories>
+</div>
+<app-filters *ngIf="currentCategory!= null" [criteriaList]="currentCategory.criteriaList"></app-filters>

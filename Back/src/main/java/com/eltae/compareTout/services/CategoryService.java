@@ -1,22 +1,31 @@
 package com.eltae.compareTout.services;
+
+import com.eltae.compareTout.converter.CategoryConverter;
 import com.eltae.compareTout.converter.CriteriaConverter;
-import com.eltae.compareTout.converter.ProductConverter;
-import com.eltae.compareTout.dto.*;
+import com.eltae.compareTout.converter.product.ProductConverter;
+import com.eltae.compareTout.dto.CategoryDto;
+import com.eltae.compareTout.dto.CriteriaProductDto;
+import com.eltae.compareTout.dto.ShortCategoryDto;
+import com.eltae.compareTout.dto.product.ShortProductDto;
 import com.eltae.compareTout.entities.Category;
 import com.eltae.compareTout.entities.Criteria;
-import com.eltae.compareTout.converter.CategoryConverter;
 import com.eltae.compareTout.exceptions.BadCsvLine;
 import com.eltae.compareTout.repositories.CategoryRepository;
+import com.eltae.compareTout.repositories.ProductRepository;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
 import javax.transaction.Transactional;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -26,14 +35,16 @@ public class CategoryService {
     private final CategoryConverter categoryConverter;
     private final CriteriaConverter criteriaConverter;
     private final ProductConverter productConverter;
+    private final ProductRepository productRepository;
     private File cat_file;
 
     @Autowired
-    public CategoryService(CategoryRepository categoryRepository,CategoryConverter catConv,CriteriaConverter critConv,ProductConverter prodConv) {
+    public CategoryService(CategoryRepository categoryRepository, CategoryConverter catConv, CriteriaConverter critConv, ProductConverter prodConv, ProductRepository productRepository) {
         this.categoryRepository = categoryRepository;
         this.categoryConverter = catConv;
-        this.criteriaConverter=critConv;
+        this.criteriaConverter =critConv;
         this.productConverter=prodConv;
+        this.productRepository = productRepository;
     }
 
     public int create(MultipartFile multipartFile) {
@@ -46,7 +57,10 @@ public class CategoryService {
     }
 
     public Category getCategoryWithId(long id){
-        return categoryRepository.findById(id).get();
+        Optional<Category> cat = categoryRepository.findById(id);
+        if (cat.isPresent())
+            return cat.get();
+        return null;
     }
 
     private int readCSV(InputStream inputStream) throws IOException {
@@ -215,7 +229,7 @@ public class CategoryService {
                 pathcate=pathcate+"/";
         }
         for(Criteria critete: crit){
-            pathcate=pathcate+"/"+critete.isMandatory();
+//            pathcate=pathcate+"/"+critete.isMandatory();
             pathcate=pathcate+"/"+critete.getName();
             pathcate=pathcate+"/"+critete.getUnit();
             pathcate=pathcate+"/"+critete.getType();
@@ -263,12 +277,12 @@ public class CategoryService {
         return  categoryConverter.entityListToShortDtoList(categoryRepository.findById(id).get().getChildList());
             }
 
-    public List<CriteriaProductDto> getCriteriadCategories(Long id) {
+    public List<CriteriaProductDto> getCriteriaCategories(Long id) {
         return criteriaConverter.entityListToDtoList(categoryRepository.findById(id).get().getCriteriaList());
 
     }
 
     public List<ShortProductDto> getProductsCategory(Long id) {
-        return productConverter.ListEntityToShortDto(categoryRepository.findById(id).get().getProductList());
+        return productConverter.listEntityToShortDto(productRepository.findAllByCategoryId(id));
     }
 }

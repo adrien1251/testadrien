@@ -1,18 +1,20 @@
 package com.eltae.compareTout.controllers;
+
 import com.eltae.compareTout.constants.Routes;
-import com.eltae.compareTout.dto.ShortProductDto;
+import com.eltae.compareTout.dto.product.ShortProductDto;
 import com.eltae.compareTout.exceptionHandler.ExceptionCatcher;
 import com.eltae.compareTout.services.CriteriaService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping(Routes.CRITERIA)
+@Api(value = "Criteria", description = "Criteria gesture", tags = {"Criteria"})
 public class CriteriaController   extends ExceptionCatcher {
 
     private CriteriaService criteriaService;

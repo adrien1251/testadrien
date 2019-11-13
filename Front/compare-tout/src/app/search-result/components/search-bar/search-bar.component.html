@@ -1,0 +1,10 @@
+<div id="search-bar">
+  <div class="search-bar">
+    <div class="empty" (click)="emptySearch()">X</div>
+    <input #searchInput class="search-field" placeholder="Rechercher..." (keyup)="onType(searchInput.value)"
+      (keyup.enter)="onType(searchInput.value)" />
+
+    <button (click)="onType(searchInput.value)">Rechercher</button>
+
+  </div>
+</div>

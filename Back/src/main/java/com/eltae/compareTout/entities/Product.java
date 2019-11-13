@@ -18,7 +18,8 @@ import java.util.Set;
 @NoArgsConstructor
 public class Product implements Cloneable {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "product_generator")
+    @SequenceGenerator(name="product_generator", sequenceName = "product_seq")
     @Column(name = "product_id")
     private Long id;
 
@@ -36,6 +37,14 @@ public class Product implements Cloneable {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.product")
     private List<CriteriaProduct> criteriaProducts;
 
+    public Product(Product p){
+        this.id = p.id;
+        this.category = p.category;
+        this.criteriaProducts = p.criteriaProducts;
+        this.description = p.description;
+        this.name = p.name;
+        this.supplierLink = p.supplierLink;
+    }
 
     public List<Long> getCrit() {
         List<Long> crit = new ArrayList<>();

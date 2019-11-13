@@ -1,11 +1,16 @@
 package com.eltae.compareTout.exceptionHandler;
 
+import com.eltae.compareTout.dto.ExceptionResponseDto;
+import com.eltae.compareTout.exceptions.ApplicationException;
 import com.eltae.compareTout.exceptions.NotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
 
 import javax.validation.UnexpectedTypeException;
+
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 public class ExceptionCatcher {
 
@@ -24,14 +29,29 @@ public class ExceptionCatcher {
 //        return ResponseEntity.status(401).body(ex.getMessage());
 //    }
 
+
+    @ExceptionHandler(value = {ApplicationException.class})
+    public ResponseEntity<ExceptionResponseDto> applicationException(ApplicationException ex, WebRequest request) {
+        return ResponseEntity.status(ex.getErrCode())
+                .body(ExceptionResponseDto.builder()
+                        .statusErrorCode(ex.getErrCode().value())
+                        .statusErrorMessage(ex.getErrCode().getReasonPhrase())
+                        .errorMessage(ex.getErrMsg())
+                        .build()
+                );
+    }
+
     @ExceptionHandler({UnexpectedTypeException.class})
     public final ResponseEntity<Object> BadArgumentException(UnexpectedTypeException ex){
         return ResponseEntity.status(404).body(ex.getMessage());
     }
 
 
-    @ExceptionHandler(Exception.class)
-    public final ResponseEntity<Object> allException(Exception ex){
-        return ResponseEntity.status(500).body(ex.getMessage());
-    }
-}
+    @ExceptionHandler(value = {Exception.class})
+    public ResponseEntity genericExceptionHandler(Exception ex, WebRequest request) {
+        return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(ExceptionResponseDto.builder()
+                .statusErrorCode(INTERNAL_SERVER_ERROR.value())
+                .statusErrorMessage(INTERNAL_SERVER_ERROR.getReasonPhrase())
+                .errorMessage(ex.getMessage())
+                .build());
+    }}

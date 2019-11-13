@@ -1,0 +1,28 @@
+.category-list {
+    display:flex;
+    padding: 0 20px;
+    justify-content: space-around;
+    font-size: 16px;
+    cursor: pointer;
+    .back {
+        margin-left: -30px;
+        color: #0700a0;
+        font-size:12px;
+        text-decoration: underline;
+    }
+    .subcategory-list {
+        display: block;
+        font-size: 12px;
+    }
+    .category-title {
+        display: flex;
+        padding: 5px;
+        align-content: center;
+        vertical-align: middle;
+        img{
+            margin-right:5px;
+            height: 20px;
+        }
+    }
+}
+
