@@ -1,5 +1,7 @@
 package com.eltae.compareTout.repositories.product;
 
+import com.eltae.compareTout.entities.Category;
+import com.eltae.compareTout.entities.OurCriteriaBuilder;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,8 +17,8 @@ import java.util.List;
 @Data
 public class ProductCriteria {
     @NotNull
-    Long categoryId;
+    Category category;
 
     @NotNull
-    List<Long> criteriaIds;
+    List<OurCriteriaBuilder> criteriaBuilders;
 }
