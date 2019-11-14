@@ -6,10 +6,14 @@ import com.eltae.compareTout.dto.CriteriaProductDto;
 import com.eltae.compareTout.dto.ShortCategoryDto;
 import com.eltae.compareTout.dto.product.ShortProductDto;
 import com.eltae.compareTout.exceptionHandler.ExceptionCatcher;
+import com.eltae.compareTout.exceptions.ApplicationException;
 import com.eltae.compareTout.services.CategoryService;
+import com.google.gson.JsonObject;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
+import springfox.documentation.spring.web.json.Json;
 
 import java.io.File;
 import java.util.List;
@@ -29,15 +34,24 @@ public class CategoryController extends ExceptionCatcher {
 
     private CategoryService categoryService;
 
+
+
     @Autowired
     public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
     }
 
-    @ApiOperation(value = "Ajout de catégorie par fichier csv (delimiter: `;`)")
-    @PostMapping(consumes = "multipart/form-data")
-    public ResponseEntity<Integer> createUser(@RequestParam("file") MultipartFile file) {
-        return ResponseEntity.status(201).body(this.categoryService.create(file));
+    @ApiOperation(value = "Add categories with a CSV file (delimiter: `;`)   " +
+                    "  Exemple of a line :   "+
+                    "  Main_category ; First_child_category ;... ; Last_child_category")
+    @PostMapping(consumes = "multipart/form-data",produces="application/json")
+    @ApiParam("Your CSV file with the categories to import. Cannot be empty. ")
+    public ResponseEntity<?> addCategories(@ApiParam(value = "Your CSV file with the categories to import. Cannot be empty. ")@RequestParam("file") MultipartFile file) {
+        if(!file.getOriginalFilename().endsWith("csv")) {
+            throw new ApplicationException(HttpStatus.resolve(400), "Wrong file format");
+        }
+        else
+            return ResponseEntity.ok(this.categoryService.create(file).toJSONString());
     }
 
     @ApiOperation(value = "Exporter le fichier des catégories")
