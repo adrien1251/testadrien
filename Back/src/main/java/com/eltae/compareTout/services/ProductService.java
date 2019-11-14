@@ -132,6 +132,7 @@ public class ProductService {
         Category category = categoryService.getCategoryWithId(Long.parseLong(records[3]));
         if (category == null) {
             System.out.println("La catégorie indiquée n'existe pas dans la base (lors de l'ajout du produit " + records[0] + ")");
+            return false;
         }
 
         Product product = Product.builder()
