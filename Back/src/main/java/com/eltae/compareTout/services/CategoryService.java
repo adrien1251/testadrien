@@ -224,7 +224,9 @@ public class CategoryService {
     }
 
     public List<ShortCategoryDto> getChildCategories(long id) {
+
         return  categoryConverter.entityListToShortDtoList(categoryRepository.findById(id).get().getChildList());
+
             }
 
     public List<CriteriaProductDto> getCriteriaCategories(Long id) {

@@ -77,31 +77,19 @@ public class CategoryController extends ExceptionCatcher {
     @GetMapping(produces="application/json")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Request is successfully treated"),
-            @ApiResponse(code = 500, message = "No value present")})
+            @ApiResponse(code = 460, message = "No value present")})
     protected ResponseEntity<?> getMainCategories(@ApiParam(value = "Category identification number") @RequestParam(value="id",required = false)Long id) {
-            if(id==null) {
-            Gson gson = new Gson();
-            String jsonList = gson.toJson(this.categoryService.getMainCategories());
-            return ResponseEntity.ok().body(jsonList);
+        Gson gson = new Gson();
+        if(id==null) {
+            return ResponseEntity.ok().body(gson.toJson(this.categoryService.getMainCategories()));
         }
         else{
-            if(this.categoryService.getChildCategories(id)==null)
-                return (ResponseEntity<?>) ResponseEntity.notFound();
-            else
-                return ResponseEntity.ok().body(this.categoryService.getChildCategories(id));
+            if(this.categoryService.getCategoryWithId(id)==null)
+                return ResponseEntity.status(460).body(gson.toJson("Category id not present in database"));
+            else {
+                 return ResponseEntity.ok().body(gson.toJson(this.categoryService.getChildCategories(id)));
+            }
         }
     }
 
-    /*
-    @ApiOperation(value = "Liste des critères d'une catégorie ")
-    @GetMapping(value="/category-criteria/{id}")
-    public ResponseEntity<List<CriteriaProductDto>> getCriteriaCategory(@PathVariable Long id) {
-        return ResponseEntity.status(201).body(this.categoryService.getCriteriaCategories(id));
-    }
-    @ApiOperation(value = "Liste des produits d'une catégorie ")
-    @GetMapping(value="/category-products/{id}")
-    public ResponseEntity<List<ShortProductDto>> getProductsCategory(@PathVariable Long id) {
-        return ResponseEntity.status(201).body(this.categoryService.getProductsCategory(id));
-    }
-    */
     }

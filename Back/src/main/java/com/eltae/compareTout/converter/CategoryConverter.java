@@ -30,7 +30,7 @@ public class CategoryConverter extends GenericsConverter<Category, CategoryDto> 
         return ShortCategoryDto.builder()
                 .id(category.getId())
                 .name(category.getName())
-                .criteriaList(category.getCriteriaList())
+               // .criteriaList(category.getCriteriaList())
                 .build();
     }
 
