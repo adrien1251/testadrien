@@ -28,6 +28,7 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,6 +47,7 @@ public class ProductService {
 
     private final CriteriaRepository criteriaRepository;
     private final EntityManagerFactory entityManagerFactory;
+
     @Autowired
     public ProductService(ProductRepository productRepository, ProductConverter productConverter, ProductForFrontConverter productForFrontConverter, CategoryService categoryService, CriteriaService criteriaService, CriteriaProductRepository criteriaProductRepository, CategoryRepository categoryRepository, CriteriaRepository criteriaRepository, EntityManagerFactory entityManagerFactory) {
         this.productRepository = productRepository;
@@ -121,7 +123,9 @@ public class ProductService {
         CSVReader csvReader = new CSVReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8), ';');
         String[] nextRecord = csvReader.readNext();
         int nbLineAdd = 0;
-        while ((nextRecord = csvReader.readNext()) != null) if (this.insertProduct(nextRecord)) nbLineAdd++;
+        while ((nextRecord = csvReader.readNext()) != null) {
+            if (this.insertProduct(nextRecord)) nbLineAdd++;
+        }
         return nbLineAdd;
     }
 
@@ -134,7 +138,10 @@ public class ProductService {
             System.out.println("La catégorie indiquée n'existe pas dans la base (lors de l'ajout du produit " + records[0] + ")");
             return false;
         }
-
+        if (!checkAllMandatoryCriteriaPresentInFile(records, criteriaService.getAllMandatoryCriteriasIdWithIdCategory(category))) {
+            System.out.println("Il manque un ou plusieurs critères obligatoires dans le fichier d'ajout (lors de l'ajout du produit " + records[0] + ")");
+            return false;
+        }
         Product product = Product.builder()
                 .category(category)
                 .name(records[0].toLowerCase())
@@ -162,15 +169,32 @@ public class ProductService {
                             .build();
                     product.addCriteriaProduct(cp);
                     criteriaProductRepository.save(cp);
+
                 }
             }
         }
-        //category.addProduct(product);
-        // categoryRepository.save(category);
-
         productRepository.save(product);
         productRepository.flush();
         return true;
+    }
+
+    private boolean checkAllMandatoryCriteriaPresentInFile(String[] records, ArrayList<Long> mandatoryCriteriaList) {
+        ArrayList<Long> res = new ArrayList<>();
+        String actualColumn;
+        for (int i = 4; i < records.length; i++) {
+            actualColumn = records[i];
+            if (actualColumn.trim().length() > 0) {
+                for (Long id : mandatoryCriteriaList) {
+                    if (id.equals(Long.parseLong(actualColumn))) {
+                        res.add(id);
+                    }
+                }
+            }
+            i++;
+        }
+        if (mandatoryCriteriaList.size() == res.size())  //true si tous les criteres sont présents
+            return true;
+        return false;
     }
 
 }

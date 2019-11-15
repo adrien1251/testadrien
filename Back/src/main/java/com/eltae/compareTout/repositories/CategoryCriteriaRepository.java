@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface CategoryCriteriaRepository extends JpaRepository<CategoryCriteria, CriteriaProductPK> {
+public interface CategoryCriteriaRepository extends JpaRepository<CategoryCriteria, CategoryCriteriaPK> {
     List<CategoryCriteria> findAll();
-
+    List<CategoryCriteria> findByPk_Category(Category categoryId);
 }
 

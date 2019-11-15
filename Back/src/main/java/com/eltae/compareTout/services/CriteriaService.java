@@ -144,7 +144,7 @@ public class CriteriaService {
 
                 } else { // si le critere existe, il faut ajouter la category qui l'appelle
                     CategoryCriteria categoryCriteriaToFind = category.getCriteriaProductWithCriteriaName(records[i + 1].toLowerCase());
-                    if (categoryCriteriaToFind!=null)
+                    if (categoryCriteriaToFind != null)
                         return false;
                     else {
                         CategoryCriteriaPK categoryCriteriaPK = new CategoryCriteriaPK();
@@ -158,12 +158,21 @@ public class CriteriaService {
                     }
 
 
-                    }
                 }
-
             }
-            return true;
+
         }
-
-
+        return true;
     }
+
+
+    public ArrayList<Long> getAllMandatoryCriteriasIdWithIdCategory(Category category) {
+        ArrayList<Long> res = new ArrayList<>();
+        List<CategoryCriteria> list = categoryCriteriaRepository.findByPk_Category(category);
+        for (CategoryCriteria cc : list) {
+            if (cc.getIsMandatory())
+                res.add(cc.getCriteria().getId());
+        }
+        return res;
+    }
+}
