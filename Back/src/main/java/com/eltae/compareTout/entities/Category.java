@@ -53,10 +53,17 @@ public class Category implements Cloneable {
 
     public CategoryCriteria getCriteriaProductWithCriteriaName(String name){
         for (CategoryCriteria cc : this.getCategoryCriteriaList()){
-            if (cc.getCriteria().getName().equals(id))
+            if (cc.getCriteria().getName().equals(name))
                 return cc;
         }
         return null;
     }
 
+    public CategoryCriteria getCriteriaProductWithCriteriaName(Long id_criteria){
+        for (CategoryCriteria cc : this.getCategoryCriteriaList()){
+            if (cc.getCriteria().getId()==(id_criteria))
+                return cc;
+        }
+        return null;
+    }
 }

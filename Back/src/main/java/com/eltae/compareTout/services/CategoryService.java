@@ -7,9 +7,9 @@ import com.eltae.compareTout.dto.CriteriaProductDto;
 import com.eltae.compareTout.dto.ShortCategoryDto;
 import com.eltae.compareTout.dto.product.ShortProductDto;
 import com.eltae.compareTout.entities.Category;
+import com.eltae.compareTout.entities.CategoryCriteria;
 import com.eltae.compareTout.entities.Criteria;
 import com.eltae.compareTout.exceptions.ApplicationException;
-import com.eltae.compareTout.exceptions.BadCsvLine;
 import com.eltae.compareTout.repositories.CategoryRepository;
 import com.eltae.compareTout.repositories.ProductRepository;
 import com.opencsv.*;
@@ -140,7 +140,6 @@ public class CategoryService {
         }
         return added>0;
     }
-
     public File getCategories(){
         List<Category> mother;
         mother = this.categoryRepository.findByParent_idIsNull();
@@ -186,7 +185,8 @@ public class CategoryService {
                 pathcate=pathcate+"/";
         }
         for(Criteria critere: crit){
-//           pathcate=pathcate+"/"+critete.isMandatory();
+            CategoryCriteria categoryCriteriaToFind = g.getCriteriaProductWithCriteriaName(critere.getId());
+            pathcate=pathcate+"/"+categoryCriteriaToFind.getIsMandatory();
             pathcate=pathcate+"/"+critere.getName();
             pathcate=pathcate+"/"+critere.getUnit();
             pathcate=pathcate+"/"+critere.getType();
@@ -196,20 +196,13 @@ public class CategoryService {
         c.writeNext(row);
     }
     private  CSVWriter writeDataLineByLine(String filePath) {
-        // first create file object for file placed at location
-        // specified by filepath
         cat_file = new File(filePath);
         try {
-            // create FileWriter object with file as parameter
             FileWriter outputfile = new FileWriter(cat_file);
-
-            // create CSVWriter object filewriter object as parameter
             CSVWriter writer = new CSVWriter(outputfile, ';',
                     CSVWriter.NO_QUOTE_CHARACTER,
                     CSVWriter.DEFAULT_ESCAPE_CHARACTER,
                     CSVWriter.DEFAULT_LINE_END);
-
-            // adding header to csv
             String[] header = {"Category's last child Id"  ,"Main category", "Child_1 category", "Child_2 category", "Child_3 category", "Child_4 category",
                                 "Is_mandatory_criteria_1","Criteria_1","Unit_1","Type_1", "Is_mandatory_criteria_2","Criteria_2","Unit_2","Type_2", "Is_mandatory_criteria_3","Criteria_3","Unit_3","Type_3",
                                 "Is_mandatory_criteria_4","Criteria_4","Unit_4","Type_4","Is_mandatory_criteria_5","Criteria_5","Unit_5","Type_5", "Is_mandatory_criteria_6","Criteria_6","Unit_6","Type_6",
