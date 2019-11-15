@@ -14,6 +14,7 @@ public class CriteriaConverter extends GenericsConverter<Criteria, CriteriaProdu
 
 
     @Override
+
     public CriteriaProductDto entityToDto(Criteria criteria) {
         return CriteriaProductDto.builder()
                 .id(criteria.getId())
@@ -22,6 +23,10 @@ public class CriteriaConverter extends GenericsConverter<Criteria, CriteriaProdu
                 .type(criteria.getType())
                 .build();
     }
+
+    
+
+
 
     @Override
     public Criteria dtoToEntity(CriteriaProductDto criteriaProductDto) {

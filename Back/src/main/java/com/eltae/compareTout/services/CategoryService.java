@@ -1,17 +1,15 @@
 package com.eltae.compareTout.services;
 import com.eltae.compareTout.converter.CategoryConverter;
 import com.eltae.compareTout.converter.CriteriaConverter;
-import com.eltae.compareTout.converter.product.ProductConverter;
 import com.eltae.compareTout.dto.CategoryDto;
 import com.eltae.compareTout.dto.CriteriaProductDto;
 import com.eltae.compareTout.dto.ShortCategoryDto;
-import com.eltae.compareTout.dto.product.ShortProductDto;
 import com.eltae.compareTout.entities.Category;
 import com.eltae.compareTout.entities.CategoryCriteria;
 import com.eltae.compareTout.entities.Criteria;
 import com.eltae.compareTout.exceptions.ApplicationException;
 import com.eltae.compareTout.repositories.CategoryRepository;
-import com.eltae.compareTout.repositories.ProductRepository;
+
 import com.opencsv.*;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,19 +30,15 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryConverter categoryConverter;
     private final CriteriaConverter criteriaConverter;
-    private final ProductConverter productConverter;
-    private final ProductRepository productRepository;
     private File cat_file;
     private Map<Integer,String> errorMap;
 
 
     @Autowired
-    public CategoryService(CategoryRepository categoryRepository, CategoryConverter catConv, CriteriaConverter critConv, ProductConverter prodConv, ProductRepository productRepository) {
+    public CategoryService(CategoryRepository categoryRepository, CategoryConverter catConv, CriteriaConverter criteriaConverter) {
         this.categoryRepository = categoryRepository;
         this.categoryConverter = catConv;
-        this.criteriaConverter =critConv;
-        this.productConverter=prodConv;
-        this.productRepository = productRepository;
+        this.criteriaConverter = criteriaConverter;
     }
 
     public JSONObject create(MultipartFile multipartFile) throws ApplicationException {
@@ -54,14 +48,12 @@ public class CategoryService {
             throw new ApplicationException(HttpStatus.resolve(400),"Wrong format file");
         }
     }
-
     public Category getCategoryWithId(long id){
         Optional<Category> cat = categoryRepository.findById(id);
         if (cat.isPresent())
             return cat.get();
         return null;
     }
-
     private JSONObject readCSV(InputStream inputStream) throws IOException {
         errorMap=new HashMap<>();
         CSVParser parser = new CSVParserBuilder()
@@ -87,8 +79,6 @@ public class CategoryService {
          json.put("Error_lines",this.errorMap);
         return json;
     }
-
-
     private boolean saveCat(String[] records,int line){
         String actualCategoryName;
         Category parent=null;
@@ -217,24 +207,14 @@ public class CategoryService {
             }
         return null;
     }
-
-
     public List<CategoryDto> getMainCategories() {
             return categoryConverter.entityListToDtoList(categoryRepository.findByParent_idIsNull());
     }
-
     public List<ShortCategoryDto> getChildCategories(long id) {
-
         return  categoryConverter.entityListToShortDtoList(categoryRepository.findById(id).get().getChildList());
 
             }
-
-    public List<CriteriaProductDto> getCriteriaCategories(Long id) {
-        return criteriaConverter.entityListToDtoList(categoryRepository.findById(id).get().getCriteriaList());
-
-    }
-
-    public List<ShortProductDto> getProductsCategory(Long id) {
-        return productConverter.listEntityToShortDto(productRepository.findAllByCategoryId(id));
+    public List<CriteriaProductDto> getCategoryCriteria(Category id_category) {
+        return this.criteriaConverter.entityListToDtoList(id_category.getCriteriaList());
     }
 }

@@ -1,6 +1,8 @@
 package com.eltae.compareTout.services;
 
+import com.eltae.compareTout.converter.CriteriaConverter;
 import com.eltae.compareTout.converter.product.ProductConverter;
+import com.eltae.compareTout.dto.CriteriaDto;
 import com.eltae.compareTout.dto.CriteriaProductDto;
 import com.eltae.compareTout.dto.product.ShortProductDto;
 import com.eltae.compareTout.entities.*;
@@ -35,18 +37,19 @@ public class CriteriaService {
     private final CriteriaRepository criteriaRepository;
     private final CategoryService categoryService;
     private final CategoryCriteriaRepository categoryCriteriaRepository;
+    private final CriteriaConverter criteriaConverter;
     private Map<Integer,String> errorMap;
 
 
     @Autowired
-    public CriteriaService(ProductConverter prodConv, ProductRepository prodRep, CriteriaRepository criteriaRepository, CategoryService categoryService, CategoryCriteriaRepository categoryCriteriaRepository) {
+    public CriteriaService(ProductConverter prodConv, ProductRepository prodRep, CriteriaRepository criteriaRepository, CategoryService categoryService, CategoryCriteriaRepository categoryCriteriaRepository, CriteriaConverter criteriaConverter) {
         this.productRepository = prodRep;
         this.productConverter = prodConv;
         this.criteriaRepository = criteriaRepository;
         this.categoryService = categoryService;
         this.categoryCriteriaRepository = categoryCriteriaRepository;
+        this.criteriaConverter = criteriaConverter;
     }
-
     public List<ShortProductDto> getProductsCriteria(Long id, List<Long> crit) {
         List<Product> myProducts = new ArrayList<Product>();
         myProducts = productRepository.findAllByCategoryId(id);
@@ -60,14 +63,12 @@ public class CriteriaService {
         return productConverter.listEntityToShortDto(filterProduct);
 
     }
-
     public Criteria getCriteriaProductWithIdCriteria(Long idCriteria) {
         Optional<Criteria> c = criteriaRepository.findById(idCriteria);
         if (c.isPresent())
             return c.get();
         return null;
     }
-
     public List<ShortProductDto> getProductsStrictCriteria(Long id, Long[] idCrit, String[] valuesCrit) {
 
         if (id == null || idCrit.length != valuesCrit.length)
@@ -99,8 +100,6 @@ public class CriteriaService {
             return shortProductListFinal;
         }
     }
-
-
     public JSONObject create(MultipartFile multipartFile) throws ApplicationException {
         try {
             return this.readCSV(multipartFile.getInputStream());
@@ -110,10 +109,7 @@ public class CriteriaService {
         }
 
     }
-
-
-
-        private JSONObject readCSV(InputStream inputStream) throws IOException {
+    private JSONObject readCSV(InputStream inputStream) throws IOException {
             errorMap=new HashMap<>();
             CSVParser parser = new CSVParserBuilder()
                     .withSeparator(';')
@@ -140,8 +136,6 @@ public class CriteriaService {
             json.put("Error_lines",this.errorMap);
             return json;
         }
-
-
     private boolean saveCrit(String[] records,int line) {
         int added=0;
         String actualColumn;
@@ -202,8 +196,6 @@ public class CriteriaService {
         }
         return true;
     }
-
-
     public ArrayList<Long> getAllMandatoryCriteriasIdWithIdCategory(Category category) {
         ArrayList<Long> res = new ArrayList<>();
         List<CategoryCriteria> list = categoryCriteriaRepository.findByPk_Category(category);
@@ -213,7 +205,8 @@ public class CriteriaService {
         }
         return res;
     }
-
-
+    public List<CriteriaProductDto> getAllcriteria() {
+        return this.criteriaConverter.entityListToDtoList(this.criteriaRepository.findAll());
+    }
 
 }

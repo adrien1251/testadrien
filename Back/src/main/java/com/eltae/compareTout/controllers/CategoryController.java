@@ -1,8 +1,5 @@
 package com.eltae.compareTout.controllers;
 import com.eltae.compareTout.constants.Routes;
-import com.eltae.compareTout.dto.CriteriaProductDto;
-import com.eltae.compareTout.dto.ShortCategoryDto;
-import com.eltae.compareTout.dto.product.ShortProductDto;
 import com.eltae.compareTout.exceptionHandler.ExceptionCatcher;
 import com.eltae.compareTout.exceptions.ApplicationException;
 import com.eltae.compareTout.services.CategoryService;
@@ -20,9 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import java.io.File;
-import java.util.List;
-import java.util.Optional;
-
 
 @RestController
 @RequestMapping(Routes.CATEGORY)
@@ -30,8 +24,6 @@ import java.util.Optional;
 public class CategoryController extends ExceptionCatcher {
 
     private CategoryService categoryService;
-
-
 
     @Autowired
     public CategoryController(CategoryService categoryService) {

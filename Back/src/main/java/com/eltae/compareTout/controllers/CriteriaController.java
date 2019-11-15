@@ -4,7 +4,9 @@ import com.eltae.compareTout.constants.Routes;
 import com.eltae.compareTout.dto.product.ShortProductDto;
 import com.eltae.compareTout.exceptionHandler.ExceptionCatcher;
 import com.eltae.compareTout.exceptions.ApplicationException;
+import com.eltae.compareTout.services.CategoryService;
 import com.eltae.compareTout.services.CriteriaService;
+import com.google.gson.Gson;
 import io.swagger.annotations.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,11 +21,38 @@ import java.util.List;
 public class CriteriaController   extends ExceptionCatcher {
 
     private CriteriaService criteriaService;
+    private CategoryService categoryService;
 
-    public CriteriaController(CriteriaService criteriaService) {
+
+    public CriteriaController(CriteriaService criteriaService,CategoryService catService) {
         this.criteriaService = criteriaService;
+        this.categoryService = catService;
+    }
+    @ApiOperation(value = "Produces json with all criteria available if no query parameters. If an identification number " +
+            "of a category is provided, it returns criteria attached to it")
+    @GetMapping(produces="application/json")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Request is successfully treated"),
+            @ApiResponse(code = 460, message = "No value present")})
+    protected ResponseEntity<?> getCriteria(@ApiParam(value = "Category identification number") @RequestParam(value="id_category",required = false)Long id_category) {
+        Gson gson = new Gson();
+        if(id_category==null) {
+            return ResponseEntity.ok().body(gson.toJson(this.criteriaService.getAllcriteria()));
+        }
+        else{
+            if(this.categoryService.getCategoryWithId(id_category)==null)
+                return ResponseEntity.status(460).body(gson.toJson("Category id not present in database"));
+            else {
+                return ResponseEntity.ok().body(gson.toJson(this.categoryService.getCategoryCriteria(categoryService.getCategoryWithId(id_category))));
+            }
+        }
     }
 
+
+
+
+
+    /*
     @ApiOperation(value = "Liste des produits d'une catégorie pour les critères définis ")
     @GetMapping(value="/")
     public ResponseEntity<List<ShortProductDto>> getProductsCriteria(@RequestParam Long id, @RequestParam List<Long> crit) {
@@ -39,7 +68,7 @@ public class CriteriaController   extends ExceptionCatcher {
         return ResponseEntity.status(201).body(this.criteriaService.getProductsStrictCriteria(id,idCrit,valuesCrit));
     }
 
-
+    */
     @ApiOperation(value = "Add criteria with a CSV file (delimiter: `;`)  Only last-child category " +
             "can receive criteria."+
             "Line example : "+
@@ -59,15 +88,6 @@ public class CriteriaController   extends ExceptionCatcher {
         }
     }
 
-
-    /*
-    @ApiOperation(value = "Ajout de critères par fichier csv (delimiter: ';')")
-    @PostMapping(consumes = "multipart/form-data")
-    public ResponseEntity<Integer> createCriterias(@ApiParam(value = "Your CSV file with the categories to import." +
-            " Cannot be empty. ",required = true)@RequestParam("file") MultipartFile file) {
-        return ResponseEntity.status(201).body(this.criteriaService.create(file));
-    }
-*/
 
 
 }
