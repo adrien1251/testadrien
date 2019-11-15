@@ -2,6 +2,7 @@ package com.eltae.compareTout.services;
 import com.eltae.compareTout.converter.CategoryConverter;
 import com.eltae.compareTout.converter.CriteriaConverter;
 import com.eltae.compareTout.dto.CategoryDto;
+import com.eltae.compareTout.dto.CriteriaDto;
 import com.eltae.compareTout.dto.CriteriaProductDto;
 import com.eltae.compareTout.dto.ShortCategoryDto;
 import com.eltae.compareTout.entities.Category;
@@ -214,7 +215,7 @@ public class CategoryService {
         return  categoryConverter.entityListToShortDtoList(categoryRepository.findById(id).get().getChildList());
 
             }
-    public List<CriteriaProductDto> getCategoryCriteria(Category id_category) {
-        return this.criteriaConverter.entityListToDtoList(id_category.getCriteriaList());
+    public List<CriteriaDto> getCategoryCriteria(Category id_category) {
+        return this.criteriaConverter.entityListToDtoListWithMandatory(id_category.getCriteriaList(),id_category);
     }
 }

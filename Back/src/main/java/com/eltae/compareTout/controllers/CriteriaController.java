@@ -1,7 +1,6 @@
 package com.eltae.compareTout.controllers;
 
 import com.eltae.compareTout.constants.Routes;
-import com.eltae.compareTout.dto.product.ShortProductDto;
 import com.eltae.compareTout.exceptionHandler.ExceptionCatcher;
 import com.eltae.compareTout.exceptions.ApplicationException;
 import com.eltae.compareTout.services.CategoryService;
@@ -12,8 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(Routes.CRITERIA)
@@ -47,10 +44,6 @@ public class CriteriaController   extends ExceptionCatcher {
             }
         }
     }
-
-
-
-
 
     /*
     @ApiOperation(value = "Liste des produits d'une catégorie pour les critères définis ")

@@ -15,6 +15,8 @@ public abstract class GenericsConverter<Entity, Dto> {
         return dtoList;
     }
 
+
+
     public List<Entity> dtoListToEntityList(List<Dto> dtoList) {
         List<Entity> entityList = new ArrayList<>();
         for(Dto dto : dtoList){
