@@ -79,7 +79,7 @@ public class CategoryController extends ExceptionCatcher {
             @ApiResponse(code = 200, message = "Request is successfully treated"),
             @ApiResponse(code = 500, message = "No value present")})
     protected ResponseEntity<?> getMainCategories(@ApiParam(value = "Category identification number") @RequestParam(value="id",required = false)Long id) {
-            System.out.println(id);       if(id==null) {
+            if(id==null) {
             Gson gson = new Gson();
             String jsonList = gson.toJson(this.categoryService.getMainCategories());
             return ResponseEntity.ok().body(jsonList);

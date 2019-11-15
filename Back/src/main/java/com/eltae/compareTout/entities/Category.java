@@ -59,7 +59,7 @@ public class Category implements Cloneable {
         return null;
     }
 
-    public CategoryCriteria getCriteriaProductWithCriteriaName(Long id_criteria){
+    public CategoryCriteria getCriteriaProductWithCriteriaId(Long id_criteria){
         for (CategoryCriteria cc : this.getCategoryCriteriaList()){
             if (cc.getCriteria().getId()==(id_criteria))
                 return cc;

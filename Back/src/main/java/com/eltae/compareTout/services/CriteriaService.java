@@ -4,11 +4,16 @@ import com.eltae.compareTout.converter.product.ProductConverter;
 import com.eltae.compareTout.dto.CriteriaProductDto;
 import com.eltae.compareTout.dto.product.ShortProductDto;
 import com.eltae.compareTout.entities.*;
+import com.eltae.compareTout.exceptions.ApplicationException;
 import com.eltae.compareTout.exceptions.WrongParameters;
 import com.eltae.compareTout.repositories.CategoryCriteriaRepository;
 import com.eltae.compareTout.repositories.CriteriaRepository;
 import com.eltae.compareTout.repositories.ProductRepository;
+import com.opencsv.CSVParser;
+import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -30,6 +35,8 @@ public class CriteriaService {
     private final CriteriaRepository criteriaRepository;
     private final CategoryService categoryService;
     private final CategoryCriteriaRepository categoryCriteriaRepository;
+    private Map<Integer,String> errorMap;
+
 
     @Autowired
     public CriteriaService(ProductConverter prodConv, ProductRepository prodRep, CriteriaRepository criteriaRepository, CategoryService categoryService, CategoryCriteriaRepository categoryCriteriaRepository) {
@@ -94,41 +101,72 @@ public class CriteriaService {
     }
 
 
-    public int create(MultipartFile multipartFile) {
+    public JSONObject create(MultipartFile multipartFile) throws ApplicationException {
         try {
             return this.readCSV(multipartFile.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
+            throw new ApplicationException(HttpStatus.resolve(400),"Wrong format file");
         }
-        return 0;
+
     }
 
-    private int readCSV(InputStream inputStream) throws IOException {
-        CSVReader csvReader = new CSVReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8), ';');
-        String[] nextRecord = csvReader.readNext();
-        int nbLineAdd = 0;
-        while ((nextRecord = csvReader.readNext()) != null) if (this.saveCrit(nextRecord)) nbLineAdd++;
-        return nbLineAdd;
-    }
 
-    private boolean saveCrit(String[] records) {
+
+        private JSONObject readCSV(InputStream inputStream) throws IOException {
+            errorMap=new HashMap<>();
+            CSVParser parser = new CSVParserBuilder()
+                    .withSeparator(';')
+                    .withIgnoreQuotations(true)
+                    .build();
+            CSVReader csvReader = new CSVReaderBuilder(new InputStreamReader(inputStream, StandardCharsets.UTF_8)).withCSVParser(parser).build();
+            String[] nextRecord;
+            Map<Integer,String> notAdded=new HashMap<>();
+            int nbLineAdd = 0;
+            int line=0;
+            JSONObject json = new JSONObject();
+            csvReader.readNext();
+            while ((nextRecord = csvReader.readNext()) != null) {
+                line++;
+                String myline=Arrays.asList(nextRecord).toString();
+                if (this.saveCrit(nextRecord,line))
+                    nbLineAdd++;
+                else {
+                    if(errorMap.get(line)==null) notAdded.put(line, myline);
+                }
+            }
+            json.put("Lines_Added", nbLineAdd);
+            json.put("Lines_not_Added",notAdded);
+            json.put("Error_lines",this.errorMap);
+            return json;
+        }
+
+
+    private boolean saveCrit(String[] records,int line) {
+        int added=0;
         String actualColumn;
-        Category category = categoryService.getCategoryWithId(Long.parseLong(records[0]));
+        Category category = null;
+        category = categoryService.getCategoryWithId(Long.parseLong(records[0]));
+        if(category==null){
+            errorMap.put(line,"Missing Category "+records[0]);
+            return false;
+        }
+        // si la catégorie n'existe pas on insère pas les criteres
         for (int i = 0; i < records.length; i++) {
             actualColumn = records[i];
-            if (actualColumn.trim().length() == 0) return false;
+            if (actualColumn.trim().length() == 0 && !(i < 4)) return added > 0;
             if (i % 4 == 0 & i != 0) {
                 Optional<Criteria> critInBase = criteriaRepository.findByName(records[i + 1].toLowerCase());
                 if (!critInBase.isPresent()) { //Si le critère n'existe pas, on l'ajoute
                     if (!actualColumn.isEmpty()) {
                         Criteria newCritere = Criteria.builder()
-                                //.isMandatory(Boolean.parseBoolean(actualColumn))
                                 .name(records[i + 1].toLowerCase())
                                 .unit(records[i + 2])
                                 .type(TypeCriteria.valueOf(records[i + 3].toUpperCase()))
                                 .categoryList(new ArrayList<>())
                                 .build();
                         criteriaRepository.save(newCritere);
+                        added = 1;
 
                         CategoryCriteriaPK categoryCriteriaPK = new CategoryCriteriaPK();
                         categoryCriteriaPK.setCategory(category);
@@ -138,15 +176,16 @@ public class CriteriaService {
                                 .pk(categoryCriteriaPK)
                                 .build();
                         categoryCriteriaRepository.save(categoryCriteria);
-
-
+                    } else {
+                        errorMap.put(line, "Missing field in this line");
+                        added = 0;
                     }
 
                 } else { // si le critere existe, il faut ajouter la category qui l'appelle
                     CategoryCriteria categoryCriteriaToFind = category.getCriteriaProductWithCriteriaName(records[i + 1].toLowerCase());
-                    if (categoryCriteriaToFind != null)
-                        return false;
-                    else {
+                    if (categoryCriteriaToFind != null) {
+                        return added > 0;
+                    } else {
                         CategoryCriteriaPK categoryCriteriaPK = new CategoryCriteriaPK();
                         categoryCriteriaPK.setCategory(category);
                         categoryCriteriaPK.setCriteria_cat(critInBase.get());
@@ -155,9 +194,8 @@ public class CriteriaService {
                                 .pk(categoryCriteriaPK)
                                 .build();
                         categoryCriteriaRepository.save(categoryCriteria);
+                        added = 1;
                     }
-
-
                 }
             }
 
@@ -175,5 +213,7 @@ public class CriteriaService {
         }
         return res;
     }
+
+
 
 }

@@ -185,7 +185,7 @@ public class CategoryService {
                 pathcate=pathcate+"/";
         }
         for(Criteria critere: crit){
-            CategoryCriteria categoryCriteriaToFind = g.getCriteriaProductWithCriteriaName(critere.getId());
+            CategoryCriteria categoryCriteriaToFind = g.getCriteriaProductWithCriteriaId(critere.getId());
             pathcate=pathcate+"/"+categoryCriteriaToFind.getIsMandatory();
             pathcate=pathcate+"/"+critere.getName();
             pathcate=pathcate+"/"+critere.getUnit();
