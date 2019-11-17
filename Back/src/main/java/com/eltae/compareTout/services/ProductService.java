@@ -14,7 +14,11 @@ import com.eltae.compareTout.repositories.CriteriaRepository;
 import com.eltae.compareTout.repositories.ProductRepository;
 import com.eltae.compareTout.repositories.product.CriteriaFilter;
 import com.eltae.compareTout.repositories.product.CriteriaFilterSpecification;
+import com.opencsv.CSVParser;
+import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -30,8 +34,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Transactional
@@ -44,9 +47,10 @@ public class ProductService {
     private final CriteriaService criteriaService;
     private final CriteriaProductRepository criteriaProductRepository;
     private final CategoryRepository categoryRepository;
-
     private final CriteriaRepository criteriaRepository;
     private final EntityManagerFactory entityManagerFactory;
+    private Map<Integer,String> errorMap;
+    private Map<Integer,String> criteriaMap;
 
     @Autowired
     public ProductService(ProductRepository productRepository, ProductConverter productConverter, ProductForFrontConverter productForFrontConverter, CategoryService categoryService, CriteriaService criteriaService, CriteriaProductRepository criteriaProductRepository, CategoryRepository categoryRepository, CriteriaRepository criteriaRepository, EntityManagerFactory entityManagerFactory) {
@@ -59,6 +63,7 @@ public class ProductService {
         this.categoryRepository = categoryRepository;
         this.criteriaRepository = criteriaRepository;
         this.entityManagerFactory = entityManagerFactory;
+
     }
 
     public List<ShortProductDto> getAll() {
@@ -66,31 +71,37 @@ public class ProductService {
     }
 
     public List<ProductDtoForFront> getAllProductsByCategory(long idCategory) {
+        Category category = categoryRepository
+                .findById(idCategory)
+                .orElseThrow(() -> new ApplicationException(HttpStatus.NOT_FOUND, "Category " + idCategory + " not found"));
         return productForFrontConverter.entityListToDtoList(this.productRepository.findAllByCategoryId(idCategory));
     }
 
     public List<CriteriaProductDto> getAllCriteriaByProduct(long idProduct) {
-        return productConverter.entityListToDtoList(this.productRepository.findProductById(idProduct)).get(0).getCriteriaProducts();
+        Product p =productRepository
+                .findById(idProduct)
+                .orElseThrow(() -> new ApplicationException(HttpStatus.NOT_FOUND, "Product " + idProduct + " not found"));
+             return productConverter.entityListToDtoList(this.productRepository.findProductById(idProduct)).get(0).getCriteriaProducts();
     }
 
     public List<ProductDtoForFront> getAllProductByCategoryAndCriteria(long categoryId, List<CriteriaFilterDto> idCriteria) {
+        Category category = categoryRepository
+                .findById(categoryId)
+                .orElseThrow(() -> new ApplicationException(HttpStatus.NOT_FOUND, "Category " + categoryId + " not found"));
+
         List<OurCriteria> criteriaBuilders = new ArrayList<>();
         idCriteria.forEach(cb -> {
             Criteria criteria = criteriaRepository
                     .findById(cb.getIdCriteria())
-                    .orElseThrow(() -> new ApplicationException(HttpStatus.NOT_FOUND, "Criteria " + cb.getIdCriteria() + "not found"));
+                    .orElseThrow(() -> new ApplicationException(HttpStatus.NOT_FOUND, "Criteria " + cb.getIdCriteria() + " not found"));
 
             criteriaBuilders.add(OurCriteria.builder()
                     .criteria(criteria)
-                    .value(cb.getValue())
+                    .value(cb.getValue().toLowerCase())
                     .minValue(cb.getMinValue())
                     .maxValue(cb.getMaxValue())
                     .build());
         });
-
-        Category category = categoryRepository
-                .findById(categoryId)
-                .orElseThrow(() -> new ApplicationException(HttpStatus.NOT_FOUND, "Category " + categoryId + "not found"));
 
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
@@ -110,36 +121,57 @@ public class ProductService {
         return productForFrontConverter.entityListToDtoList(typedQuery.getResultList());
     }
 
-    public int insertProductsFromFile(MultipartFile multipartFile) {
+    public JSONObject insertProductsFromFile(MultipartFile multipartFile) {
         try {
             return this.readProductsCSV(multipartFile.getInputStream());
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new ApplicationException(HttpStatus.resolve(400),"Wrong format file");
         }
-        return 0;
     }
 
-    private int readProductsCSV(InputStream inputStream) throws IOException {
-        CSVReader csvReader = new CSVReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8), ';');
-        String[] nextRecord = csvReader.readNext();
+    private JSONObject readProductsCSV(InputStream inputStream) throws IOException {
+        errorMap=new HashMap<>();
+        CSVParser parser = new CSVParserBuilder()
+                .withSeparator(';')
+                .withIgnoreQuotations(true)
+                .build();
+        CSVReader csvReader = new CSVReaderBuilder(new InputStreamReader(inputStream, StandardCharsets.UTF_8)).withCSVParser(parser).build();
+        String[] nextRecord;
+        Map<Integer,String> notAdded=new HashMap<Integer,String>();
         int nbLineAdd = 0;
+        int line=0;
+        JSONObject json = new JSONObject();
+        csvReader.readNext();
         while ((nextRecord = csvReader.readNext()) != null) {
-            if (this.insertProduct(nextRecord)) nbLineAdd++;
+            line++;
+            String myline= Arrays.asList(nextRecord).toString();
+            if (this.insertProduct(nextRecord,line))
+                nbLineAdd++;
+            else
+                notAdded.put(line,myline);
         }
-        return nbLineAdd;
+        json.put("Lines_Added", nbLineAdd);
+        json.put("Lines_not_Added",notAdded);
+        json.put("Error_lines",this.errorMap);
+        json.put("Missing_criteria_line",this.criteriaMap);
+        return json;
     }
 
-    private boolean insertProduct(String[] records) {
+    private boolean insertProduct(String[] records,int line) {
         String actualColumn;
         CriteriaProduct cp;
-
         Category category = categoryService.getCategoryWithId(Long.parseLong(records[3]));
         if (category == null) {
-            System.out.println("La catégorie indiquée n'existe pas dans la base (lors de l'ajout du produit " + records[0] + ")");
+            this.errorMap.put(line,"Category identification not exits in database (for the product :  " + records[0] + ")");
             return false;
         }
+        if(!category.getChildList().isEmpty()){
+            this.errorMap.put(line,"Category : "+category.getId()+ " cannot have products (for the product :  " + records[0] + ")");
+            return false;
+        }
+
         if (!checkAllMandatoryCriteriaPresentInFile(records, criteriaService.getAllMandatoryCriteriasIdWithIdCategory(category))) {
-            System.out.println("Il manque un ou plusieurs critères obligatoires dans le fichier d'ajout (lors de l'ajout du produit " + records[0] + ")");
+            this.errorMap.put(line,"Mandatories criteria missing, cannot add product  (for the product " + records[0] + ")");
             return false;
         }
         Product product = Product.builder()
@@ -157,19 +189,28 @@ public class ProductService {
                 cp = null;
                 Criteria criteria = criteriaService.getCriteriaProductWithIdCriteria(Long.parseLong(actualColumn));
                 if (criteria == null) {
-                    System.out.println("Le critère indiqué n'existe pas dans la base (lors de l'ajout du produit " + product.getName() + ")");
+                    this.errorMap.put(line,"Criteria identification not exits in database, cannot add product(for product :  " + product.getName() + ")");
                     return false; // criteria non trouvé en base
                 } else {
-                    CriteriaProductPK primaryKey = new CriteriaProductPK();
-                    primaryKey.setCriteria(criteria);
-                    primaryKey.setProduct(product);
-                    cp = CriteriaProduct.builder()
-                            .pk(primaryKey)
-                            .value(records[i + 1])
-                            .build();
-                    product.addCriteriaProduct(cp);
-                    criteriaProductRepository.save(cp);
+                    if(category.getCriteriaList().size()==0){
+                        this.errorMap.put(line,"Category : " +category.getId()+" has no criteria, cannot had product");
+                        return false;
+                    }
+                    if(!category.getCriteriaList().contains(criteria))
+                            this.criteriaMap.put(line,"Missing criteria "+criteria.getId() +
+                                    "in category : "+category.getId());
+                    else {
 
+                        CriteriaProductPK primaryKey = new CriteriaProductPK();
+                        primaryKey.setCriteria(criteria);
+                        primaryKey.setProduct(product);
+                        cp = CriteriaProduct.builder()
+                                .pk(primaryKey)
+                                .value(records[i + 1])
+                                .build();
+                        product.addCriteriaProduct(cp);
+                        criteriaProductRepository.save(cp);
+                    }
                 }
             }
         }
@@ -196,5 +237,6 @@ public class ProductService {
             return true;
         return false;
     }
+
 
 }
