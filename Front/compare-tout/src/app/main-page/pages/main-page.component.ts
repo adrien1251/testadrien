@@ -14,9 +14,9 @@ import { productMock } from 'src/app/shared/mocks/product-mock';
 })
 export class MainPageComponent implements OnInit, OnDestroy {
   public categories: Category[];
-  private currentCategory: Category;
-  private subCategories: Category[];
-  private isChildCategory: boolean;
+  public currentCategory: Category;
+   public subCategories: Category[];
+  public isChildCategory: boolean;
   public productList: Product[];
 
 
