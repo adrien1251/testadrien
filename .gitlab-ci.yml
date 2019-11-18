@@ -17,6 +17,11 @@ stages:
   - images
   - deploy
 
+back-build:
+  image: maven:3-jdk-8
+  stage: build
+  script: "echo $UneVariable"
+
 # back-build:
 #   image: maven:3-jdk-8
 #   stage: build
@@ -35,47 +40,47 @@ stages:
 #     paths:
 #       - $FRONT_DIR/dist/*
 
-front-push-image:
-  stage: images
-  before_script: ['cd $FRONT_DIR']
-  script:
-  - echo mdp
-  - echo $TREESCALE_PASS
-  - echo $env:TREESCALE_PASS
-  - echo %TREESCALE_PASS%
-  - docker login repo.treescale.com --username=deblocka -p $TREESCALE_PASS
-  - docker build -t $FRONT_IMAGE .
-  - docker push $FRONT_IMAGE
+# front-push-image:
+#   stage: images
+#   before_script: ['cd $FRONT_DIR']
+#   script:
+#   - echo mdp
+#   - echo $TREESCALE_PASS
+#   - echo $env:TREESCALE_PASS
+#   - echo %TREESCALE_PASS%
+#   - docker login repo.treescale.com --username=deblocka -p $TREESCALE_PASS
+#   - docker build -t $FRONT_IMAGE .
+#   - docker push $FRONT_IMAGE
 
-back-push-image:
-  stage: images
-  before_script: ['cd $BACK_DIR']
-  script:
-  - echo mdp
-  - echo $TREESCALE_PASS
-  - echo $env:TREESCALE_PASS
-  - echo %TREESCALE_PASS%
-  - docker login repo.treescale.com --username=deblocka -p $TREESCALE_PASS
-  - docker build -t $BACK_IMAGE .
-  - docker push $BACK_IMAGE
+# back-push-image:
+#   stage: images
+#   before_script: ['cd $BACK_DIR']
+#   script:
+#   - echo mdp
+#   - echo $TREESCALE_PASS
+#   - echo $env:TREESCALE_PASS
+#   - echo %TREESCALE_PASS%
+#   - docker login repo.treescale.com --username=deblocka -p $TREESCALE_PASS
+#   - docker build -t $BACK_IMAGE .
+#   - docker push $BACK_IMAGE
 
-deploy-prod:
-  image: rastasheep/ubuntu-sshd
-  stage: deploy
-  script:
-  - chmod 600 ../comparetout.tmp/PROD_PEM
-  - ssh -i $PROD_PEM -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $PROD_SERVER_ADDRESS './start_project'
-  only:
-  - master
+# deploy-prod:
+#   image: rastasheep/ubuntu-sshd
+#   stage: deploy
+#   script:
+#   - chmod 600 ../comparetout.tmp/PROD_PEM
+#   - ssh -i $PROD_PEM -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $PROD_SERVER_ADDRESS './start_project'
+#   only:
+#   - master
 
-deploy-dev:
-  image: rastasheep/ubuntu-sshd
-  stage: deploy
-  script:
-  - pwd
-  - ls
-  - echo $PROD_PEM
-  - chmod 600 ../comparetout.tmp/PROD_PEM
-  - ssh -i $PROD_PEM -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $DEV_SERVER_ADDRESS './start_project'
-  only:
-  - develop
+# deploy-dev:
+#   image: rastasheep/ubuntu-sshd
+#   stage: deploy
+#   script:
+#   - pwd
+#   - ls
+#   - echo $PROD_PEM
+#   - chmod 600 ../comparetout.tmp/PROD_PEM
+#   - ssh -i $PROD_PEM -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $DEV_SERVER_ADDRESS './start_project'
+#   only:
+#   - develop
