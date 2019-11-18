@@ -79,7 +79,6 @@ public class ProductController extends ExceptionCatcher {
         else {
             Gson gson=new Gson();
             String response=gson.toJson(this.productService.insertProductsFromFile(file));
-            System.out.println("appel reussit");
             return ResponseEntity.status(200).body(response);
         }
     }

@@ -4,6 +4,7 @@ import com.eltae.compareTout.constants.Tables;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @DiscriminatorValue("SUPPLIER")
@@ -22,6 +23,7 @@ public class Supplier extends User implements Cloneable{
     private String webSite;
 
     private String siret;
+    private Date validationDate;
 
     public Supplier clone() throws CloneNotSupportedException {
         return (Supplier) super.clone();

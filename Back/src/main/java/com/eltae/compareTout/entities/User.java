@@ -4,6 +4,7 @@ import com.eltae.compareTout.constants.Tables;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.Random;
 
 
@@ -26,6 +27,7 @@ public class User implements Cloneable {
     private String email;
     private String password;
     private String resetToken;
+    private Date creationDate;
 
     public String getRandomPassword() {
         char[] chars = new char[26 + 26 + 10]; //
