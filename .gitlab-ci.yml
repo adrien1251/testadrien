@@ -20,6 +20,7 @@ stages:
 back-build:
   image: maven:3-jdk-8
   stage: build
+  before_script: ['cd $BACK_DIR']
   script: "echo $UneVariable"
 
 # back-build:
