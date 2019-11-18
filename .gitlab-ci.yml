@@ -26,14 +26,14 @@ back-build:
     paths:
       - $BACK_DIR/target/*.jar
 
-# front-build:
-#   image: trion/ng-cli
-#   stage: build
-#   before_script: ['cd Front/compare-tout']
-#   script: "npm install && ng build --prod"
-#   artifacts:
-#     paths:
-#       - $FRONT_DIR/dist/*
+front-build:
+  image: trion/ng-cli
+  stage: build
+  before_script: ['cd Front/compare-tout']
+  script: "npm install && ng build --prod"
+  artifacts:
+    paths:
+      - $FRONT_DIR/dist/*
 
 front-push-image:
   stage: images
