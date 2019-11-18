@@ -39,7 +39,7 @@ front-push-image:
   stage: images
   before_script: ['cd $FRONT_DIR']
   script:
-  - cat $TREESCALE_PASS | docker login repo.treescale.com --username=deblocka --password-stdin	
+  - echo $TREESCALE_PASS | docker login repo.treescale.com --username=deblocka --password-stdin	
   - docker build -t $FRONT_IMAGE .
   - docker push $FRONT_IMAGE
 
@@ -47,7 +47,7 @@ back-push-image:
   stage: images
   before_script: ['cd $BACK_DIR']
   script:
-  - cat $TREESCALE_PASS | docker login repo.treescale.com --username=deblocka --password-stdin	
+  - echo $TREESCALE_PASS | docker login repo.treescale.com --username=deblocka --password-stdin	
   - docker build -t $BACK_IMAGE .
   - docker push $BACK_IMAGE
 
@@ -64,9 +64,6 @@ deploy-dev:
   image: rastasheep/ubuntu-sshd
   stage: deploy
   script:
-  - pwd
-  - ls
-  - echo $PROD_PEM
   - chmod 600 ../comparetout.tmp/PROD_PEM
   - ssh -i $PROD_PEM -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null $DEV_SERVER_ADDRESS './start_project'
   only:
