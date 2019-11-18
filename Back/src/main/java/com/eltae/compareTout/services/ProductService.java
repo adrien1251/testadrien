@@ -97,7 +97,7 @@ public class ProductService {
 
             criteriaBuilders.add(OurCriteria.builder()
                     .criteria(criteria)
-                    .value(cb.getValue().toLowerCase())
+                    .value(cb.getValue() == null ? null : cb.getValue().toLowerCase())
                     .minValue(cb.getMinValue())
                     .maxValue(cb.getMaxValue())
                     .build());
