@@ -1,5 +1,7 @@
 
-<div *ngIf="uniqueCriteria != null">
+<div *ngIf="!displayFilters" (click)="showFilters()" class="show-hide-filters">Afficher les filtres</div>
+<div *ngIf="uniqueCriteria != null && displayFilters" >
+    <div class="show-hide-filters" (click)="showFilters()">Cacher les filtres</div> 
     <div *ngFor="let criteria of uniqueCriteria">
         <div class="criteria">
             <p class="title">{{ criteria.name }}</p>

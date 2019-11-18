@@ -11,6 +11,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
   @Input() criteriaList: Criteria[];
   public uniqueCriteria: UniqueCriteria[] = [];
   @Output() valueHasChanged: EventEmitter<any> = new EventEmitter<any>();
+  displayFilters = false;
 
   constructor(
   ) { }
@@ -48,6 +49,10 @@ export class FiltersComponent implements OnInit, OnDestroy {
 
   updateCriteria(event) {
     this.valueHasChanged.emit(event);
+  }
+
+  showFilters() {
+    this.displayFilters = !this.displayFilters;
   }
 
 }

@@ -34,10 +34,11 @@ export class MenuCategoriesComponent implements OnInit, OnDestroy {
 
   goToSubcategory(category: Category): void {
     if (category.childList) {
-      this.categoriesDisplay = [category];
       this.isTopCategory = false;
-      this.currentCategory.emit(category);
     }
+    this.categoriesDisplay = [category];
+    this.currentCategory.emit(category);
+
   }
 
 }
