@@ -14,9 +14,9 @@ import { productMock } from 'src/app/shared/mocks/product-mock';
 })
 export class MainPageComponent implements OnInit, OnDestroy {
   public categories: Category[];
-  private currentCategory: Category;
-  private subCategories: Category[];
-  private isChildCategory: boolean;
+  public currentCategory: Category;
+   public subCategories: Category[];
+  public isChildCategory: boolean;
   public productList: Product[];
 
 
@@ -34,7 +34,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   fetchCategories(): void {
-    // this.categoryService.getMainCategories().subscribe(res => {
+    // this.categoryService.getCategories().subscribe(res => {
     //   if (res != null && res.length !== 0) {
     //     this.categories = res;
     //   } else {
@@ -51,7 +51,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
   fetchCurrentCategory(event): void {
     this.isChildCategory = event.childList == null;
     if (event != null) {
-      this.categoryService.getChildCategories(event.id).subscribe((res) => {
+      this.categoryService.getCategories(event.id).subscribe((res) => {
         this.subCategories = res;
       });
       this.subCategories = event.childList;
