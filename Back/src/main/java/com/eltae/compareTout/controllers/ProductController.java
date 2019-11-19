@@ -46,7 +46,7 @@ public class ProductController extends ExceptionCatcher {
                     "fill the example to test, if you want more than one filter, just add another object" +
                     "in the list. ",defaultValue ="empty")@RequestBody(required = false) List<CriteriaFilterDto> criteriaFilterDtos) {
         Gson gson=new Gson();
-        if(criteriaFilterDtos.get(0).getIdCriteria().toString().equals("0"))
+        if(criteriaFilterDtos == null)
             return ResponseEntity.status(201).body(gson.toJson(this.productService.getAllProductsByCategory(categoryId)));
         return ResponseEntity.status(200).body(gson.toJson(this.productService.getAllProductByCategoryAndCriteria(categoryId, criteriaFilterDtos)));
     }
