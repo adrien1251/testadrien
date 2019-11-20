@@ -121,7 +121,6 @@ public class CriteriaService {
             int nbLineAdd = 0;
             int line=0;
             JSONObject json = new JSONObject();
-            csvReader.readNext();
             while ((nextRecord = csvReader.readNext()) != null) {
                 line++;
                 String myline=Arrays.asList(nextRecord).toString();
@@ -140,23 +139,22 @@ public class CriteriaService {
         int added=0;
         String actualColumn;
         Category category = null;
-        category = categoryService.getCategoryWithId(Long.parseLong(records[0]));
+        category = categoryService.getCategoryWithId(Long.parseLong(records[0].trim()));
         if(category==null){
             errorMap.put(line,"Missing Category "+records[0]);
             return false;
         }
         // si la catégorie n'existe pas on insère pas les criteres
-        for (int i = 0; i < records.length; i++) {
+        for (int i = 1; i < records.length; i=i+4) {
             actualColumn = records[i];
-            if (actualColumn.trim().length() == 0 && !(i < 4)) return added > 0;
-            if (i % 4 == 0 & i != 0) {
-                Optional<Criteria> critInBase = criteriaRepository.findByName(records[i + 1].toLowerCase());
+            if (actualColumn.trim().length() == 0) return added > 0;
+              Optional<Criteria> critInBase = criteriaRepository.findByName(records[i + 1].trim().toLowerCase());
                 if (!critInBase.isPresent()) { //Si le critère n'existe pas, on l'ajoute
                     if (!actualColumn.isEmpty()) {
                         Criteria newCritere = Criteria.builder()
-                                .name(records[i + 1].toLowerCase())
-                                .unit(records[i + 2])
-                                .type(TypeCriteria.valueOf(records[i + 3].toUpperCase()))
+                                .name(records[i + 1].trim().toLowerCase())
+                                .unit(records[i + 2].trim())
+                                .type(TypeCriteria.valueOf(records[i + 3].trim().toUpperCase()))
                                 .categoryList(new ArrayList<>())
                                 .build();
                         criteriaRepository.save(newCritere);
@@ -166,7 +164,7 @@ public class CriteriaService {
                         categoryCriteriaPK.setCategory(category);
                         categoryCriteriaPK.setCriteria_cat(newCritere);
                         CategoryCriteria categoryCriteria = CategoryCriteria.builder()
-                                .isMandatory(Boolean.parseBoolean(actualColumn))
+                                .isMandatory(Boolean.parseBoolean(actualColumn.trim()))
                                 .pk(categoryCriteriaPK)
                                 .build();
                         categoryCriteriaRepository.save(categoryCriteria);
@@ -176,7 +174,7 @@ public class CriteriaService {
                     }
 
                 } else { // si le critere existe, il faut ajouter la category qui l'appelle
-                    CategoryCriteria categoryCriteriaToFind = category.getCriteriaProductWithCriteriaName(records[i + 1].toLowerCase());
+                    CategoryCriteria categoryCriteriaToFind = category.getCriteriaProductWithCriteriaName(records[i + 1].trim().toLowerCase());
                     if (categoryCriteriaToFind != null) {
                         return added > 0;
                     } else {
@@ -193,7 +191,7 @@ public class CriteriaService {
                 }
             }
 
-        }
+
         return true;
     }
     public ArrayList<Long> getAllMandatoryCriteriasIdWithIdCategory(Category category) {

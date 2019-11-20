@@ -45,23 +45,6 @@ public class CriteriaController   extends ExceptionCatcher {
         }
     }
 
-    /*
-    @ApiOperation(value = "Liste des produits d'une catégorie pour les critères définis ")
-    @GetMapping(value="/")
-    public ResponseEntity<List<ShortProductDto>> getProductsCriteria(@RequestParam Long id, @RequestParam List<Long> crit) {
-        return ResponseEntity.status(201).body(this.criteriaService.getProductsCriteria(id,crit));
-    }
-
-
-    @ApiOperation(value = "Liste des produits d'une catégorie pour les critères et valeur définis  ")
-    @GetMapping(value="/strict")
-    public ResponseEntity<List<ShortProductDto>> getProductsStrictCriteria(@RequestParam Long id, @RequestParam Long[] idCrit,
-                                                                           @RequestParam String[] valuesCrit) {
-
-        return ResponseEntity.status(201).body(this.criteriaService.getProductsStrictCriteria(id,idCrit,valuesCrit));
-    }
-
-    */
     @ApiOperation(value = "Add criteria with a CSV file (delimiter: `;`)  Only last-child category " +
             "can receive criteria."+
             "Line example : "+

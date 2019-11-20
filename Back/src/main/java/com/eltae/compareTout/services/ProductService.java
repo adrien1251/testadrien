@@ -160,6 +160,7 @@ public class ProductService {
     private boolean insertProduct(String[] records,int line) {
         String actualColumn;
         CriteriaProduct cp;
+        int added=0;
         Category category = categoryService.getCategoryWithId(Long.parseLong(records[3]));
         if (category == null) {
             this.errorMap.put(line,"Category identification not exits in database (for the product :  " + records[0] + ")");
@@ -184,9 +185,8 @@ public class ProductService {
         productRepository.save(product);
         for (int i = 4; i < records.length; i++) {
             actualColumn = records[i];
-            if (actualColumn.trim().length() == 0) return false;
+            if (actualColumn.trim().length() == 0) return added>0;
             if (i % 2 == 0) {
-                cp = null;
                 Criteria criteria = criteriaService.getCriteriaProductWithIdCriteria(Long.parseLong(actualColumn));
                 if (criteria == null) {
                     this.errorMap.put(line,"Criteria identification not exits in database, cannot add product(for product :  " + product.getName() + ")");
@@ -210,12 +210,15 @@ public class ProductService {
                                 .build();
                         product.addCriteriaProduct(cp);
                         criteriaProductRepository.save(cp);
+                        added=1;
                     }
                 }
             }
         }
         productRepository.save(product);
+        added=1;
         productRepository.flush();
+
         return true;
     }
 
