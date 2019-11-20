@@ -13,7 +13,7 @@ export class CriteriaService {
         private httpClient: HttpClient,
     ) { }
 
-    env = 'http://18.190.104.245:8080/criteria';
+    env = 'http://localhost:8080/';
 
     public getCriterias(idCat: string): Observable<any> {
         return this.httpClient.get<any>(`${this.env}${apiEndpoints.getCriteriaOfCategory(idCat)}`);

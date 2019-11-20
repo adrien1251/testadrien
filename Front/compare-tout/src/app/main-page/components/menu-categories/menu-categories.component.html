@@ -1,12 +1,18 @@
 <div  class="category-list">
         <div *ngIf="!isTopCategory" class="back" (click)="goBack()"> Retour </div> 
-    <div *ngFor="let category of categoriesDisplay">
-        <div class="category-title" 
-        (click)="goToSubcategory(category)"><img src="{{category.image}}"> {{ category.name }}</div>
+    <div class="main-list">
+            <div *ngFor="let category of categoriesDisplay">
+                    <div class="category-title" 
+                    (click)="goToSubcategory(category)"><img src="{{category.image}}"> {{ category.name }}</div>
+                </div>
     </div>
-    <div class="subcategory-list">
-        <div *ngFor="let sub of subCategories">
-            <div (click)="goToSubcategory(sub)"> {{ sub.name }}</div>
+    <div class="subcategory-list" *ngIf="subCategories">
+            <div *ngFor="let sub of subCategories; let i = index">
+                <div *ngIf="i<5" (click)="goToSubcategory(sub)"> {{ sub.name }}</div>
+            </div>
+            <div *ngIf = "!seeMore" class="back" (click)="displayMore()">Voir plus</div>
+            <div *ngFor="let sub of subCategories; let i = index">
+                    <div *ngIf="seeMore && i >= 5"> {{ sub.name }}</div>
+                </div>
         </div>
-    </div>
 </div>

@@ -3,9 +3,10 @@ export const apiEndpoints = {
     getUsers: 'users',
 
     // Categories
-    getMainCategories: '/main-categories',
-    getCategories: (id?: string) => `/categories/${id}`,
+    getMainCategories: 'main-categories',
+    getCategories: 'categories',
+    getCategoriesChild: (id?: string) => `categories?id=${id}`,
 
     // Criterias
-    getCriteriaOfCategory: (idCat: string) =>  `/${idCat}`
+    getCriteriaOfCategory: (idCat: string) =>  `criteria?id_category=${idCat}`
   };

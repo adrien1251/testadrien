@@ -34,30 +34,21 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   fetchCategories(): void {
-    // this.categoryService.getCategories().subscribe(res => {
-    //   if (res != null && res.length !== 0) {
-    //     this.categories = res;
-    //   } else {
-    //     this.categories = [categoryMock1];
-    //     this.categories.push(categoryMock2);
-    //   }
-    // }
-    // );
-    this.categories = [categoryMock1];
-    this.categories.push(categoryMock2);
-    this.productList = productMock;
+    this.categoryService.getCategories().subscribe(res => {
+      if (res != null && res.length !== 0) {
+        this.categories = res;
+      }
+    }
+    );
   }
 
   fetchCurrentCategory(event): void {
-    this.isChildCategory = event.childList == null;
     if (event != null) {
-      this.categoryService.getCategories(event.id).subscribe((res) => {
+      this.categoryService.getCategoriesChild(event.id).subscribe((res) => {
+        this.isChildCategory = res.length === 0;
         this.subCategories = res;
       });
-      this.subCategories = event.childList;
       this.currentCategory = event;
-      this.currentCategory.criteriaList = criteriaMock1.concat(criteriaMock2);
-      // this.currentCategory.criteriaList.push(criteriaMock2);
     } else {
       this.currentCategory = null;
     }
