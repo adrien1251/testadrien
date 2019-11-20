@@ -4,6 +4,7 @@ import com.eltae.compareTout.constants.Tables;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -23,7 +24,7 @@ public class Supplier extends User implements Cloneable{
     private String webSite;
 
     private String siret;
-    private Date validationDate;
+    private LocalDate validationDate;
 
     public Supplier clone() throws CloneNotSupportedException {
         return (Supplier) super.clone();

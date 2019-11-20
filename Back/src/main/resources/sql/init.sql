@@ -1,3 +1,4 @@
+/*
 INSERT INTO public.users(
   id, discriminator, email, first_name, last_name, password,
   reset_token, siret, web_site, birthday, phone_num, sexe)
@@ -16,6 +17,8 @@ INSERT INTO public.users
 (id, discriminator, email, first_name, last_name, password, reset_token, phone_num)
 VALUES(3, 'ADMIN', 'admin@comparetout.fr', 'Pierre', 'Paul', '$2a$12$gPhTV2TjgEreC0L8sjZWqe.dg48cPXdiHTt95GgKei9fcBBO7ZTx2', NULL, '1234567844' )
 ON CONFLICT DO NOTHING;
+
+ */
 
 /*
 insert into public.criteria

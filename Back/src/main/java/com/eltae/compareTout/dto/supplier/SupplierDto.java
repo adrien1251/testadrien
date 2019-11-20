@@ -2,7 +2,7 @@ package com.eltae.compareTout.dto.supplier;
 
 import lombok.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @Builder
@@ -17,8 +17,8 @@ public class SupplierDto implements Cloneable {
     private String email;
     private String webSite;
     private String siret;
-    private Date creationDate;
-    private Date validationDate;
+    private LocalDate creationDate;
+    private LocalDate validationDate;
 
     public SupplierDto clone() throws CloneNotSupportedException {
         return (SupplierDto) super.clone();
