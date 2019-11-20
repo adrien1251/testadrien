@@ -2,7 +2,6 @@ package com.eltae.compareTout.services;
 
 import com.eltae.compareTout.converter.CriteriaConverter;
 import com.eltae.compareTout.converter.product.ProductConverter;
-import com.eltae.compareTout.dto.CriteriaDto;
 import com.eltae.compareTout.dto.CriteriaProductDto;
 import com.eltae.compareTout.dto.product.ShortProductDto;
 import com.eltae.compareTout.entities.*;

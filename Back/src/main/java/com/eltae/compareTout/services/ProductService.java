@@ -32,9 +32,9 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -49,8 +49,8 @@ public class ProductService {
     private final CategoryRepository categoryRepository;
     private final CriteriaRepository criteriaRepository;
     private final EntityManagerFactory entityManagerFactory;
-    private Map<Integer,String> errorMap;
-    private Map<Integer,String> criteriaMap;
+    private Map<Integer, String> errorMap;
+    private Map<Integer, String> criteriaMap;
 
     @Autowired
     public ProductService(ProductRepository productRepository, ProductConverter productConverter, ProductForFrontConverter productForFrontConverter, CategoryService categoryService, CriteriaService criteriaService, CriteriaProductRepository criteriaProductRepository, CategoryRepository categoryRepository, CriteriaRepository criteriaRepository, EntityManagerFactory entityManagerFactory) {
@@ -71,33 +71,33 @@ public class ProductService {
     }
 
     public List<ProductDtoForFront> getAllProductsByCategory(long idCategory) {
-        Category category = categoryRepository
+        categoryRepository
                 .findById(idCategory)
                 .orElseThrow(() -> new ApplicationException(HttpStatus.NOT_FOUND, "Category " + idCategory + " not found"));
         return productForFrontConverter.entityListToDtoList(this.productRepository.findAllByCategoryId(idCategory));
     }
 
     public List<CriteriaProductDto> getAllCriteriaByProduct(long idProduct) {
-        Product p =productRepository
+        productRepository
                 .findById(idProduct)
                 .orElseThrow(() -> new ApplicationException(HttpStatus.NOT_FOUND, "Product " + idProduct + " not found"));
-             return productConverter.entityListToDtoList(this.productRepository.findProductById(idProduct)).get(0).getCriteriaProducts();
+        return productConverter.entityListToDtoList(this.productRepository.findProductById(idProduct)).get(0).getCriteriaProducts();
     }
 
-    public List<ProductDtoForFront> getAllProductByCategoryAndCriteria(long categoryId, List<CriteriaFilterDto> idCriteria) {
+    public List<ProductDtoForFront> getAllProductByCategoryAndCriteria(long categoryId, List<CriteriaFilterDto> criteriaFilterDtos) {
         Category category = categoryRepository
                 .findById(categoryId)
                 .orElseThrow(() -> new ApplicationException(HttpStatus.NOT_FOUND, "Category " + categoryId + " not found"));
 
         List<OurCriteria> criteriaBuilders = new ArrayList<>();
-        idCriteria.forEach(cb -> {
+        criteriaFilterDtos.forEach(cb -> {
             Criteria criteria = criteriaRepository
                     .findById(cb.getIdCriteria())
                     .orElseThrow(() -> new ApplicationException(HttpStatus.NOT_FOUND, "Criteria " + cb.getIdCriteria() + " not found"));
 
             criteriaBuilders.add(OurCriteria.builder()
                     .criteria(criteria)
-                    .value(cb.getValue() == null ? null : cb.getValue().toLowerCase())
+                    .value(cb.getValue() == null ? null : cb.getValue().stream().map(String::toLowerCase).collect(Collectors.toList()))
                     .minValue(cb.getMinValue())
                     .maxValue(cb.getMaxValue())
                     .build());
@@ -116,7 +116,7 @@ public class ProductService {
 
         query.groupBy(productRoot.get("id"));
         query.multiselect(productRoot);
-        query.having(criteriaBuilder.equal(criteriaBuilder.count(productRoot.get("id")), idCriteria.size()));
+        query.having(criteriaBuilder.equal(criteriaBuilder.count(productRoot.get("id")), criteriaFilterDtos.size()));
         TypedQuery<Product> typedQuery = entityManager.createQuery(query);
         return productForFrontConverter.entityListToDtoList(typedQuery.getResultList());
     }
@@ -125,54 +125,54 @@ public class ProductService {
         try {
             return this.readProductsCSV(multipartFile.getInputStream());
         } catch (IOException e) {
-            throw new ApplicationException(HttpStatus.resolve(400),"Wrong format file");
+            throw new ApplicationException(HttpStatus.resolve(400), "Wrong format file");
         }
     }
 
     private JSONObject readProductsCSV(InputStream inputStream) throws IOException {
-        errorMap=new HashMap<>();
+        errorMap = new HashMap<>();
         CSVParser parser = new CSVParserBuilder()
                 .withSeparator(';')
                 .withIgnoreQuotations(true)
                 .build();
         CSVReader csvReader = new CSVReaderBuilder(new InputStreamReader(inputStream, StandardCharsets.UTF_8)).withCSVParser(parser).build();
         String[] nextRecord;
-        Map<Integer,String> notAdded=new HashMap<Integer,String>();
+        Map<Integer, String> notAdded = new HashMap<Integer, String>();
         int nbLineAdd = 0;
-        int line=0;
+        int line = 0;
         JSONObject json = new JSONObject();
         csvReader.readNext();
         while ((nextRecord = csvReader.readNext()) != null) {
             line++;
-            String myline= Arrays.asList(nextRecord).toString();
-            if (this.insertProduct(nextRecord,line))
+            String myline = Arrays.asList(nextRecord).toString();
+            if (this.insertProduct(nextRecord, line))
                 nbLineAdd++;
             else
-                notAdded.put(line,myline);
+                notAdded.put(line, myline);
         }
         json.put("Lines_Added", nbLineAdd);
-        json.put("Lines_not_Added",notAdded);
-        json.put("Error_lines",this.errorMap);
-        json.put("Missing_criteria_line",this.criteriaMap);
+        json.put("Lines_not_Added", notAdded);
+        json.put("Error_lines", this.errorMap);
+        json.put("Missing_criteria_line", this.criteriaMap);
         return json;
     }
 
-    private boolean insertProduct(String[] records,int line) {
+    private boolean insertProduct(String[] records, int line) {
         String actualColumn;
         CriteriaProduct cp;
-        int added=0;
+        int added = 0;
         Category category = categoryService.getCategoryWithId(Long.parseLong(records[3]));
         if (category == null) {
-            this.errorMap.put(line,"Category identification not exits in database (for the product :  " + records[0] + ")");
+            this.errorMap.put(line, "Category identification not exits in database (for the product :  " + records[0] + ")");
             return false;
         }
-        if(!category.getChildList().isEmpty()){
-            this.errorMap.put(line,"Category : "+category.getId()+ " cannot have products (for the product :  " + records[0] + ")");
+        if (!category.getChildList().isEmpty()) {
+            this.errorMap.put(line, "Category : " + category.getId() + " cannot have products (for the product :  " + records[0] + ")");
             return false;
         }
 
         if (!checkAllMandatoryCriteriaPresentInFile(records, criteriaService.getAllMandatoryCriteriasIdWithIdCategory(category))) {
-            this.errorMap.put(line,"Mandatories criteria missing, cannot add product  (for the product " + records[0] + ")");
+            this.errorMap.put(line, "Mandatories criteria missing, cannot add product  (for the product " + records[0] + ")");
             return false;
         }
         Product product = Product.builder()
@@ -185,20 +185,20 @@ public class ProductService {
         productRepository.save(product);
         for (int i = 4; i < records.length; i++) {
             actualColumn = records[i];
-            if (actualColumn.trim().length() == 0) return added>0;
+            if (actualColumn.trim().length() == 0) return added > 0;
             if (i % 2 == 0) {
                 Criteria criteria = criteriaService.getCriteriaProductWithIdCriteria(Long.parseLong(actualColumn));
                 if (criteria == null) {
-                    this.errorMap.put(line,"Criteria identification not exits in database, cannot add product(for product :  " + product.getName() + ")");
+                    this.errorMap.put(line, "Criteria identification not exits in database, cannot add product(for product :  " + product.getName() + ")");
                     return false; // criteria non trouvé en base
                 } else {
-                    if(category.getCriteriaList().size()==0){
-                        this.errorMap.put(line,"Category : " +category.getId()+" has no criteria, cannot had product");
+                    if (category.getCriteriaList().size() == 0) {
+                        this.errorMap.put(line, "Category : " + category.getId() + " has no criteria, cannot had product");
                         return false;
                     }
-                    if(!category.getCriteriaList().contains(criteria))
-                            this.criteriaMap.put(line,"Missing criteria "+criteria.getId() +
-                                    "in category : "+category.getId());
+                    if (!category.getCriteriaList().contains(criteria))
+                        this.criteriaMap.put(line, "Missing criteria " + criteria.getId() +
+                                "in category : " + category.getId());
                     else {
 
                         CriteriaProductPK primaryKey = new CriteriaProductPK();
@@ -210,13 +210,13 @@ public class ProductService {
                                 .build();
                         product.addCriteriaProduct(cp);
                         criteriaProductRepository.save(cp);
-                        added=1;
+                        added = 1;
                     }
                 }
             }
         }
         productRepository.save(product);
-        added=1;
+        added = 1;
         productRepository.flush();
 
         return true;

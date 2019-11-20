@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Data
 @Builder
@@ -13,7 +14,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class CriteriaFilterDto implements Serializable {
     private Long idCriteria;
-    private String value;
+    private List<String> value;
     private Double minValue;
     private Double maxValue;
 }

@@ -39,16 +39,15 @@ public class ProductController extends ExceptionCatcher {
             @ApiResponse(code = 201, message = "Query is successfully treated categoryId parameter"),
             @ApiResponse(code = 404, message = "CategoryId or criteria are not present in database") })
     @PostMapping(produces="application/json",value = "/{categoryId}")
-    public ResponseEntity<?> getAllProductByCategoryAndCriteria(
+    public ResponseEntity<List<ProductDtoForFront>> getAllProductByCategoryAndCriteria(
             @ApiParam(value = "The identification number of the category. Must not be null",required = true)
             @PathVariable( value="categoryId") Long categoryId,
             @ApiParam(name = "criteriaFilters", value = "The list of criteria to filter products. " +
                     "fill the example to test, if you want more than one filter, just add another object" +
                     "in the list. ",defaultValue ="empty")@RequestBody(required = false) List<CriteriaFilterDto> criteriaFilterDtos) {
-        Gson gson=new Gson();
         if(criteriaFilterDtos == null)
-            return ResponseEntity.status(201).body(gson.toJson(this.productService.getAllProductsByCategory(categoryId)));
-        return ResponseEntity.status(200).body(gson.toJson(this.productService.getAllProductByCategoryAndCriteria(categoryId, criteriaFilterDtos)));
+            return ResponseEntity.status(201).body(this.productService.getAllProductsByCategory(categoryId));
+        return ResponseEntity.status(200).body(this.productService.getAllProductByCategoryAndCriteria(categoryId, criteriaFilterDtos));
     }
 
     @ApiOperation(value = "Provide a json of all the criteria for a product")
