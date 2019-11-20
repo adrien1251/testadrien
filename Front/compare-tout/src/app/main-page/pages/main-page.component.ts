@@ -6,6 +6,8 @@ import { criteriaMock1, criteriaMock2 } from 'src/app/shared/mocks/critere-mock'
 import { CriteriaService } from 'src/app/shared/services/criteria.service';
 import { Product } from 'src/app/shared/models/product.interface';
 import { productMock } from 'src/app/shared/mocks/product-mock';
+import { ProductService } from 'src/app/shared/services/product.service';
+import { Criteria, UniqueCriteria } from 'src/app/shared/models/criteria.interface';
 
 @Component({
   selector: 'app-main-page',
@@ -15,14 +17,17 @@ import { productMock } from 'src/app/shared/mocks/product-mock';
 export class MainPageComponent implements OnInit, OnDestroy {
   public categories: Category[];
   public currentCategory: Category;
-   public subCategories: Category[];
+  public subCategories: Category[];
   public isChildCategory: boolean;
   public productList: Product[];
+  public criteriaList: Criteria[] = [];
+  public criteriaValues: UniqueCriteria[];
 
 
   constructor(
     private categoryService: CategoryService,
     private criteriaService: CriteriaService,
+    private productService: ProductService,
   ) { }
 
   ngOnInit(): void {
@@ -52,26 +57,46 @@ export class MainPageComponent implements OnInit, OnDestroy {
     } else {
       this.currentCategory = null;
     }
-    this.criteriaService.getCriterias(this.currentCategory.id).subscribe((res) => {
-      this.currentCategory.criteriaList = res;
-    });
+    if (this.currentCategory) {
+      this.criteriaService.getCriterias(this.currentCategory.id).subscribe((res) => {
+        this.currentCategory.criteriaList = res;
+        // this.criteriaList = res;
+        this.fetchProducts();
+      });
+    }
+  }
 
+  fetchProducts(): void {
+    this.criteriaValues = [];
+    this.productService.getProductsByCategoryAndCriteria(this.currentCategory.id, null).subscribe((res) => {
+      this.productList = res;
+      this.productList.forEach(product => {
+        this.productService.getCriteriasOfProduct(product.id).subscribe(criterias => {
+          criterias.forEach(criteria => {
+            const alreadyIn = this.criteriaValues.find(c => c.id === criteria.id) != null;
+            if (!alreadyIn) {
+              const newCrit: UniqueCriteria = {
+                id: criteria.id,
+                name: criteria.criteriaName,
+                type: criteria.type,
+                unit: criteria.criteriaUnit,
+                values: [criteria.value]
+              };
+              this.criteriaValues.push(newCrit);
+            } else {
+              const idx = this.criteriaValues.findIndex(c => c.id === criteria.id);
+              if (idx !== -1) {
+                this.criteriaValues[idx].values.push(criteria.value);
+              }
+            }
+          });
+        });
+      });
+    });
   }
 
   reloadProducts(event): void {
-    if (event.checked) {
-      const filteredProducts = [];
-      this.productList.forEach(p => {
-        p.criteriaList.forEach( crit => {
-          if (crit.value === event.value) {
-            filteredProducts.push(p);
-          }
-        });
-      });
-      this.productList = filteredProducts;
-    } else {
-      this.productList = productMock;
-    }
+    console.log(event);
 
   }
 

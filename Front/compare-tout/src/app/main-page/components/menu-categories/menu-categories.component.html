@@ -12,7 +12,7 @@
             </div>
             <div *ngIf = "!seeMore" class="back" (click)="displayMore()">Voir plus</div>
             <div *ngFor="let sub of subCategories; let i = index">
-                    <div *ngIf="seeMore && i >= 5"> {{ sub.name }}</div>
+                    <div *ngIf="seeMore && i >= 5" (click)="goToSubcategory(sub)"> {{ sub.name }}</div>
                 </div>
         </div>
 </div>

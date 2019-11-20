@@ -15,6 +15,7 @@ import { FiltersComponent } from './main-page/components/filters/filters.compone
 import { FiltersValueComponent } from './main-page/components/filters-value/filters-value.component';
 import { CriteriaService } from './shared/services/criteria.service';
 import { ProductDisplayComponent } from './main-page/components/product-display/product-display.component';
+import { ProductService } from './shared/services/product.service';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { ProductDisplayComponent } from './main-page/components/product-display/
   providers: [
     TestService,
     CategoryService,
-    CriteriaService
+    CriteriaService,
+    ProductService,
   ],
   bootstrap: [AppComponent]
 })

@@ -8,5 +8,9 @@ export const apiEndpoints = {
     getCategoriesChild: (id?: string) => `categories?id=${id}`,
 
     // Criterias
-    getCriteriaOfCategory: (idCat: string) =>  `criteria?id_category=${idCat}`
+    getCriteriaOfCategory: (idCat: string) =>  `criteria?id_category=${idCat}`,
+
+    // Products
+    getProductsByCategoryAndCriteria: (idCat: string) => `products/${idCat}`,
+    getCriteriasOfProduct: (idProd: string) => `products/${idProd}`,
   };
