@@ -1,6 +1,6 @@
 package com.eltae.compareTout.controllers;
 
-import com.eltae.compareTout.dto.CriteriaFilterDto;
+import com.eltae.compareTout.dto.criteria.CriteriaFilterDto;
 import com.eltae.compareTout.dto.product.ProductDtoForFront;
 import com.eltae.compareTout.services.ProductService;
 import org.junit.Test;

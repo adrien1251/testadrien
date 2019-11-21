@@ -1,7 +1,7 @@
 package com.eltae.compareTout.services;
 
-import com.eltae.compareTout.controllers.ProductController;
-import com.eltae.compareTout.dto.CriteriaFilterDto;
+
+import com.eltae.compareTout.dto.criteria.CriteriaFilterDto;
 import com.eltae.compareTout.dto.product.ProductDtoForFront;
 import com.eltae.compareTout.entities.Category;
 import com.eltae.compareTout.entities.Product;
@@ -11,7 +11,6 @@ import com.eltae.compareTout.repositories.CriteriaRepository;
 import com.eltae.compareTout.repositories.ProductRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
