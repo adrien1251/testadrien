@@ -1,4 +1,5 @@
-package com.eltae.compareTout.dto;
+package com.eltae.compareTout.dto.category;
+
 import com.eltae.compareTout.entities.Category;
 import com.eltae.compareTout.entities.Criteria;
 import com.eltae.compareTout.entities.Product;
@@ -12,14 +13,17 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class ShortCategoryDto implements Cloneable{
+public class CategoryDto implements Cloneable{
     private Long id;
     private String name;
+    private List<Category> childList;
+    private Category parent;
     private List<Criteria> criteriaList;
     private List<Product> productList;
 
 
-    public ShortCategoryDto clone() throws CloneNotSupportedException {
-        return (ShortCategoryDto) super.clone();
+
+    public CategoryDto clone() throws CloneNotSupportedException {
+        return (CategoryDto) super.clone();
     }
 }

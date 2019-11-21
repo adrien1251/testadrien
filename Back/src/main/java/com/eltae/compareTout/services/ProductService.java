@@ -2,8 +2,8 @@ package com.eltae.compareTout.services;
 
 import com.eltae.compareTout.converter.product.ProductConverter;
 import com.eltae.compareTout.converter.product.ProductForFrontConverter;
-import com.eltae.compareTout.dto.CriteriaFilterDto;
-import com.eltae.compareTout.dto.CriteriaProductDto;
+import com.eltae.compareTout.dto.criteria.CriteriaFilterDto;
+import com.eltae.compareTout.dto.criteria.CriteriaProductDto;
 import com.eltae.compareTout.dto.product.ProductDtoForFront;
 import com.eltae.compareTout.dto.product.ShortProductDto;
 import com.eltae.compareTout.entities.*;

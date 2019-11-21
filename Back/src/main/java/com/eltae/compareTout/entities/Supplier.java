@@ -2,12 +2,14 @@ package com.eltae.compareTout.entities;
 
 import com.eltae.compareTout.constants.Tables;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
+@SuperBuilder
 @DiscriminatorValue("SUPPLIER")
 @Table(name = Tables.SUPPLIER)
 @Data
@@ -15,11 +17,6 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Supplier extends User implements Cloneable{
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
 
     private String webSite;
 

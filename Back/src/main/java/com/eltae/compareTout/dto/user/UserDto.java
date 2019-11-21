@@ -1,4 +1,4 @@
-package com.eltae.compareTout.dto;
+package com.eltae.compareTout.dto.user;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

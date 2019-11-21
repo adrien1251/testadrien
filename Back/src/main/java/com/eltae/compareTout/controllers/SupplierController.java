@@ -1,16 +1,14 @@
 package com.eltae.compareTout.controllers;
 
 import com.eltae.compareTout.constants.Routes;
+import com.eltae.compareTout.dto.supplier.SupplierInscriptionDto;
 import com.eltae.compareTout.exceptionHandler.ExceptionCatcher;
 import com.eltae.compareTout.services.SupplierService;
 import com.google.gson.Gson;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(Routes.SUPPLIER)
@@ -28,18 +26,22 @@ public class SupplierController extends ExceptionCatcher {
     @GetMapping(produces="application/json")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Request is successfully treated"),
-            @ApiResponse(code = 460, message = "No value present")})
+            @ApiResponse(code = 500, message = "No value present")})
     protected ResponseEntity<?> getSuppliers(@ApiParam(value = "Identification number of the supplier") @RequestParam(value="id_supplier",required = false)Long id) {
         Gson gson = new Gson();
-        if(id==null) {
-            return ResponseEntity.ok().body(gson.toJson(this.supplierService.getAllSuppliers()));
-        }
-        else{
-            if(this.supplierService.getSupplierWithId(id)==false)
-                return ResponseEntity.status(460).body(gson.toJson("Supplier id not present in database"));
-            else {
-                return ResponseEntity.ok().body(gson.toJson(this.supplierService.getSupplierInfo(id)));
-            }
-        }
+        if(id==null)
+            return ResponseEntity.ok().body(this.supplierService.getAllSuppliers());
+        else
+                return ResponseEntity.ok().body(this.supplierService.getSupplierInfo(id));
+    }
+
+
+    @ApiOperation(value = "Create a supplier account. This account will be activate by the administrator.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "The supplier account has correctly been created"),
+            @ApiResponse(code = 500, message = "ThIs email is already attached to an account")})
+    @PostMapping(produces="application/json")
+    public ResponseEntity<?> createSupplier(@RequestBody SupplierInscriptionDto supDto) {
+        return ResponseEntity.status(200).body(this.supplierService.create(supDto));
     }
 }

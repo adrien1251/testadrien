@@ -1,6 +1,6 @@
 package com.eltae.compareTout.converter;
-import com.eltae.compareTout.dto.CriteriaDto;
-import com.eltae.compareTout.dto.CriteriaProductDto;
+import com.eltae.compareTout.dto.criteria.CriteriaDto;
+import com.eltae.compareTout.dto.criteria.CriteriaProductDto;
 import com.eltae.compareTout.entities.Category;
 import com.eltae.compareTout.entities.Criteria;
 import com.eltae.compareTout.exceptions.ApplicationException;

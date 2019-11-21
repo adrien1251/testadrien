@@ -1,6 +1,6 @@
 package com.eltae.compareTout.exceptionHandler;
 
-import com.eltae.compareTout.dto.ExceptionResponseDto;
+import com.eltae.compareTout.dto.exception.ExceptionResponseDto;
 import com.eltae.compareTout.exceptions.ApplicationException;
 import com.eltae.compareTout.exceptions.NotFoundException;
 import org.springframework.http.ResponseEntity;

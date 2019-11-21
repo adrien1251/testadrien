@@ -1,13 +1,10 @@
-package com.eltae.compareTout.dto;
+package com.eltae.compareTout.dto.admin;
 
+import com.eltae.compareTout.dto.user.UserDto;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import java.time.LocalDate;
-import java.util.Date;
-
 @Data
-//@JsonInclude(JsonInclude.Include.NON_NULL)
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor

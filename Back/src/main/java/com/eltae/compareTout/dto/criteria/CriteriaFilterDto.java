@@ -1,4 +1,4 @@
-package com.eltae.compareTout.dto;
+package com.eltae.compareTout.dto.criteria;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

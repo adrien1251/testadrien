@@ -1,6 +1,6 @@
 package com.eltae.compareTout.dto.product;
 
-import com.eltae.compareTout.dto.CriteriaProductDto;
+import com.eltae.compareTout.dto.criteria.CriteriaProductDto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 

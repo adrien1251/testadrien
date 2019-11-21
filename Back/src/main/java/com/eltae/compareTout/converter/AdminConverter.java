@@ -1,6 +1,6 @@
 package com.eltae.compareTout.converter;
 
-import com.eltae.compareTout.dto.AdminDto;
+import com.eltae.compareTout.dto.admin.AdminDto;
 import com.eltae.compareTout.entities.Admin;
 import com.eltae.compareTout.repositories.AdminRepository;
 import org.springframework.beans.factory.annotation.Autowired;

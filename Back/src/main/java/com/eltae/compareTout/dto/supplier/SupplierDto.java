@@ -1,24 +1,22 @@
 package com.eltae.compareTout.dto.supplier;
 
+import com.eltae.compareTout.dto.user.UserDto;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class SupplierDto implements Cloneable {
+public class SupplierDto extends UserDto implements Cloneable {
 
-    private Long id;
-    private String firstName;
-    private String lastName;
-    private String email;
     private String webSite;
     private String siret;
-    private LocalDate creationDate;
     private LocalDate validationDate;
+
 
     public SupplierDto clone() throws CloneNotSupportedException {
         return (SupplierDto) super.clone();
