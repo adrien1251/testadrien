@@ -17,6 +17,9 @@ export class FiltersValueComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    if (this.unit === 'null') {
+      this.unit = '';
+    }
   }
 
   ngOnDestroy(): void {
