@@ -4,7 +4,7 @@
 //import com.eltae.compareTout.SpringBasedTest;
 //import com.eltae.compareTout.controllers.UserController;
 //import com.eltae.compareTout.converter.UserConverter;
-//import com.eltae.compareTout.dto.UserDto;
+//import com.eltae.compareTout.dto.user.UserDto;
 //import com.eltae.compareTout.entities.User;
 //import com.eltae.compareTout.exceptions.NotFoundException;
 //import com.eltae.compareTout.repositories.UserRepository;

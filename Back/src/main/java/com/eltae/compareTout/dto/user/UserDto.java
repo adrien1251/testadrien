@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @SuperBuilder
 @NoArgsConstructor
 @EqualsAndHashCode
-public class UserDto implements Cloneable {
+public class UserDto implements  Cloneable {
     private Long id;
 
     private String firstName;

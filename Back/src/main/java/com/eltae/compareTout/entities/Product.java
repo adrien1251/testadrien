@@ -37,6 +37,9 @@ public class Product implements Cloneable {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "pk.product")
     private List<CriteriaProduct> criteriaProducts;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Supplier supplier;
+
     public Product(Product p){
         this.id = p.id;
         this.category = p.category;
@@ -44,6 +47,7 @@ public class Product implements Cloneable {
         this.description = p.description;
         this.name = p.name;
         this.supplierLink = p.supplierLink;
+        this.supplier=p.supplier;
     }
 
     public List<Long> getCrit() {

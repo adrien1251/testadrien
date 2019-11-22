@@ -35,7 +35,15 @@ public class SupplierConverter extends GenericsConverter<Supplier, SupplierDto> 
 
     @Override
     public Supplier dtoToEntity(SupplierDto supplierDto) {
-      return null;
+            return Supplier.builder()
+                    .email(supplierDto.getEmail())
+                    .firstName(supplierDto.getFirstName())
+                    .lastName(supplierDto.getLastName())
+                    .password(supplierDto.getPassword())
+                    .webSite(supplierDto.getWebSite())
+                    .id(supplierDto.getId())
+                    .siret(supplierDto.getSiret())
+                    .build();
     }
 
 

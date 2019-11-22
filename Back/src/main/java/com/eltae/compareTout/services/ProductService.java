@@ -4,8 +4,10 @@ import com.eltae.compareTout.converter.product.ProductConverter;
 import com.eltae.compareTout.converter.product.ProductForFrontConverter;
 import com.eltae.compareTout.dto.criteria.CriteriaFilterDto;
 import com.eltae.compareTout.dto.criteria.CriteriaProductDto;
+import com.eltae.compareTout.dto.product.ProductDto;
 import com.eltae.compareTout.dto.product.ProductDtoForFront;
 import com.eltae.compareTout.dto.product.ShortProductDto;
+import com.eltae.compareTout.dto.supplier.SupplierDto;
 import com.eltae.compareTout.entities.*;
 import com.eltae.compareTout.exceptions.ApplicationException;
 import com.eltae.compareTout.repositories.CategoryRepository;
@@ -53,7 +55,7 @@ public class ProductService {
     private Map<Integer, String> criteriaMap;
 
     @Autowired
-    public ProductService(ProductRepository productRepository, ProductConverter productConverter, ProductForFrontConverter productForFrontConverter, CategoryService categoryService, CriteriaService criteriaService, CriteriaProductRepository criteriaProductRepository, CategoryRepository categoryRepository, CriteriaRepository criteriaRepository, EntityManagerFactory entityManagerFactory) {
+    public ProductService(SupplierService supplierService,ProductRepository productRepository, ProductConverter productConverter, ProductForFrontConverter productForFrontConverter, CategoryService categoryService, CriteriaService criteriaService, CriteriaProductRepository criteriaProductRepository, CategoryRepository categoryRepository, CriteriaRepository criteriaRepository, EntityManagerFactory entityManagerFactory) {
         this.productRepository = productRepository;
         this.productConverter = productConverter;
         this.productForFrontConverter = productForFrontConverter;
@@ -121,15 +123,15 @@ public class ProductService {
         return productForFrontConverter.entityListToDtoList(typedQuery.getResultList());
     }
 
-    public JSONObject insertProductsFromFile(MultipartFile multipartFile) {
+    public JSONObject insertProductsFromFile(MultipartFile multipartFile, Supplier supplier) {
         try {
-            return this.readProductsCSV(multipartFile.getInputStream());
+            return this.readProductsCSV(multipartFile.getInputStream(),supplier);
         } catch (IOException e) {
             throw new ApplicationException(HttpStatus.resolve(400), "Wrong format file");
         }
     }
 
-    private JSONObject readProductsCSV(InputStream inputStream) throws IOException {
+    private JSONObject readProductsCSV(InputStream inputStream,Supplier supplier) throws IOException {
         errorMap = new HashMap<>();
         CSVParser parser = new CSVParserBuilder()
                 .withSeparator(';')
@@ -145,11 +147,12 @@ public class ProductService {
         while ((nextRecord = csvReader.readNext()) != null) {
             line++;
             String myline = Arrays.asList(nextRecord).toString();
-            if (this.insertProduct(nextRecord, line))
+            if (this.insertProduct(nextRecord, line,supplier))
                 nbLineAdd++;
             else
                 notAdded.put(line, myline);
         }
+        json.put("Supplier",supplier.getId());
         json.put("Lines_Added", nbLineAdd);
         json.put("Lines_not_Added", notAdded);
         json.put("Error_lines", this.errorMap);
@@ -157,7 +160,7 @@ public class ProductService {
         return json;
     }
 
-    private boolean insertProduct(String[] records, int line) {
+    private boolean insertProduct(String[] records, int line,Supplier supplier) {
         String actualColumn;
         CriteriaProduct cp;
         int added = 0;
@@ -181,8 +184,12 @@ public class ProductService {
                 .description(records[1])
                 .supplierLink(records[2])
                 .criteriaProducts(new ArrayList<>())
+                .supplier(supplier)
                 .build();
         productRepository.save(product);
+
+
+
         for (int i = 4; i < records.length; i++) {
             actualColumn = records[i];
             if (actualColumn.trim().length() == 0) return added > 0;
@@ -242,4 +249,13 @@ public class ProductService {
     }
 
 
+    public List<ProductDto> getAllProductsBySupplier(Long id) {
+
+        return productConverter.entityListToDtoList(this.productRepository.findAllBySupplierId(id));
+
+    }
+
+    public List<ShortProductDto> getSupplierProducts(Long id) {
+        return productConverter.listEntityToShortDto(productRepository.findAllBySupplierId(id));
+    }
 }
