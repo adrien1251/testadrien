@@ -71,7 +71,8 @@ public class ProductController extends ExceptionCatcher {
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "File is successful imported and treated. You can find in json response" +
                     " number lines added, the lines not added, and the error lines"),
-            @ApiResponse(code = 400, message = "Wrong file format") })
+            @ApiResponse(code = 400, message = "Wrong file format"),
+            @ApiResponse(code = 500, message = "Unknown supplier identification number")  })
     public ResponseEntity<?> insertProductsFromFile(@ApiParam(value = "Your CSV file with the products to import. Cannot be empty. ",
             required = true)@RequestParam("file") MultipartFile file,
              @ApiParam(value="Your supplier identification number")@RequestParam("supplierId") Long id) {
@@ -87,7 +88,7 @@ public class ProductController extends ExceptionCatcher {
         //else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Supplier account don't have credentials");
     }
 
-    @ApiOperation(value = "Produces a jason with all supplier products.")
+    @ApiOperation(value = "Produce a json with all supplier products.")
     @GetMapping(value = "/Supplier",produces="application/json")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Request is successfully treated"),
@@ -99,7 +100,7 @@ public class ProductController extends ExceptionCatcher {
         if(!this.supplierService.getSupplierWithId(id_supplier))
             return ResponseEntity.ok().body(this.productService.getSupplierProducts(id_supplier));
         else
-            return ResponseEntity.ok().body("Unknown supplier identification number");
+            return ResponseEntity.ok().body("");
 
     }
 

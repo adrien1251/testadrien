@@ -1,7 +1,7 @@
 //package com.eltae.compareTout.converter;
-//
+
 //import com.eltae.compareTout.SpringBasedTest;
-//import com.eltae.compareTout.dto.UserDto;
+//import com.eltae.compareTout.dto.user.UserDto;
 //import com.eltae.compareTout.entities.User;
 //import com.eltae.compareTout.repositories.UserRepository;
 //import org.junit.Test;

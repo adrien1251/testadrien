@@ -37,16 +37,16 @@ public class SupplierService {
     }
 
     public boolean getSupplierWithId(Long id) {
-              return this.supplierRepository.findById(id).get()==null;
+              return this.supplierRepository.findByIdAndDiscriminatorValue(id,"SUPPLIER").get()==null;
     }
 
     public SupplierDto getSupplierInfo(Long id) {
 
-        return this.supConv.entityToDto( this.supplierRepository.findById(id).get());
+        return this.supConv.entityToDto( this.supplierRepository.findByIdAndDiscriminatorValue(id,"SUPPLIER").get());
     }
 
     public Supplier getEntitySupplier(Long id){
-        return this.supplierRepository.findById(id).get();
+        return this.supplierRepository.findByIdAndDiscriminatorValue(id,"SUPPLIER").get();
     }
 
     public String create(SupplierInscriptionDto supDto) {
@@ -56,10 +56,10 @@ public class SupplierService {
     }
 
     public String updateSupplier(SupplierDto supDto) {
-        if(this.supplierRepository.findById(supDto.getId())!=null) {
+        if(this.supplierRepository.findByIdAndDiscriminatorValue(supDto.getId(),"SUPPLIER")!=null) {
             Supplier supplier = this.supConv.dtoToEntity(supDto);
             this.supplierRepository.save(supplier);
-            return "ok";
+            return "Supplier account has been add";
         }
         else
             return "Supplier not found";
