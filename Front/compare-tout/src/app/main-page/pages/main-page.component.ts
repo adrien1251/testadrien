@@ -86,13 +86,16 @@ export class MainPageComponent implements OnInit, OnDestroy {
             } else {
               const idx = this.criteriaValues.findIndex(c => c.id === criteria.id);
               if (idx !== -1) {
-                this.criteriaValues[idx].values.push(criteria.value);
+                if (this.criteriaValues[idx].values.find(v => v === criteria.value) == null) {
+                  this.criteriaValues[idx].values.push(criteria.value);
+                }
               }
             }
           });
         });
       });
     });
+    console.log(this.criteriaValues);
   }
 
   reloadProducts(event): void {

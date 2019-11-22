@@ -26,25 +26,30 @@ export class FiltersComponent implements OnInit, OnDestroy {
   }
 
   fetchCriteria(): void {
-    this.criteriaList.forEach(crit => {
-      const alreadyIn = this.uniqueCriteria.find(c => c.name === crit.name) != null;
-      if (!alreadyIn) {
-        const criteria: UniqueCriteria = {
-          name: crit.name,
-          isMandatory: crit.isMandatory,
-          type: crit.type,
-          unit: crit.unit,
-          values: [crit.value]
-        };
-        this.uniqueCriteria.push(criteria);
-      } else {
-        const idx = this.uniqueCriteria.findIndex(c => c.name === crit.name);
-        if (idx !== -1) {
-          this.uniqueCriteria[idx].values.push(crit.value);
-          // this.criteriaList.values.push(crit.value);
-        }
-      }
-    });
+    console.log(this.criteriaList);
+    console.log(this.uniqueCriteria);
+    // this.criteriaList.forEach(crit => {
+    //   const alreadyIn = this.uniqueCriteria.find(c => c.name === crit.name) != null;
+    //   if (!alreadyIn) {
+    //     const criteria: UniqueCriteria = {
+    //       name: crit.name,
+    //       isMandatory: crit.isMandatory,
+    //       type: crit.type,
+    //       unit: crit.unit,
+    //       values: [crit.value]
+    //     };
+    //     this.uniqueCriteria.push(criteria);
+    //   } else {
+    //     const idx = this.uniqueCriteria.findIndex(c => c.name === crit.name);
+    //     if (idx !== -1) {
+    //       if (this.uniqueCriteria[idx].values.find(v => v === crit.value) == null) {
+    //         this.uniqueCriteria[idx].values.push(crit.value);
+    //       }
+    //     }
+    //   }
+    // });
+    console.log(this.criteriaList);
+    console.log(this.uniqueCriteria);
   }
 
   updateCriteria(event) {

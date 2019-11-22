@@ -39,7 +39,9 @@ export class FiltersComponent implements OnInit, OnDestroy {
       } else {
         const idx = this.uniqueCriteria.findIndex(c => c.name === crit.name);
         if (idx !== -1) {
-          this.uniqueCriteria[idx].values.push(crit.value);
+          if (this.uniqueCriteria[idx].values.find(v => v === crit.value) == null) {
+            this.uniqueCriteria[idx].values.push(crit.value);
+          }
           // this.criteriaList.values.push(crit.value);
         }
       }

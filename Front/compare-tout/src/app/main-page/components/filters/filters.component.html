@@ -1,6 +1,6 @@
 
 <div *ngIf="!displayFilters" (click)="showFilters()" class="show-hide-filters">Afficher les filtres</div>
-<div *ngIf="criteriaList != null && displayFilters" >
+<div *ngIf="displayFilters && criteriaList != null" >
     <div class="show-hide-filters" (click)="showFilters()">Cacher les filtres</div> 
     <div *ngFor="let criteria of criteriaList">
         <div class="criteria">
