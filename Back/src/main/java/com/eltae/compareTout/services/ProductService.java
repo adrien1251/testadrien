@@ -7,13 +7,9 @@ import com.eltae.compareTout.dto.criteria.CriteriaProductDto;
 import com.eltae.compareTout.dto.product.ProductDto;
 import com.eltae.compareTout.dto.product.ProductDtoForFront;
 import com.eltae.compareTout.dto.product.ShortProductDto;
-import com.eltae.compareTout.dto.supplier.SupplierDto;
 import com.eltae.compareTout.entities.*;
 import com.eltae.compareTout.exceptions.ApplicationException;
-import com.eltae.compareTout.repositories.CategoryRepository;
-import com.eltae.compareTout.repositories.CriteriaProductRepository;
-import com.eltae.compareTout.repositories.CriteriaRepository;
-import com.eltae.compareTout.repositories.ProductRepository;
+import com.eltae.compareTout.repositories.*;
 import com.eltae.compareTout.repositories.product.CriteriaFilter;
 import com.eltae.compareTout.repositories.product.CriteriaFilterSpecification;
 import com.opencsv.CSVParser;
@@ -35,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -51,11 +48,12 @@ public class ProductService {
     private final CategoryRepository categoryRepository;
     private final CriteriaRepository criteriaRepository;
     private final EntityManagerFactory entityManagerFactory;
+    private final InsertionErrorsRepository insertionErrorsRepository;
     private Map<Integer, String> errorMap;
     private Map<Integer, String> criteriaMap;
 
     @Autowired
-    public ProductService(SupplierService supplierService,ProductRepository productRepository, ProductConverter productConverter, ProductForFrontConverter productForFrontConverter, CategoryService categoryService, CriteriaService criteriaService, CriteriaProductRepository criteriaProductRepository, CategoryRepository categoryRepository, CriteriaRepository criteriaRepository, EntityManagerFactory entityManagerFactory) {
+    public ProductService(SupplierService supplierService, ProductRepository productRepository, ProductConverter productConverter, ProductForFrontConverter productForFrontConverter, CategoryService categoryService, CriteriaService criteriaService, CriteriaProductRepository criteriaProductRepository, CategoryRepository categoryRepository, CriteriaRepository criteriaRepository, EntityManagerFactory entityManagerFactory, InsertionErrorsRepository insertionErrorsRepository) {
         this.productRepository = productRepository;
         this.productConverter = productConverter;
         this.productForFrontConverter = productForFrontConverter;
@@ -65,7 +63,7 @@ public class ProductService {
         this.categoryRepository = categoryRepository;
         this.criteriaRepository = criteriaRepository;
         this.entityManagerFactory = entityManagerFactory;
-
+        this.insertionErrorsRepository = insertionErrorsRepository;
     }
 
     public List<ShortProductDto> getAll() {
@@ -133,6 +131,7 @@ public class ProductService {
 
     private JSONObject readProductsCSV(InputStream inputStream,Supplier supplier) throws IOException {
         errorMap = new HashMap<>();
+        criteriaMap=new HashMap<>();
         CSVParser parser = new CSVParserBuilder()
                 .withSeparator(';')
                 .withIgnoreQuotations(true)
@@ -157,7 +156,37 @@ public class ProductService {
         json.put("Lines_not_Added", notAdded);
         json.put("Error_lines", this.errorMap);
         json.put("Missing_criteria_line", this.criteriaMap);
+        this.insertIntoErrors(supplier);
         return json;
+    }
+
+    private void insertIntoErrors(Supplier supplier) {
+        if(!errorMap.isEmpty())
+            for(Integer j :errorMap.keySet()) {
+                {
+                    String val=errorMap.get(j);
+                    InsertionErrors error = InsertionErrors.builder()
+                            .insertionDate(LocalDate.now())
+                            .lineNumber(j)
+                            .supplier(supplier)
+                            .description(val)
+                            .build();
+                    this.insertionErrorsRepository.save(error);
+                }
+            }
+        if(!criteriaMap.isEmpty())
+            for(Integer j :criteriaMap.keySet()) {
+                {
+                    String val=criteriaMap  .get(j);
+                    InsertionErrors error = InsertionErrors.builder()
+                            .insertionDate(LocalDate.now())
+                            .lineNumber(j)
+                            .supplier(supplier)
+                            .description(val)
+                            .build();
+                    this.insertionErrorsRepository.save(error);
+                }
+            }
     }
 
     private boolean insertProduct(String[] records, int line,Supplier supplier) {
@@ -166,16 +195,16 @@ public class ProductService {
         int added = 0;
         Category category = categoryService.getCategoryWithId(Long.parseLong(records[3]));
         if (category == null) {
-            this.errorMap.put(line, "Category identification not exits in database (for the product :  " + records[0] + ")");
+            this.errorMap.put(line, "Category identification not exits in database, can't add product (for the product :  " + records[0] + ")");
             return false;
         }
         if (!category.getChildList().isEmpty()) {
-            this.errorMap.put(line, "Category : " + category.getId() + " cannot have products (for the product :  " + records[0] + ")");
+            this.errorMap.put(line, "Category : " + category.getId() + " cannot have products, can't add product (for the product :  " + records[0] + ")");
             return false;
         }
 
         if (!checkAllMandatoryCriteriaPresentInFile(records, criteriaService.getAllMandatoryCriteriasIdWithIdCategory(category))) {
-            this.errorMap.put(line, "Mandatories criteria missing, cannot add product  (for the product " + records[0] + ")");
+            this.errorMap.put(line, "Mandatories criteria missing, can't add product (for the product " + records[0] + ")");
             return false;
         }
         Product product = Product.builder()
@@ -196,16 +225,12 @@ public class ProductService {
             if (i % 2 == 0) {
                 Criteria criteria = criteriaService.getCriteriaProductWithIdCriteria(Long.parseLong(actualColumn));
                 if (criteria == null) {
-                    this.errorMap.put(line, "Criteria identification not exits in database, cannot add product(for product :  " + product.getName() + ")");
+                    this.errorMap.put(line, "Criteria identification not exits in database, can't add product (for product :  " + product.getName() + ")");
                     return false; // criteria non trouvé en base
                 } else {
-                    if (category.getCriteriaList().size() == 0) {
-                        this.errorMap.put(line, "Category : " + category.getId() + " has no criteria, cannot had product");
-                        return false;
-                    }
                     if (!category.getCriteriaList().contains(criteria))
                         this.criteriaMap.put(line, "Missing criteria " + criteria.getId() +
-                                "in category : " + category.getId());
+                                " in category : " + category.getId() +" (for the product : " +product.getName()+ " , product_Id : "+product.getId()+" )"); //criteria non present dans categorie
                     else {
 
                         CriteriaProductPK primaryKey = new CriteriaProductPK();
@@ -223,7 +248,6 @@ public class ProductService {
             }
         }
         productRepository.save(product);
-        added = 1;
         productRepository.flush();
 
         return true;
