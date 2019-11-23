@@ -49,4 +49,7 @@ public class AdminService {
     }
 
 
+    public AdminDto getAdminWithId(long idAdmin) {
+        return  null;
+    }
 }
