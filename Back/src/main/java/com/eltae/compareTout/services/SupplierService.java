@@ -8,9 +8,11 @@ import com.eltae.compareTout.dto.supplier.SupplierDto;
 import com.eltae.compareTout.dto.supplier.SupplierInscriptionDto;
 import com.eltae.compareTout.entities.Supplier;
 import com.eltae.compareTout.repositories.supplier.SupplierRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -18,13 +20,13 @@ public class SupplierService {
     private final SupplierRepository supplierRepository;
     private final SupplierConverter supConv;
     private final SupplierInscriptionConverter supInsconv;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-
-
-    public SupplierService(SupplierRepository supRep, SupplierConverter supConv, SupplierInscriptionConverter supInsconv){
+    public SupplierService(SupplierRepository supRep, SupplierConverter supConv, SupplierInscriptionConverter supInsconv, BCryptPasswordEncoder bCryptPasswordEncoder){
         this.supplierRepository=supRep;
         this.supConv = supConv;
         this.supInsconv = supInsconv;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     public List<Supplier> getAllSuppliers() {
@@ -49,8 +51,14 @@ public class SupplierService {
         return this.supplierRepository.findByIdAndDiscriminatorValue(id,"SUPPLIER").get();
     }
 
+
+    public Optional<Supplier> findSupplierByEmail(String email){
+        return this.supplierRepository.findByEmailAndDiscriminatorValue(email,"SUPPLIER");
+    }
+
     public String create(SupplierInscriptionDto supDto) {
         Supplier sup =this.supInsconv.dtoFromFrontEntity(supDto);
+        sup.setPassword(bCryptPasswordEncoder.encode(sup.getPassword()));
         this.supplierRepository.save(sup);
         return "ok";
     }

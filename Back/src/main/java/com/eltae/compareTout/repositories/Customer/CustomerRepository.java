@@ -14,12 +14,12 @@ import java.util.Optional;
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
     @Query("SELECT p FROM User p where p.class=:discriminatorValue")
-    List<Customer> findByDiscriminatorValue(@Param("discriminatorValue") String discriminatorValue);
+    List<Customer> findByDiscriminatorValue(String discriminatorValue);
     @Query("SELECT p FROM User p where p.id=:id")
     Optional<Customer> findById(Long id);
     @Query("SELECT p FROM User p where p.email=:email")
     Optional<Customer> findByEmail(String email);
     @Query("SELECT p FROM User p where p.id=:id and  p.class=:discriminatorValue")
-    Optional<Customer> findByIdAndDiscriminatorValue(Long id,@Param("discriminatorValue") String discriminatorValue);
+    Optional<Customer> findByIdAndDiscriminatorValue(Long id, String discriminatorValue);
 
 }
