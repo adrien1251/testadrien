@@ -23,4 +23,5 @@ export class ProductService {
     public getCriteriasOfProduct(idProduct: string): Observable<any> {
         return this.httpClient.get<any>(`${this.env}${apiEndpoints.getCriteriasOfProduct(idProduct)}`);
     }
+
 }

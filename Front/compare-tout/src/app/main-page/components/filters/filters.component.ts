@@ -8,8 +8,8 @@ import { Criteria, UniqueCriteria } from 'src/app/shared/models/criteria.interfa
 })
 export class FiltersComponent implements OnInit, OnDestroy {
 
-  @Input() criteriaList: Criteria[];
-  public uniqueCriteria: UniqueCriteria[] = [];
+  @Input() criteriaList: any[];
+  criteriaSelected: any[] = [];
   @Output() valueHasChanged: EventEmitter<any> = new EventEmitter<any>();
   displayFilters = false;
 
@@ -18,6 +18,7 @@ export class FiltersComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (this.criteriaList != null) {
+      console.log(this.criteriaList);
       this.fetchCriteria();
     }
   }
@@ -26,34 +27,17 @@ export class FiltersComponent implements OnInit, OnDestroy {
   }
 
   fetchCriteria(): void {
-    console.log(this.criteriaList);
-    console.log(this.uniqueCriteria);
-    // this.criteriaList.forEach(crit => {
-    //   const alreadyIn = this.uniqueCriteria.find(c => c.name === crit.name) != null;
-    //   if (!alreadyIn) {
-    //     const criteria: UniqueCriteria = {
-    //       name: crit.name,
-    //       isMandatory: crit.isMandatory,
-    //       type: crit.type,
-    //       unit: crit.unit,
-    //       values: [crit.value]
-    //     };
-    //     this.uniqueCriteria.push(criteria);
-    //   } else {
-    //     const idx = this.uniqueCriteria.findIndex(c => c.name === crit.name);
-    //     if (idx !== -1) {
-    //       if (this.uniqueCriteria[idx].values.find(v => v === crit.value) == null) {
-    //         this.uniqueCriteria[idx].values.push(crit.value);
-    //       }
-    //     }
-    //   }
-    // });
-    console.log(this.criteriaList);
-    console.log(this.uniqueCriteria);
+    //
   }
 
   updateCriteria(event) {
-    this.valueHasChanged.emit(event);
+    if (event.selected) {
+      this.criteriaSelected.push(event);
+    } else {
+      const i = this.criteriaSelected.findIndex(x => x.id === event.id);
+      this.criteriaSelected.splice(i, 1);
+    }
+    this.valueHasChanged.emit(this.criteriaSelected);
   }
 
   showFilters() {

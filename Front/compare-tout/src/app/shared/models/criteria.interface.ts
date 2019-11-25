@@ -12,5 +12,10 @@ export interface UniqueCriteria {
     name: string;
     type: string;
     unit?: string;
-    values: string[];
+    values: CriteriaValue[];
+}
+
+export interface CriteriaValue {
+    value: string;
+    selected: boolean;
 }

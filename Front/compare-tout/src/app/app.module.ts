@@ -14,8 +14,8 @@ import { MenuCategoriesComponent } from './main-page/components/menu-categories/
 import { FiltersComponent } from './main-page/components/filters/filters.component';
 import { FiltersValueComponent } from './main-page/components/filters-value/filters-value.component';
 import { CriteriaService } from './shared/services/criteria.service';
-import { ProductDisplayComponent } from './main-page/components/product-display/product-display.component';
 import { ProductService } from './shared/services/product.service';
+import { ProductDisplayComponent } from './main-page/components/product-display/product-display.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +25,7 @@ import { ProductService } from './shared/services/product.service';
     MenuCategoriesComponent,
     FiltersComponent,
     FiltersValueComponent,
-    TestComponent,
+    ProductDisplayComponent
   ],
   imports: [
     BrowserModule,

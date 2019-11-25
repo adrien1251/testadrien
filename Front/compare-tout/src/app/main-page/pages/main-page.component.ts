@@ -100,7 +100,14 @@ export class MainPageComponent implements OnInit, OnDestroy {
 
   reloadProducts(event): void {
     console.log(event);
+  }
 
+  sendCriterias(event): void {
+    if (event.length === 0) { event = null; }
+    this.productService.getProductsByCategoryAndCriteria(this.currentCategory.id, event).subscribe( res => {
+      this.productList = res;
+    }
+    );
   }
 
 }

@@ -10,6 +10,7 @@ export class FiltersValueComponent implements OnInit, OnDestroy {
 
   @Input() value: string;
   @Input() unit: string;
+  @Input() id: string;
   @Output() valueChecked: EventEmitter<any> = new EventEmitter<any>();
   public checked = false;
 
@@ -28,9 +29,11 @@ export class FiltersValueComponent implements OnInit, OnDestroy {
 
   updateFilter(value: string) {
     this.checked = !this.checked;
+    console.log(this.checked);
     const valueSelect = {
+      idCriteria: this.id,
       value,
-      checked: this.checked
+      selected: this.checked
     };
     this.valueChecked.emit(valueSelect);
   }
