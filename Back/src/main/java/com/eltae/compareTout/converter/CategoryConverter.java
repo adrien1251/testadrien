@@ -1,6 +1,6 @@
 package com.eltae.compareTout.converter;
-import com.eltae.compareTout.dto.CategoryDto;
-import com.eltae.compareTout.dto.ShortCategoryDto;
+import com.eltae.compareTout.dto.category.CategoryDto;
+import com.eltae.compareTout.dto.category.ShortCategoryDto;
 import com.eltae.compareTout.entities.Category;
 import com.eltae.compareTout.repositories.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.eltae.compareTout.dto;
+package com.eltae.compareTout.dto.criteria;
 import com.eltae.compareTout.entities.TypeCriteria;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;

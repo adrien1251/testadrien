@@ -2,11 +2,12 @@ package com.eltae.compareTout.entities;
 
 import com.eltae.compareTout.constants.Tables;
 import lombok.*;
-
+import lombok.experimental.SuperBuilder;
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
+@SuperBuilder
 @DiscriminatorValue("CUSTOMER")
 @Table(name = Tables.CUSTOMER)
 @Data
@@ -15,15 +16,11 @@ import java.util.Date;
 @NoArgsConstructor
 public class Customer extends User implements Cloneable{
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
     private String phoneNum;
 
     private String sexe;
 
-    private Date birthday;
+    private LocalDate birthday;
 
     public Customer clone() throws CloneNotSupportedException {
         return (Customer) super.clone();

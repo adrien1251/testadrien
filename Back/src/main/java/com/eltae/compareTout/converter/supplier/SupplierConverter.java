@@ -29,12 +29,21 @@ public class SupplierConverter extends GenericsConverter<Supplier, SupplierDto> 
                         .webSite(supplier.getWebSite())
                         .creationDate(supplier.getCreationDate())
                         .validationDate(supplier.getValidationDate())
+                        .resetToken(supplier.getResetToken())
                         .build();
     }
 
     @Override
     public Supplier dtoToEntity(SupplierDto supplierDto) {
-        return this.supplierRepository.findById(supplierDto.getId()).get();
+            return Supplier.builder()
+                    .email(supplierDto.getEmail())
+                    .firstName(supplierDto.getFirstName())
+                    .lastName(supplierDto.getLastName())
+                    .password(supplierDto.getPassword())
+                    .webSite(supplierDto.getWebSite())
+                    .id(supplierDto.getId())
+                    .siret(supplierDto.getSiret())
+                    .build();
     }
 
 

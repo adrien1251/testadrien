@@ -6,10 +6,12 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findAll();
     List<Product> findAllByCategoryId(long idCategory);
     List<Product> findProductById(long idProduct);
+    List<Product> findAllBySupplierId(long idSupplier);
 }

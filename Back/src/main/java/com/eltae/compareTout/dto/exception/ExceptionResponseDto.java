@@ -1,4 +1,4 @@
-package com.eltae.compareTout.dto;
+package com.eltae.compareTout.dto.exception;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AccessLevel;

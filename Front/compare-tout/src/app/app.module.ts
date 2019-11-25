@@ -25,7 +25,7 @@ import { ProductService } from './shared/services/product.service';
     MenuCategoriesComponent,
     FiltersComponent,
     FiltersValueComponent,
-    ProductDisplayComponent,
+    TestComponent,
   ],
   imports: [
     BrowserModule,

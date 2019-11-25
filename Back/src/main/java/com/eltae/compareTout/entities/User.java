@@ -2,9 +2,10 @@ package com.eltae.compareTout.entities;
 
 import com.eltae.compareTout.constants.Tables;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Random;
 
 
@@ -12,7 +13,7 @@ import java.util.Random;
 @Table(name = Tables.USERS, uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 @DiscriminatorColumn(name="DISCRIMINATOR", discriminatorType=DiscriminatorType.STRING)
 @DiscriminatorValue("USER")
-@Builder
+@SuperBuilder
 @Data
 @EqualsAndHashCode
 @AllArgsConstructor
@@ -27,7 +28,9 @@ public class User implements Cloneable {
     private String email;
     private String password;
     private String resetToken;
-    private Date creationDate;
+    private LocalDate creationDate;
+
+
 
     public String getRandomPassword() {
         char[] chars = new char[26 + 26 + 10]; //

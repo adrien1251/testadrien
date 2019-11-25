@@ -1,7 +1,7 @@
 package com.eltae.compareTout.controllers;
 
 import com.eltae.compareTout.constants.Routes;
-import com.eltae.compareTout.dto.UserDto;
+import com.eltae.compareTout.dto.user.UserDto;
 import com.eltae.compareTout.exceptionHandler.ExceptionCatcher;
 import com.eltae.compareTout.services.UserService;
 import io.swagger.annotations.Api;
