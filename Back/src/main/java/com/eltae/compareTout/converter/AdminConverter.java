@@ -29,7 +29,16 @@ public class AdminConverter extends GenericsConverter<Admin, AdminDto> {
 
     @Override
     public Admin dtoToEntity(AdminDto adminDto) {
-        return null;
+        return   Admin.builder()
+                .email(adminDto.getEmail())
+                .firstName(adminDto.getFirstName())
+                .lastName(adminDto.getLastName())
+                .password(adminDto.getPassword())
+                .id(adminDto.getId())
+                .phoneNum(adminDto.getPhoneNum())
+                .resetToken(adminDto.getResetToken())
+                .creationDate(adminDto.getCreationDate())
+                .build();
     }
 
     public AdminDto entityToDtoMinimumParams(Admin admin) {

@@ -17,7 +17,9 @@ public interface SupplierRepository extends JpaRepository<Supplier, Long> {
     List<Supplier> findByDiscriminatorValue(String discriminatorValue);
     @Query("SELECT p FROM User p where p.id=:id")
     Optional<Supplier> findById(Long id);
-    List<Supplier> findByValidationDateIsNull();
+
+    List<Supplier> findAllByValidationDateIsNull();
+
     @Query("SELECT p FROM User p where p.id=:id and  p.class=:discriminatorValue")
     Optional<Supplier> findByIdAndDiscriminatorValue(Long id, String discriminatorValue);
 

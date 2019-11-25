@@ -11,6 +11,7 @@ import com.eltae.compareTout.repositories.supplier.SupplierRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,22 +34,22 @@ public class SupplierService {
 
         return this.supplierRepository.findByDiscriminatorValue("SUPPLIER");
     }
-    public List<SupplierDto> getAllSuppliersNotValidate() {
 
-        return this.supConv.entityListToDtoListSup(supplierRepository.findByValidationDateIsNull());
+    public List<SupplierDto> getAllSuppliersNotValidate() {
+        return this.supConv.entityListToDtoListSup(supplierRepository.findAllByValidationDateIsNull());
     }
 
     public boolean getSupplierWithId(Long id) {
-              return this.supplierRepository.findByIdAndDiscriminatorValue(id,"SUPPLIER").get()==null;
+        return this.supplierRepository.findByIdAndDiscriminatorValue(id, "SUPPLIER").get() == null;
     }
 
     public SupplierDto getSupplierInfo(Long id) {
 
-        return this.supConv.entityToDto( this.supplierRepository.findByIdAndDiscriminatorValue(id,"SUPPLIER").get());
+        return this.supConv.entityToDto(this.supplierRepository.findByIdAndDiscriminatorValue(id, "SUPPLIER").get());
     }
 
-    public Supplier getEntitySupplier(Long id){
-        return this.supplierRepository.findByIdAndDiscriminatorValue(id,"SUPPLIER").get();
+    public Supplier getEntitySupplier(Long id) {
+        return this.supplierRepository.findByIdAndDiscriminatorValue(id, "SUPPLIER").get();
     }
 
 
@@ -64,14 +65,22 @@ public class SupplierService {
     }
 
     public String updateSupplier(SupplierDto supDto) {
-        if(this.supplierRepository.findByIdAndDiscriminatorValue(supDto.getId(),"SUPPLIER")!=null) {
+        if (this.supplierRepository.findByIdAndDiscriminatorValue(supDto.getId(), "SUPPLIER") != null) {
             Supplier supplier = this.supConv.dtoToEntity(supDto);
             this.supplierRepository.save(supplier);
-            return "Supplier account has been add";
-        }
-        else
+            return "Supplier account has been update";
+        } else
             return "Supplier not found";
     }
 
+    public SupplierDto confirmSupplierAccount(SupplierDto supplierDto) {
+        Optional<Supplier> supplier = supplierRepository.findById(supplierDto.getId());
+        if (supplier.isPresent()) {
+            Supplier s = supplier.get();
+            s.setValidationDate(LocalDate.now());
+            return supConv.entityToDto(supplierRepository.save(s));
+        }
+        return null;
+    }
 
 }
