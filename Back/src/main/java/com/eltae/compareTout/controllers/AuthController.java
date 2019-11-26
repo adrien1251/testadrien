@@ -2,6 +2,7 @@ package com.eltae.compareTout.controllers;
 
 import com.eltae.compareTout.constants.Routes;
 import com.eltae.compareTout.dto.user.LoginDto;
+import com.eltae.compareTout.exceptionHandler.ExceptionCatcher;
 import com.eltae.compareTout.services.AuthService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(Routes.LOGIN)
 @Api(value = "Connexion", description = "Connexion", tags = {"Connexion"})
-public class AuthController {
+public class AuthController extends ExceptionCatcher {
     @Autowired
     private AuthService authService;
 
