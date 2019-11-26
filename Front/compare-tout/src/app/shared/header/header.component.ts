@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {ModalService} from '../services/modal/modal.service';
 import {LoginComponent} from '../../Auth/pages/login/login.component';
 import {AuthUtils} from '../services/utils/auth-utils.service';
@@ -11,21 +11,26 @@ import {AuthUtils} from '../services/utils/auth-utils.service';
 export class HeaderComponent implements OnInit, OnDestroy {
   user = null;
 
-  constructor(private modalService: ModalService) { }
+  @Output() toggleSideNav: EventEmitter<any> = new EventEmitter<any>();
+  constructor(
+    private modalService: ModalService,
+    private authUtils: AuthUtils) { }
 
   ngOnInit(): void {
     this.user = AuthUtils.getCurrentUser();
+    this.authUtils.userEmitter.subscribe((user) => {
+      this.user = user;
+    });
   }
 
   ngOnDestroy(): void {
   }
 
   openConnexion() {
-    this.modalService.init(LoginComponent, {isMobile: true}, {});
+    this.modalService.init(LoginComponent, {}, {});
   }
 
-  openProfil() {
-    // TODO : profil page for now --> disconnected
-    AuthUtils.dispose();
+  openSideNav() {
+    this.toggleSideNav.emit();
   }
 }

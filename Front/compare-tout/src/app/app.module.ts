@@ -21,9 +21,11 @@ import { LoginComponent } from './Auth/pages/login/login.component';
 import { CommonModule } from '@angular/common';
 import {
   MatButtonModule, MatCardModule, MatDialogModule, MatInputModule, MatTableModule,
-  MatToolbarModule, MatMenuModule,MatIconModule, MatProgressSpinnerModule
+  MatToolbarModule, MatMenuModule, MatIconModule, MatProgressSpinnerModule, MatSidenavModule,
+  MatDividerModule, MatListModule
 } from '@angular/material';
 import {ReactiveFormsModule} from '@angular/forms';
+import {AuthUtils} from './shared/services/utils/auth-utils.service';
 
 @NgModule({
   declarations: [
@@ -53,7 +55,10 @@ import {ReactiveFormsModule} from '@angular/forms';
     MatTableModule,
     MatMenuModule,
     MatIconModule,
-    MatProgressSpinnerModule
+    MatSidenavModule,
+    MatProgressSpinnerModule,
+    MatDividerModule,
+    MatListModule
   ],
   exports: [
     MainPageComponent,
@@ -66,12 +71,13 @@ import {ReactiveFormsModule} from '@angular/forms';
     MatTableModule,
     MatMenuModule,
     MatIconModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
   ],
   providers: [
     TestService,
     CategoryService,
-    CriteriaService
+    CriteriaService,
+    AuthUtils
   ],
   entryComponents: [
     LoginComponent

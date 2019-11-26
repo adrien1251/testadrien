@@ -14,8 +14,6 @@ import {AuthUtils} from '../../../shared/services/utils/auth-utils.service';
 export class LoginComponent implements OnInit {
   @Input() error: string | null;
 
-  @Output() submitEM = new EventEmitter();
-
   isWaiting = false;
 
   form: FormGroup = new FormGroup({
@@ -25,7 +23,8 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private modalService: ModalService,
-    private authService: AuthService) { }
+    private authService: AuthService,
+    private authUtils: AuthUtils) { }
 
   ngOnInit() {
   }
@@ -37,15 +36,11 @@ export class LoginComponent implements OnInit {
 
   submit() {
     if (this.form.valid) {
-      // this.submitEM.emit(this.form.value);
-      //TODO: loader
       this.isWaiting = true;
       this.authService.login(this.form.value.username, this.form.value.password).subscribe(
         (user: any) => {
           this.error = null;
-          AuthUtils.setCurrentUser(user);
-          // this.isWaiting = false;
-          // this.close();
+          this.authUtils.setCurrentUser(user);
         },
         (error: Error) => {
           if (error.error.statusErrorCode === 404) {

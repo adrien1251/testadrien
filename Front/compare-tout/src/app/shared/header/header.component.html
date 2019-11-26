@@ -1,13 +1,14 @@
 <div class="header-content">
-    <div class="menu">
-            <img src="./assets/icons/menu.png">
-    </div>
-    <div class="main-title">
-        <img src="./assets/icons/search.png">
-        <div>CompareTout</div>
-    </div>
-    <div class="account">
-      <img *ngIf="!user" src="./assets/icons/loginIcon.svg" (click)="openConnexion()">
-      <img *ngIf="user" src="./assets/icons/account_circle-24px.svg" (click)="openProfil()">
-    </div>
+  <div class="menu">
+    <img src="./assets/icons/menu.png" (click)="openSideNav()">
+  </div>
+  <div class="main-title">
+    <img src="./assets/icons/search.png">
+    <div>CompareTout</div>
+  </div>
+  <div class="account">
+    <img *ngIf="!user" src="./assets/icons/loginIcon.svg" (click)="openConnexion()">
+    <img *ngIf="user" src="./assets/icons/account_circle-24px.svg">
+  </div>
 </div>
+
