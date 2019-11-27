@@ -1,3 +1,5 @@
 <div *ngIf="value != null">
-   <mat-checkbox disableRipple [checked]="checked" (change)="updateFilter(value)"> {{ value }} {{ unit }} </mat-checkbox>
+   <mat-checkbox *ngIf="criteria.type !== 'INT' && criteria.type !== 'FLOAT'" disableRipple [checked]="checked" (change)="updateFilter(value)"> {{ value }} {{ criteria.unit }} </mat-checkbox>
+   <!-- <mat-slider *ngIf="criteria.type === 'INT' || criteria.type === 'FLOAT'" 
+   min="1" max="5" step="0.5" value="1.5"></mat-slider> -->
 </div>

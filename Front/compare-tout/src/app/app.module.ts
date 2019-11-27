@@ -14,7 +14,8 @@ import { MenuCategoriesComponent } from './main-page/components/menu-categories/
 import { FiltersComponent } from './main-page/components/filters/filters.component';
 import { FiltersValueComponent } from './main-page/components/filters-value/filters-value.component';
 import { CriteriaService } from './shared/services/criteria.service';
-import {ProductDisplayComponent} from './main-page/components/product-display/product-display.component';
+import { ProductService } from './shared/services/product.service';
+import { ProductDisplayComponent } from './main-page/components/product-display/product-display.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './Auth/pages/login/login.component';
 
@@ -26,6 +27,9 @@ import {
 } from '@angular/material';
 import {ReactiveFormsModule} from '@angular/forms';
 import {AuthUtils} from './shared/services/utils/auth-utils.service';
+import { MatSliderModule } from '@angular/material/slider';
+import { FiltersSliderComponent } from './main-page/components/filters-slider/filters-slider.component';
+import { Ng5SliderModule } from 'ng5-slider';
 
 @NgModule({
   declarations: [
@@ -37,6 +41,7 @@ import {AuthUtils} from './shared/services/utils/auth-utils.service';
     FiltersValueComponent,
     ProductDisplayComponent,
     LoginComponent,
+    FiltersSliderComponent
   ],
   imports: [
     BrowserModule,
@@ -58,7 +63,9 @@ import {AuthUtils} from './shared/services/utils/auth-utils.service';
     MatSidenavModule,
     MatProgressSpinnerModule,
     MatDividerModule,
-    MatListModule
+    MatListModule,
+    MatSliderModule,
+    Ng5SliderModule
   ],
   exports: [
     MainPageComponent,
@@ -77,6 +84,7 @@ import {AuthUtils} from './shared/services/utils/auth-utils.service';
     TestService,
     CategoryService,
     CriteriaService,
+    ProductService,
     AuthUtils
   ],
   entryComponents: [

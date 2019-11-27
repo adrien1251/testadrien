@@ -8,16 +8,18 @@ import { Criteria, UniqueCriteria } from 'src/app/shared/models/criteria.interfa
 })
 export class FiltersComponent implements OnInit, OnDestroy {
 
-  @Input() criteriaList: Criteria[];
-  public uniqueCriteria: UniqueCriteria[] = [];
+  @Input() criteriaList: any[];
+  criteriaSelected: any[] = [];
   @Output() valueHasChanged: EventEmitter<any> = new EventEmitter<any>();
   displayFilters = false;
+  valueMin = 99999;
+  valueMax = 0;
 
   constructor(
   ) { }
 
   ngOnInit(): void {
-    if (this.criteriaList != null) {
+    if (this.criteriaList != null && this.criteriaList.length > 0) {
       this.fetchCriteria();
     }
   }
@@ -26,33 +28,40 @@ export class FiltersComponent implements OnInit, OnDestroy {
   }
 
   fetchCriteria(): void {
-    this.criteriaList.forEach(crit => {
-      const alreadyIn = this.uniqueCriteria.find(c => c.name === crit.name) != null;
-      if (!alreadyIn) {
-        const criteria: UniqueCriteria = {
-          name: crit.name,
-          isMandatory: crit.isMandatory,
-          type: crit.type,
-          unit: crit.unit,
-          values: [crit.value]
-        };
-        this.uniqueCriteria.push(criteria);
-      } else {
-        const idx = this.uniqueCriteria.findIndex(c => c.name === crit.name);
-        if (idx !== -1) {
-          this.uniqueCriteria[idx].values.push(crit.value);
-          // this.criteriaList.values.push(crit.value);
-        }
-      }
-    });
+    // this.criteriaList.forEach(c => {
+    //   if (c.type === 'INT' || c.type === 'FLOAT') {
+    //     c.values.forEach(crit => {
+    //       if (+crit < this.valueMin) {
+    //         this.valueMin = +crit;
+    //         c.minValue = +crit;
+    //       } else {
+    //         if (+crit > this.valueMax) {
+    //           this.valueMax = +crit;
+    //           c.maxValue = +crit;
+    //         }
+    //       }
+    //     });
+    //   }
+    // });
   }
 
   updateCriteria(event) {
-    this.valueHasChanged.emit(event);
+    if (event.selected) {
+      this.criteriaSelected.push( { idCriteria: event.idCriteria, value: event.value, minValue: event.minValue, maxValue: event.maxValue });
+    } else {
+      const i = this.criteriaSelected.findIndex(x => x.id === event.id);
+      this.criteriaSelected.splice(i, 1);
+    }
+    this.valueHasChanged.emit(this.criteriaSelected);
   }
 
   showFilters() {
     this.displayFilters = !this.displayFilters;
+  }
+
+  resetFilters(): void {
+    this.criteriaSelected = [];
+    this.valueHasChanged.emit(this.criteriaSelected);
   }
 
 }

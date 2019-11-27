@@ -7,9 +7,15 @@ export interface Criteria {
 }
 
 export interface UniqueCriteria {
-    isMandatory: boolean;
+    isMandatory?: boolean;
+    id?: string;
     name: string;
     type: string;
     unit?: string;
-    values: string[];
+    values: CriteriaValue[];
+}
+
+export interface CriteriaValue {
+    value: string;
+    selected: boolean;
 }

@@ -13,13 +13,17 @@ export class CategoryService {
         private httpClient: HttpClient,
     ) { }
 
-    env = 'http://18.190.104.245:8080/';
+    env = 'http://localhost:8080/';
 
     // public getMainCategories(): Observable<any> {
     //     return this.httpClient.get<any>(`${this.env}${apiEndpoints.getMainCategories}`);
     // }
 
-    public getCategories(id?: string): Observable<any> {
-        return this.httpClient.get<any>(`${this.env}${apiEndpoints.getCategories(id)}`);
+    public getCategories(): Observable<any> {
+        return this.httpClient.get<any>(`${this.env}${apiEndpoints.getCategories}`);
+    }
+
+    public getCategoriesChild(id?: string): Observable<any> {
+        return this.httpClient.get<any>(`${this.env}${apiEndpoints.getCategoriesChild(id)}`);
     }
 }
