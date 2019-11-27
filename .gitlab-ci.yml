@@ -21,7 +21,7 @@ back-build:
   image: maven:3-jdk-8
   stage: build
   before_script: ['cd $BACK_DIR']
-  script: "mvn clean install -DskipTests"
+  script: "mvn clean install"
   artifacts:
     paths:
       - $BACK_DIR/target/*.jar
