@@ -22,10 +22,12 @@ import { CommonModule } from '@angular/common';
 import {
   MatButtonModule, MatCardModule, MatDialogModule, MatInputModule, MatTableModule,
   MatToolbarModule, MatMenuModule, MatIconModule, MatProgressSpinnerModule, MatSidenavModule,
-  MatDividerModule, MatListModule
+  MatDividerModule, MatListModule, MatTabsModule
 } from '@angular/material';
 import {ReactiveFormsModule} from '@angular/forms';
 import {AuthUtils} from './shared/services/utils/auth-utils.service';
+import { AuthComponent } from './Auth/pages/auth/auth.component';
+import { InscriptionFournComponent } from './Auth/pages/inscription-fourn/inscription-fourn.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +39,8 @@ import {AuthUtils} from './shared/services/utils/auth-utils.service';
     FiltersValueComponent,
     ProductDisplayComponent,
     LoginComponent,
+    AuthComponent,
+    InscriptionFournComponent,
   ],
   imports: [
     BrowserModule,
@@ -58,6 +62,7 @@ import {AuthUtils} from './shared/services/utils/auth-utils.service';
     MatSidenavModule,
     MatProgressSpinnerModule,
     MatDividerModule,
+    MatTabsModule,
     MatListModule
   ],
   exports: [
@@ -80,7 +85,7 @@ import {AuthUtils} from './shared/services/utils/auth-utils.service';
     AuthUtils
   ],
   entryComponents: [
-    LoginComponent
+    AuthComponent
   ],
   bootstrap: [AppComponent]
 })

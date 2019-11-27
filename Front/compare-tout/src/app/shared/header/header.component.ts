@@ -2,6 +2,7 @@ import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core'
 import {ModalService} from '../services/modal/modal.service';
 import {LoginComponent} from '../../Auth/pages/login/login.component';
 import {AuthUtils} from '../services/utils/auth-utils.service';
+import {AuthComponent} from '../../Auth/pages/auth/auth.component';
 
 @Component({
   selector: 'app-header',
@@ -27,7 +28,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   openConnexion() {
-    this.modalService.init(LoginComponent, {}, {});
+    this.modalService.init(AuthComponent, {}, {});
   }
 
   openSideNav() {
