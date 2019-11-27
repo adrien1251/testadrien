@@ -1,5 +1,6 @@
 package com.eltae.compareTout.converter;
 
+import com.eltae.compareTout.dto.admin.AdminDto;
 import com.eltae.compareTout.dto.customer.CustomerDto;
 import com.eltae.compareTout.dto.supplier.SupplierDto;
 import com.eltae.compareTout.dto.user.UserDto;
@@ -56,7 +57,7 @@ public class UserConverter extends GenericsConverter<User, UserDto> {
                     .birthday(((Customer) user).getBirthday())
                     .build();
         } else if(user instanceof Admin){
-            return CustomerDto.builder()
+            return AdminDto.builder()
                     .id(user.getId())
                     .firstName(user.getFirstName())
                     .lastName(user.getLastName())

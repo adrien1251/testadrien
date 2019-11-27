@@ -13,6 +13,9 @@
         <a mat-list-item routerLink="/" (click)="sidenav.close()">Mon profil</a>
         <mat-divider></mat-divider>
         <a mat-list-item (click)="logout(); sidenav.close()">Déconnexion</a>
+        <div *ngIf="user.type==='admin'">
+          <a mat-list-item routerLink="/admin/supplier" (click)="sidenav.close()">Gérer les fournisseurs</a>
+        </div>
       </div>
     </mat-nav-list>
   </mat-sidenav>

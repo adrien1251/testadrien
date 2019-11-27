@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MenuCategoriesComponent } from './components/menu-categories/menu-categories.component';
+import { AdminComponent } from './pages/admin/admin.component';
 
 
 @NgModule({
@@ -11,7 +12,7 @@ import { MenuCategoriesComponent } from './components/menu-categories/menu-categ
   ],
   declarations: [
     // MenuCategoriesComponent,
-  ],
+  AdminComponent],
   exports: [
     MatCheckboxModule,
   ],
