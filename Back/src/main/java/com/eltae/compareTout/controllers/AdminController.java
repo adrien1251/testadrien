@@ -38,7 +38,7 @@ public class AdminController extends ExceptionCatcher {
 
 
     @ApiOperation(value = "Create a new admin profile in database.")
-    @PostMapping(produces = "application/json", value = "/create")
+    @PostMapping(produces = "application/json", value = "/")
     public ResponseEntity<AdminDto> createAdmin(@RequestBody AdminDto adminDto) {
         return ResponseEntity.status(201).body(this.adminService.create(adminDto));
     }

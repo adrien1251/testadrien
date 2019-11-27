@@ -21,9 +21,25 @@ import { LoginComponent } from './Auth/pages/login/login.component';
 
 import { CommonModule } from '@angular/common';
 import {
-  MatButtonModule, MatCardModule, MatDialogModule, MatInputModule, MatTableModule,
-  MatToolbarModule, MatMenuModule, MatIconModule, MatProgressSpinnerModule, MatSidenavModule,
-  MatDividerModule, MatListModule, MatTabsModule, MatSliderModule
+  MatButtonModule,
+  MatCardModule,
+  MatDialogModule,
+  MatInputModule,
+  MatTableModule,
+  MatToolbarModule,
+  MatMenuModule,
+  MatIconModule,
+  MatProgressSpinnerModule,
+  MatSidenavModule,
+  MatDividerModule,
+  MatListModule,
+  MatTabsModule,
+  MatSliderModule,
+  MatOptionModule,
+  MatSelectModule,
+  MatDatepickerModule,
+  MatDatepicker,
+  MatNativeDateModule
 } from '@angular/material';
 import {ReactiveFormsModule} from '@angular/forms';
 import {AuthUtils} from './shared/services/utils/auth-utils.service';
@@ -72,6 +88,10 @@ import { InscriptionCustomerComponent } from './Auth/pages/inscription-customer/
     MatSliderModule,
     Ng5SliderModule,
     MatTabsModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   exports: [
     MainPageComponent,
@@ -91,7 +111,8 @@ import { InscriptionCustomerComponent } from './Auth/pages/inscription-customer/
     CategoryService,
     CriteriaService,
     ProductService,
-    AuthUtils
+    AuthUtils,
+    MatDatepickerModule
   ],
   entryComponents: [
     AuthComponent

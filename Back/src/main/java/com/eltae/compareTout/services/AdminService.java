@@ -4,9 +4,12 @@ package com.eltae.compareTout.services;
 import com.eltae.compareTout.converter.AdminConverter;
 import com.eltae.compareTout.dto.admin.AdminDto;
 import com.eltae.compareTout.entities.Admin;
+import com.eltae.compareTout.exceptions.ApplicationException;
 import com.eltae.compareTout.repositories.AdminRepository;
-import com.eltae.compareTout.repositories.supplier.SupplierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -18,17 +21,25 @@ public class AdminService {
 
     private AdminRepository adminRepository;
     private AdminConverter adminConverter;
-    private SupplierRepository supplierRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public AdminService(AdminRepository adminRepository, AdminConverter adminConverter, SupplierRepository supplierRepository){
+    public AdminService(
+            AdminRepository adminRepository,
+            AdminConverter adminConverter,
+            @Lazy BCryptPasswordEncoder bCryptPasswordEncoder){
         this.adminRepository = adminRepository;
         this.adminConverter = adminConverter;
-        this.supplierRepository = supplierRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     public AdminDto create(AdminDto adminDto) {
         Admin admin = adminConverter.dtoFromFrontEntity(adminDto);
+        admin.setPassword(bCryptPasswordEncoder.encode(admin.getPassword()));
+
+        if (adminRepository.findByEmail(admin.getEmail()).isPresent()) {
+            throw new ApplicationException(HttpStatus.CONFLICT, "This email already exist");
+        }
         return adminConverter.entityToDto(this.adminRepository.save(admin));
     }
 

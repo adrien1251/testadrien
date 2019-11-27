@@ -35,12 +35,19 @@
       </p>
       <p>
         <mat-form-field>
-          <input type="text" matInput placeholder="Votre sexe" formControlName="sexe" required>
+          <mat-label>Votre sexe</mat-label>
+          <mat-select [formControl]="sexeControl" required>
+            <mat-option *ngFor="let sexe of sexes" [value]="sexe">
+              {{sexe}}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
       </p>
       <p>
         <mat-form-field>
-          <input type="text" matInput placeholder="Votre anniversaire" formControlName="birthday" required>
+          <input matInput [matDatepicker]="dp3" placeholder="Votre anniversaire" formControlName="birthday" disabled={{true}} required>
+          <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+          <mat-datepicker #dp3 disabled="false"></mat-datepicker>
         </mat-form-field>
       </p>
 
