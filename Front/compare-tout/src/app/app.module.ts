@@ -23,13 +23,14 @@ import { CommonModule } from '@angular/common';
 import {
   MatButtonModule, MatCardModule, MatDialogModule, MatInputModule, MatTableModule,
   MatToolbarModule, MatMenuModule, MatIconModule, MatProgressSpinnerModule, MatSidenavModule,
-  MatDividerModule, MatListModule
+  MatDividerModule, MatListModule, MatTabsModule, MatSliderModule
 } from '@angular/material';
 import {ReactiveFormsModule} from '@angular/forms';
 import {AuthUtils} from './shared/services/utils/auth-utils.service';
-import { MatSliderModule } from '@angular/material/slider';
 import { FiltersSliderComponent } from './main-page/components/filters-slider/filters-slider.component';
 import { Ng5SliderModule } from 'ng5-slider';
+import { AuthComponent } from './Auth/pages/auth/auth.component';
+import { InscriptionFournComponent } from './Auth/pages/inscription-fourn/inscription-fourn.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,8 @@ import { Ng5SliderModule } from 'ng5-slider';
     ProductDisplayComponent,
     LoginComponent,
     FiltersSliderComponent
+    AuthComponent,
+    InscriptionFournComponent,
   ],
   imports: [
     BrowserModule,
@@ -65,7 +68,8 @@ import { Ng5SliderModule } from 'ng5-slider';
     MatDividerModule,
     MatListModule,
     MatSliderModule,
-    Ng5SliderModule
+    Ng5SliderModule,
+    MatTabsModule,
   ],
   exports: [
     MainPageComponent,
@@ -88,7 +92,7 @@ import { Ng5SliderModule } from 'ng5-slider';
     AuthUtils
   ],
   entryComponents: [
-    LoginComponent
+    AuthComponent
   ],
   bootstrap: [AppComponent]
 })

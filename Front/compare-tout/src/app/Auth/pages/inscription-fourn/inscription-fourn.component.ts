@@ -1,29 +1,35 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ModalService} from '../../../shared/services/modal/modal.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {ModalService} from '../../../shared/services/modal/modal.service';
 import {AuthService} from '../../../shared/services/auth.service';
-import {Error} from '../../../shared/models/error.interface';
 import {AuthUtils} from '../../../shared/services/utils/auth-utils.service';
+import {Error} from '../../../shared/models/error.interface';
+import {RegisterService} from '../../../shared/services/register.service';
+import {Supplier} from '../../../shared/models/supplier.interface';
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  selector: 'app-inscription-fourn',
+  templateUrl: './inscription-fourn.component.html',
+  styleUrls: ['./inscription-fourn.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class InscriptionFournComponent implements OnInit {
+
   error: string | null;
 
   isWaiting = false;
 
   form: FormGroup = new FormGroup({
-    username: new FormControl('',  [Validators.required]),
+    firstName: new FormControl('',  [Validators.required]),
+    lastName: new FormControl('',  [Validators.required]),
+    email: new FormControl('',  [Validators.required, Validators.email]),
     password: new FormControl('',  [Validators.required]),
+    webSite: new FormControl('',  [Validators.required]),
+    siret: new FormControl('',  [Validators.required]),
   });
 
   constructor(
     private modalService: ModalService,
-    private authService: AuthService,
-    private authUtils: AuthUtils) { }
+    private registerService: RegisterService) { }
 
   ngOnInit() {
   }
@@ -36,13 +42,12 @@ export class LoginComponent implements OnInit {
   submit() {
     if (this.form.valid) {
       this.isWaiting = true;
-      this.authService.login(this.form.value.username, this.form.value.password).subscribe(
+      this.registerService.registerSupplier(this.form.value).subscribe(
         (user: any) => {
           this.error = null;
-          this.authUtils.setCurrentUser(user);
         },
         (error: Error) => {
-          if (error.error.statusErrorCode === 404) {
+          if (error.error.statusErrorCode === 409) {
             this.error = error.error.errorMessage;
           } else {
             this.error = "Une erreur innatendu s'est produite";
@@ -58,4 +63,5 @@ export class LoginComponent implements OnInit {
       this.error = "L'un des champs n'est pas remplit";
     }
   }
+
 }

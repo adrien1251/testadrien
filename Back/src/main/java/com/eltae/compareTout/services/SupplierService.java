@@ -7,7 +7,9 @@ import com.eltae.compareTout.converter.supplier.SupplierInscriptionConverter;
 import com.eltae.compareTout.dto.supplier.SupplierDto;
 import com.eltae.compareTout.dto.supplier.SupplierInscriptionDto;
 import com.eltae.compareTout.entities.Supplier;
+import com.eltae.compareTout.exceptions.ApplicationException;
 import com.eltae.compareTout.repositories.supplier.SupplierRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
@@ -59,6 +61,9 @@ public class SupplierService {
 
     public String create(SupplierInscriptionDto supDto) {
         Supplier sup =this.supInsconv.dtoFromFrontEntity(supDto);
+        if(findSupplierByEmail(sup.getEmail()).isPresent()){
+            throw new ApplicationException(HttpStatus.CONFLICT, "This email already exist");
+        }
         sup.setPassword(bCryptPasswordEncoder.encode(sup.getPassword()));
         this.supplierRepository.save(sup);
         return "ok";
