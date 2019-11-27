@@ -1,6 +1,8 @@
 package com.eltae.compareTout.services;
 
+import antlr.StringUtils;
 import com.eltae.compareTout.converter.CriteriaConverter;
+import com.eltae.compareTout.converter.CriteriaProductConverter;
 import com.eltae.compareTout.converter.product.ProductConverter;
 import com.eltae.compareTout.dto.criteria.CriteriaProductDto;
 import com.eltae.compareTout.dto.product.ShortProductDto;
@@ -8,8 +10,11 @@ import com.eltae.compareTout.entities.*;
 import com.eltae.compareTout.exceptions.ApplicationException;
 import com.eltae.compareTout.exceptions.WrongParameters;
 import com.eltae.compareTout.repositories.CategoryCriteriaRepository;
+import com.eltae.compareTout.repositories.CriteriaProductRepository;
 import com.eltae.compareTout.repositories.CriteriaRepository;
 import com.eltae.compareTout.repositories.ProductRepository;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
 import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
@@ -24,8 +29,10 @@ import javax.transaction.Transactional;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -37,17 +44,21 @@ public class CriteriaService {
     private final CategoryService categoryService;
     private final CategoryCriteriaRepository categoryCriteriaRepository;
     private final CriteriaConverter criteriaConverter;
+    private final CriteriaProductConverter criteriaProductConverter;
+    private final CriteriaProductRepository criteriaProductRepository;
     private Map<Integer,String> errorMap;
 
 
     @Autowired
-    public CriteriaService(ProductConverter prodConv, ProductRepository prodRep, CriteriaRepository criteriaRepository, CategoryService categoryService, CategoryCriteriaRepository categoryCriteriaRepository, CriteriaConverter criteriaConverter) {
+    public CriteriaService(ProductConverter prodConv, ProductRepository prodRep, CriteriaRepository criteriaRepository, CategoryService categoryService, CategoryCriteriaRepository categoryCriteriaRepository, CriteriaConverter criteriaConverter, CriteriaProductConverter criteriaProductConverter, CriteriaProductRepository criteriaProductRepository) {
         this.productRepository = prodRep;
         this.productConverter = prodConv;
         this.criteriaRepository = criteriaRepository;
         this.categoryService = categoryService;
         this.categoryCriteriaRepository = categoryCriteriaRepository;
         this.criteriaConverter = criteriaConverter;
+        this.criteriaProductConverter = criteriaProductConverter;
+        this.criteriaProductRepository = criteriaProductRepository;
     }
     public List<ShortProductDto> getProductsCriteria(Long id, List<Long> crit) {
         List<Product> myProducts = new ArrayList<Product>();
@@ -206,4 +217,63 @@ public class CriteriaService {
         return this.criteriaConverter.entityListToDtoList(this.criteriaRepository.findAll());
     }
 
+    public Map<Long,List<String>> getAllCriteriaAndAllValuesAssociatesToACategory(Long id_category) {
+        Category category = this.categoryService.getCategoryWithId(id_category);
+        List<Criteria> criteriaList = category.getCriteriaList();
+        List<CriteriaProduct> criteriaProductList = new ArrayList<>();
+        for (Criteria c : criteriaList){
+            criteriaProductList.addAll(this.criteriaProductRepository.findDistinctByPk_CriteriaAndAndPk_ProductCategory(c, category));
+        }
+        return this.removeAllDuplicateValuesInCriteriaValuesList(criteriaProductList);
+    }
+
+    private Map<Long, List<String>> removeAllDuplicateValuesInCriteriaValuesList(List<CriteriaProduct> criteriaProductList) {
+        Map<Long, List<String>> mapFilters = new HashMap<>();
+        for (CriteriaProduct cp : criteriaProductList){
+            if(!mapFilters.containsKey(cp.getCriteria().getId())){   //Si la map ne contient pas encore le critere
+                List<String> listValue= new ArrayList<>();
+                listValue.add(cp.getValue());
+                mapFilters.put(cp.getCriteria().getId(),listValue);
+            }
+            else {      //Si la map contient deja le critere
+                if (!mapFilters.get(cp.getCriteria().getId()).contains(cp.getValue()))  //Si le tab ne contient pas la value, ell est ajoute
+                    mapFilters.get(cp.getCriteria().getId()).add(cp.getValue());
+            }
+        }
+        return sortMyMap(mapFilters);
+    }
+
+
+    private Map<Long, List<String>> sortMyMap(Map<Long, List<String>> mapFilters) {
+        for (Map.Entry<Long, List<String>> entree : mapFilters.entrySet()){
+            if(entree.getValue().stream().allMatch(x -> isNumeric(x)))
+                entree.setValue(this.sortIntArray(entree.getValue()));
+            else {
+                List<String> list = entree.getValue().stream().map(x -> x.toLowerCase()).collect(Collectors.toList());
+                Collections.sort(list);
+                entree.setValue(list);
+            }
+        }
+        return mapFilters;
+    }
+
+    private List<String> sortIntArray(List<String> value) {
+            List<Float> list = value.stream()
+                    .map(Float::parseFloat)
+                    .collect(Collectors.toList());
+            Collections.sort(list);
+            return list.stream().map(Object::toString).collect(Collectors.toList());
+    }
+
+    private boolean isNumeric(String strNum) {
+        if (strNum == null) {
+            return false;
+        }
+        try {
+            float d = Float.parseFloat(strNum);
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+        return true;
+    }
 }
