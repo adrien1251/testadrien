@@ -50,17 +50,7 @@ public class UserServiceTest {
             UserDetails result = userService.loadUserByUsername(email);
     }
 
-    @Test
-    public void testGetUserWhenCorrectId(){
-        //Entry
-        Long id= 1l;
-        //Effective
-        UserDto userdto=new UserDto();
-        Mockito.when(userRepository.findById(id)).thenReturn(Optional.of(User.builder().build()));
-        //Expected
-        UserDto result = userService.getById(id);
-        assertEquals(userdto.getClass(),result.getClass());
-    }
+
 
     @Test(expected = ApplicationException.class)
     public void testGetUserWhenUnknownIdReturnApplicationException(){
@@ -71,14 +61,6 @@ public class UserServiceTest {
         UserDto result = userService.getById(id);
     }
 
-    @Test
-    public void testCreateUser(){
 
-        User user = new User();
-        user.setEmail("email");
-        userRepository.save(user);
-        User userresponse=userRepository.findByEmail("email").get();
-        Assert.assertNotNull(userresponse);
-    }
 
   }
