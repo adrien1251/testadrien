@@ -47,10 +47,12 @@ import {Ng5SliderModule} from 'ng5-slider';
 import {AuthComponent} from './Auth/pages/auth/auth.component';
 import {InscriptionFournComponent} from './Auth/pages/inscription-fourn/inscription-fourn.component';
 import {InscriptionCustomerComponent} from './Auth/pages/inscription-customer/inscription-customer.component';
+import {AdminComponent} from './main-page/pages/admin/admin.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    AdminComponent,
     MainPageComponent,
     HeaderComponent,
     MenuCategoriesComponent,
@@ -77,7 +79,6 @@ import {InscriptionCustomerComponent} from './Auth/pages/inscription-customer/in
     MatCardModule,
     MatInputModule,
     MatDialogModule,
-    MatTableModule,
     MatMenuModule,
     MatIconModule,
     MatSidenavModule,
@@ -90,7 +91,8 @@ import {InscriptionCustomerComponent} from './Auth/pages/inscription-customer/in
     MatOptionModule,
     MatSelectModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatTableModule,
   ],
   exports: [
     MainPageComponent,
@@ -100,7 +102,6 @@ import {InscriptionCustomerComponent} from './Auth/pages/inscription-customer/in
     MatCardModule,
     MatInputModule,
     MatDialogModule,
-    MatTableModule,
     MatMenuModule,
     MatIconModule,
     MatProgressSpinnerModule,
@@ -111,7 +112,8 @@ import {InscriptionCustomerComponent} from './Auth/pages/inscription-customer/in
     CriteriaService,
     ProductService,
     AuthUtils,
-    MatDatepickerModule
+    MatDatepickerModule,
+    MatTableModule
   ],
   entryComponents: [
     AuthComponent

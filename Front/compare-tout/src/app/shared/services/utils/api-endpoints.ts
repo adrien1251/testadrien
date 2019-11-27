@@ -5,6 +5,10 @@ export const apiEndpoints = {
     registerSupplier: 'supplier',
     registerCustomer: 'customer',
 
+    // Admin
+    findAllSupplierWhoNeedValidate: 'admin/getAllSuppliersAccountToValid',
+    validateSupplierAccount: 'admin/validateSupplierAccount',
+
     // Categories
     getMainCategories: 'main-categories',
     getCategories: 'categories',
