@@ -31,6 +31,7 @@ import { FiltersSliderComponent } from './main-page/components/filters-slider/fi
 import { Ng5SliderModule } from 'ng5-slider';
 import { AuthComponent } from './Auth/pages/auth/auth.component';
 import { InscriptionFournComponent } from './Auth/pages/inscription-fourn/inscription-fourn.component';
+import { InscriptionCustomerComponent } from './Auth/pages/inscription-customer/inscription-customer.component';
 
 @NgModule({
   declarations: [
@@ -45,6 +46,7 @@ import { InscriptionFournComponent } from './Auth/pages/inscription-fourn/inscri
     FiltersSliderComponent,
     AuthComponent,
     InscriptionFournComponent,
+    InscriptionCustomerComponent,
   ],
   imports: [
     BrowserModule,

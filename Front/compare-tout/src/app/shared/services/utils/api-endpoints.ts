@@ -3,6 +3,7 @@ export const apiEndpoints = {
     getUsers: 'users',
     login: 'login',
     registerSupplier: 'supplier',
+    registerCustomer: 'customer',
 
     // Categories
     getMainCategories: 'main-categories',
