@@ -44,6 +44,8 @@ export class LoginComponent implements OnInit {
         (error: Error) => {
           if (error.error.statusErrorCode === 404) {
             this.error = error.error.errorMessage;
+          } else if (error.error.statusErrorCode === 403) {
+            this.error = error.error.errorMessage;
           } else {
             this.error = "Une erreur innatendu s'est produite";
           }

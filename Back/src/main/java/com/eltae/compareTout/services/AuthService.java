@@ -37,7 +37,11 @@ public class AuthService {
                 !bCryptPasswordEncoder.matches(login.getPassword(), dbUser.get().getPassword())) {
             throw new ApplicationException(HttpStatus.NOT_FOUND, "Wrong email or password");
         }
-
+        if (dbUser.get() instanceof Supplier){
+            if(((Supplier) dbUser.get()).getValidationDate() == null) {
+                throw new ApplicationException(HttpStatus.FORBIDDEN, "Your account reach the process of validation. Be patient");
+            }
+        }
         return this.userConverter.entityToDtoMinimumParams(dbUser.get());
     }
 }
