@@ -1,0 +1,4 @@
+<div class="custom-slider" *ngIf="options.floor != null">
+  <ng5-slider [(value)]="minValue" [(highValue)]="maxValue" [options]="options" (valueChange)="updateLow($event)"
+    (highValueChange)="updateHigh($event)"></ng5-slider>
+</div>

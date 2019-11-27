@@ -27,6 +27,9 @@ import {
 } from '@angular/material';
 import {ReactiveFormsModule} from '@angular/forms';
 import {AuthUtils} from './shared/services/utils/auth-utils.service';
+import { MatSliderModule } from '@angular/material/slider';
+import { FiltersSliderComponent } from './main-page/components/filters-slider/filters-slider.component';
+import { Ng5SliderModule } from 'ng5-slider';
 
 @NgModule({
   declarations: [
@@ -38,6 +41,7 @@ import {AuthUtils} from './shared/services/utils/auth-utils.service';
     FiltersValueComponent,
     ProductDisplayComponent,
     LoginComponent,
+    FiltersSliderComponent
   ],
   imports: [
     BrowserModule,
@@ -59,7 +63,9 @@ import {AuthUtils} from './shared/services/utils/auth-utils.service';
     MatSidenavModule,
     MatProgressSpinnerModule,
     MatDividerModule,
-    MatListModule
+    MatListModule,
+    MatSliderModule,
+    Ng5SliderModule
   ],
   exports: [
     MainPageComponent,

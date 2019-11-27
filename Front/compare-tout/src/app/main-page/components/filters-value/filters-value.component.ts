@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
-import { Criteria } from 'src/app/shared/models/criteria.interface';
+import { Criteria, UniqueCriteria } from 'src/app/shared/models/criteria.interface';
 
 @Component({
   selector: 'app-filters-value',
@@ -8,9 +8,8 @@ import { Criteria } from 'src/app/shared/models/criteria.interface';
 })
 export class FiltersValueComponent implements OnInit, OnDestroy {
 
+  @Input() criteria: UniqueCriteria;
   @Input() value: string;
-  @Input() unit: string;
-  @Input() id: string;
   @Output() valueChecked: EventEmitter<any> = new EventEmitter<any>();
   public checked = false;
 
@@ -18,8 +17,8 @@ export class FiltersValueComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    if (this.unit === 'null') {
-      this.unit = '';
+    if (this.criteria.unit === 'null') {
+      this.criteria.unit = '';
     }
   }
 
@@ -31,8 +30,8 @@ export class FiltersValueComponent implements OnInit, OnDestroy {
     this.checked = !this.checked;
     console.log(this.checked);
     const valueSelect = {
-      idCriteria: this.id,
-      value,
+      idCriteria: this.criteria.id,
+      value: [value],
       selected: this.checked
     };
     this.valueChecked.emit(valueSelect);

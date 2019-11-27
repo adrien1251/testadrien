@@ -12,13 +12,14 @@ export class FiltersComponent implements OnInit, OnDestroy {
   criteriaSelected: any[] = [];
   @Output() valueHasChanged: EventEmitter<any> = new EventEmitter<any>();
   displayFilters = false;
+  valueMin = 99999;
+  valueMax = 0;
 
   constructor(
   ) { }
 
   ngOnInit(): void {
-    if (this.criteriaList != null) {
-      console.log(this.criteriaList);
+    if (this.criteriaList != null && this.criteriaList.length > 0) {
       this.fetchCriteria();
     }
   }
@@ -27,12 +28,26 @@ export class FiltersComponent implements OnInit, OnDestroy {
   }
 
   fetchCriteria(): void {
-    //
+    // this.criteriaList.forEach(c => {
+    //   if (c.type === 'INT' || c.type === 'FLOAT') {
+    //     c.values.forEach(crit => {
+    //       if (+crit < this.valueMin) {
+    //         this.valueMin = +crit;
+    //         c.minValue = +crit;
+    //       } else {
+    //         if (+crit > this.valueMax) {
+    //           this.valueMax = +crit;
+    //           c.maxValue = +crit;
+    //         }
+    //       }
+    //     });
+    //   }
+    // });
   }
 
   updateCriteria(event) {
     if (event.selected) {
-      this.criteriaSelected.push(event);
+      this.criteriaSelected.push( { idCriteria: event.idCriteria, value: event.value, minValue: event.minValue, maxValue: event.maxValue });
     } else {
       const i = this.criteriaSelected.findIndex(x => x.id === event.id);
       this.criteriaSelected.splice(i, 1);
@@ -42,6 +57,11 @@ export class FiltersComponent implements OnInit, OnDestroy {
 
   showFilters() {
     this.displayFilters = !this.displayFilters;
+  }
+
+  resetFilters(): void {
+    this.criteriaSelected = [];
+    this.valueHasChanged.emit(this.criteriaSelected);
   }
 
 }

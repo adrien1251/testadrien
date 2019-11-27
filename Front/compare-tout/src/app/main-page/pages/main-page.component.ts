@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ɵConsole } from '@angular/core';
 import { Category } from 'src/app/shared/models/category.interface';
 import { CategoryService } from 'src/app/shared/services/category.service';
 import { categoryMock1, categoryMock2 } from 'src/app/shared/mocks/category-mock';
@@ -21,7 +21,8 @@ export class MainPageComponent implements OnInit, OnDestroy {
   public isChildCategory: boolean;
   public productList: Product[];
   public criteriaList: Criteria[] = [];
-  public criteriaValues: UniqueCriteria[];
+  public criteriaValues: UniqueCriteria[] = [];
+  canShowFilters = false;
 
 
   constructor(
@@ -54,20 +55,20 @@ export class MainPageComponent implements OnInit, OnDestroy {
         this.subCategories = res;
       });
       this.currentCategory = event;
+      if (this.currentCategory) {
+        this.criteriaService.getCriterias(this.currentCategory.id).subscribe((res) => {
+          this.currentCategory.criteriaList = res;
+          // this.criteriaList = res;
+          this.fetchProducts();
+        });
+      }
     } else {
       this.currentCategory = null;
     }
-    if (this.currentCategory) {
-      this.criteriaService.getCriterias(this.currentCategory.id).subscribe((res) => {
-        this.currentCategory.criteriaList = res;
-        // this.criteriaList = res;
-        this.fetchProducts();
-      });
-    }
+
   }
 
   fetchProducts(): void {
-    this.criteriaValues = [];
     this.productService.getProductsByCategoryAndCriteria(this.currentCategory.id, null).subscribe((res) => {
       this.productList = res;
       this.productList.forEach(product => {
@@ -92,10 +93,10 @@ export class MainPageComponent implements OnInit, OnDestroy {
               }
             }
           });
+          this.canShowFilters = true;
         });
       });
     });
-    console.log(this.criteriaValues);
   }
 
   reloadProducts(event): void {
@@ -103,7 +104,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   sendCriterias(event): void {
-    if (event.length === 0) { event = null; }
+    if (event == null || event.length === 0) { event = null; }
     this.productService.getProductsByCategoryAndCriteria(this.currentCategory.id, event).subscribe( res => {
       this.productList = res;
     }
