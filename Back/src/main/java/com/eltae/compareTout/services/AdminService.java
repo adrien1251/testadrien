@@ -5,6 +5,7 @@ import com.eltae.compareTout.converter.AdminConverter;
 import com.eltae.compareTout.dto.admin.AdminDto;
 import com.eltae.compareTout.entities.Admin;
 import com.eltae.compareTout.repositories.AdminRepository;
+import com.eltae.compareTout.repositories.supplier.SupplierRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,39 +18,33 @@ public class AdminService {
 
     private AdminRepository adminRepository;
     private AdminConverter adminConverter;
+    private SupplierRepository supplierRepository;
 
     @Autowired
-    public AdminService(AdminRepository adminRepository, AdminConverter adminConverter){
+    public AdminService(AdminRepository adminRepository, AdminConverter adminConverter, SupplierRepository supplierRepository){
         this.adminRepository = adminRepository;
         this.adminConverter = adminConverter;
+        this.supplierRepository = supplierRepository;
     }
 
-    public String create(AdminDto adminDto) {
-        Admin a = adminConverter.dtoFromFrontEntity(adminDto);
-        this.adminRepository.save(a);
-        return "Insert successful";
+    public AdminDto create(AdminDto adminDto) {
+        Admin admin = adminConverter.dtoFromFrontEntity(adminDto);
+        return adminConverter.entityToDto(this.adminRepository.save(admin));
     }
 
-    public boolean update(AdminDto adminDto) {
+    public AdminDto update(AdminDto adminDto) {
         Optional<Admin> a = adminRepository.findById(adminDto.getId());
         if (a.isPresent()){
-            Admin admin = a.get();
-            admin.setPhoneNum(adminDto.getPhoneNum());
-            admin.setCreationDate(adminDto.getCreationDate());
-            admin.setEmail(adminDto.getEmail());
-            admin.setFirstName(adminDto.getFirstName());
-            admin.setLastName(adminDto.getLastName());
-            admin.setPassword(adminDto.getPassword());
-            admin.setResetToken(adminDto.getResetToken());
-            this.adminRepository.save(admin);
-            return true;
-
+            Admin admin = this.adminConverter.dtoToEntity(adminDto);
+            return adminConverter.entityToDto(this.adminRepository.save(admin));
         }
-        return false;
+        return null;
     }
 
 
     public AdminDto getAdminWithId(long idAdmin) {
         return  null;
     }
+
+
 }

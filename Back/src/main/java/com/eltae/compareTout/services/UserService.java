@@ -15,7 +15,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,12 +37,24 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) {
         Optional<User> user = userRepository.findByEmail(email);
         if (!user.isPresent()) {
-            throw new ApplicationException(HttpStatus.BAD_REQUEST,"Invalid email.");
+            throw new ApplicationException(HttpStatus.BAD_REQUEST, "Invalid email or password.");
         }
+
         List<GrantedAuthority> grantedAuths =
                 AuthorityUtils.commaSeparatedStringToAuthorityList("user");
-        return new org.springframework.security.core.userdetails.User(user.get().getEmail(),
-                user.get().getPassword(),grantedAuths);
+
+        return new org.springframework.security.core.userdetails.User(
+                user.get().getEmail(),
+                user.get().getPassword(),
+                grantedAuths);
+    }
+
+    public User findByEmail(String email) {
+        return userRepository
+                .findByEmail(email)
+                .orElseThrow(
+                    () -> new ApplicationException(HttpStatus.BAD_REQUEST, "Invalid email or password.")
+                );
     }
 
     public UserDto create(UserDto userDto) {

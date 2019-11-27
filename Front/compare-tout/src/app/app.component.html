@@ -1,2 +1,25 @@
-<app-header></app-header>
-<router-outlet></router-outlet>
+<mat-sidenav-container class="side-nav-menu-container">
+  <mat-sidenav #sidenav mode="over">
+    <mat-toolbar>
+      <mat-toolbar-row>
+        <h2>Menu</h2>
+      </mat-toolbar-row>
+    </mat-toolbar>
+
+
+    <mat-nav-list>
+      <a mat-list-item routerLink="/" (click)="sidenav.close()">Filtrer</a>
+      <div *ngIf="user">
+        <h2 matSubheader>Profil</h2>
+        <a mat-list-item routerLink="/" (click)="sidenav.close()">Mon profil</a>
+        <mat-divider></mat-divider>
+        <a mat-list-item (click)="logout(); sidenav.close()">Déconnexion</a>
+      </div>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <app-header (toggleSideNav)="sidenav.toggle()"></app-header>
+  <router-outlet></router-outlet>
+  <div id="modal-container" class="hidden"></div>
+  <div id="overlay" (click)="removeModal()" class="hidden"></div>
+</mat-sidenav-container>

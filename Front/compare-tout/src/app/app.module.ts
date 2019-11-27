@@ -16,6 +16,17 @@ import { FiltersValueComponent } from './main-page/components/filters-value/filt
 import { CriteriaService } from './shared/services/criteria.service';
 import { ProductService } from './shared/services/product.service';
 import { ProductDisplayComponent } from './main-page/components/product-display/product-display.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { LoginComponent } from './Auth/pages/login/login.component';
+
+import { CommonModule } from '@angular/common';
+import {
+  MatButtonModule, MatCardModule, MatDialogModule, MatInputModule, MatTableModule,
+  MatToolbarModule, MatMenuModule, MatIconModule, MatProgressSpinnerModule, MatSidenavModule,
+  MatDividerModule, MatListModule
+} from '@angular/material';
+import {ReactiveFormsModule} from '@angular/forms';
+import {AuthUtils} from './shared/services/utils/auth-utils.service';
 
 @NgModule({
   declarations: [
@@ -25,23 +36,53 @@ import { ProductDisplayComponent } from './main-page/components/product-display/
     MenuCategoriesComponent,
     FiltersComponent,
     FiltersValueComponent,
-    ProductDisplayComponent
+    ProductDisplayComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
+    ReactiveFormsModule,
     AppRoutingModule,
     HttpClientModule,
     SearchResultModule,
     MainPageModule,
+    BrowserAnimationsModule,
+    CommonModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatCardModule,
+    MatInputModule,
+    MatDialogModule,
+    MatTableModule,
+    MatMenuModule,
+    MatIconModule,
+    MatSidenavModule,
+    MatProgressSpinnerModule,
+    MatDividerModule,
+    MatListModule
   ],
   exports: [
     MainPageComponent,
+    CommonModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatCardModule,
+    MatInputModule,
+    MatDialogModule,
+    MatTableModule,
+    MatMenuModule,
+    MatIconModule,
+    MatProgressSpinnerModule,
   ],
   providers: [
     TestService,
     CategoryService,
     CriteriaService,
     ProductService,
+    AuthUtils
+  ],
+  entryComponents: [
+    LoginComponent
   ],
   bootstrap: [AppComponent]
 })
