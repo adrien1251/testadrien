@@ -1,6 +1,12 @@
 <div *ngIf="this.product" class="product-details-content">
-  <div class="title">
+    <div class="go-back" (click)="goBack()">Retour à la liste</div>
+  <div class="title" *ngIf="product.nameShort">
+    {{product.nameShort}}
+    <div class="seeNext" (click)="seeMoreTitle()">voir la suite</div>
+  </div>
+  <div class="title" *ngIf="!product.nameShort">
     {{product.name}}
+    <div class="seeNext" *ngIf="product.name.length > 25" (click)="seeLessTitle()">voir moins</div>
   </div>
   <div class="description" *ngIf="product.descriptionShort">
     {{product.descriptionShort}}
@@ -8,7 +14,7 @@
   </div>
   <div class="description" *ngIf="!product.descriptionShort">
     {{product.description}}
-    <div class="seeNext" (click)="seeLessDesc()">voir moins</div>
+    <div class="seeNext" *ngIf="product.description.length > 250" (click)="seeLessDesc()">voir moins</div>
   </div>
   <table>
     <tr>

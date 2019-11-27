@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 export class ProductDisplayComponent implements OnInit {
 
     @Input() product: Product;
+    @Input() category: any;
     constructor(
         private router: Router,
     ) { }
@@ -19,6 +20,6 @@ export class ProductDisplayComponent implements OnInit {
     }
 
     goToDetails(): void {
-        this.router.navigate(['/product', this.product.id], { state: { product: this.product } });
+        this.router.navigate(['/product', this.product.id], { state: { product: this.product, cat: this.category} });
     }
 }

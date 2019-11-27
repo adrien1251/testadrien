@@ -1,9 +1,17 @@
 .product-details-content {
   text-align: center;
   margin: 10px 0px;
+  .go-back {
+      text-align: left;
+      text-decoration: underline;
+  }
   .title {
     font-size: 20px;
     line-height: 30px;
+    .seeNext {
+        font-size: 14px;
+        text-decoration: underline;
+    }
   }
 
   .description {

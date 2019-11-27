@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, Input, EventEmitter, Output } from '@angular/core';
 import { Category } from 'src/app/shared/models/category.interface';
 import { criteriaMock1 } from 'src/app/shared/mocks/critere-mock';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-menu-categories',
@@ -16,6 +17,7 @@ export class MenuCategoriesComponent implements OnInit, OnDestroy {
   @Input() subCategories: Category[];
 
   constructor(
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -40,6 +42,7 @@ export class MenuCategoriesComponent implements OnInit, OnDestroy {
     }
     this.categoriesDisplay = [category];
     this.currentCategory.emit(category);
+    this.router.navigate(['/category', category.id]);
 
   }
 

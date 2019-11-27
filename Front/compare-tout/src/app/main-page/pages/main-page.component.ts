@@ -8,6 +8,7 @@ import { Product } from 'src/app/shared/models/product.interface';
 import { productMock } from 'src/app/shared/mocks/product-mock';
 import { ProductService } from 'src/app/shared/services/product.service';
 import { Criteria, UniqueCriteria } from 'src/app/shared/models/criteria.interface';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-main-page',
@@ -23,16 +24,29 @@ export class MainPageComponent implements OnInit, OnDestroy {
   public criteriaList: Criteria[] = [];
   public criteriaValues: UniqueCriteria[] = [];
   canShowFilters = false;
+  fromProduct = false;
 
 
   constructor(
     private categoryService: CategoryService,
     private criteriaService: CriteriaService,
     private productService: ProductService,
-  ) { }
+    private route: ActivatedRoute,
+    private router: Router,
+  ) {
+    this.currentCategory = this.router.getCurrentNavigation().extras.state ? this.router.getCurrentNavigation().extras.state.cat : null;
+    this.fromProduct = this.currentCategory != null;
+  }
 
   ngOnInit(): void {
-    this.fetchCategories();
+    if (!this.fromProduct) {
+      this.fetchCategories();
+    } else {
+      const idRoute = this.route.snapshot.paramMap.get('id');
+      if (idRoute) {
+        this.fetchCurrentCategory(this.currentCategory, this.fromProduct);
+      }
+    }
   }
 
   ngOnDestroy(): void {
@@ -43,18 +57,29 @@ export class MainPageComponent implements OnInit, OnDestroy {
     this.categoryService.getCategories().subscribe(res => {
       if (res != null && res.length !== 0) {
         this.categories = res;
+
       }
     }
     );
   }
 
-  fetchCurrentCategory(event): void {
+  fetchCurrentCategory(event, fromRoute?: boolean): void {
     if (event != null) {
-      this.categoryService.getCategoriesChild(event.id).subscribe((res) => {
-        this.isChildCategory = res.length === 0;
-        this.subCategories = res;
-      });
-      this.currentCategory = event;
+      if (fromRoute) {
+        this.categoryService.getCategoriesChild(event.id).subscribe((res) => {
+          this.isChildCategory = res.length === 0;
+          this.subCategories = res;
+          this.categories = [event];
+
+        });
+      } else {
+        this.categoryService.getCategoriesChild(event.id).subscribe((res) => {
+          this.isChildCategory = res.length === 0;
+          this.subCategories = res;
+        });
+        this.currentCategory = event;
+      }
+
       if (this.currentCategory) {
         this.criteriaService.getCriterias(this.currentCategory.id).subscribe((res) => {
           this.currentCategory.criteriaList = res;
@@ -97,10 +122,6 @@ export class MainPageComponent implements OnInit, OnDestroy {
         });
       });
     });
-  }
-
-  reloadProducts(event): void {
-    console.log(event);
   }
 
   sendCriterias(event): void {
