@@ -42,7 +42,7 @@ import { InscriptionFournComponent } from './Auth/pages/inscription-fourn/inscri
     FiltersValueComponent,
     ProductDisplayComponent,
     LoginComponent,
-    FiltersSliderComponent
+    FiltersSliderComponent,
     AuthComponent,
     InscriptionFournComponent,
   ],
