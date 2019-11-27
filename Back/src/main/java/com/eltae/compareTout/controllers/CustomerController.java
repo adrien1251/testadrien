@@ -38,7 +38,8 @@ public class CustomerController extends ExceptionCatcher {
     @ApiOperation(value = "Create a customer account. ")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "The customer account has correctly been created"),
-            @ApiResponse(code = 500, message = "ThIs email is already attached to an account")})
+            @ApiResponse(code = 409, message = "This email already exist")})
+
     @PostMapping(produces="application/json")
     public ResponseEntity<?> createCustomer(@RequestBody CustomerInscriptionDto cusDto) {
         return ResponseEntity.status(200).body(this.customerService.create(cusDto));

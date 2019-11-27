@@ -20,4 +20,5 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     @Query("SELECT p FROM User p where p.id=:id and  p.class=:discriminatorValue")
     Optional<Customer> findByIdAndDiscriminatorValue(Long id, String discriminatorValue);
 
+    Optional<Customer> findByEmail(String email);
 }

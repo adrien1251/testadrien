@@ -6,11 +6,15 @@ import com.eltae.compareTout.converter.Customer.CustomerInscriptionConverter;
 import com.eltae.compareTout.dto.customer.CustomerDto;
 import com.eltae.compareTout.dto.customer.CustomerInscriptionDto;
 import com.eltae.compareTout.entities.Customer;
+import com.eltae.compareTout.exceptions.ApplicationException;
 import com.eltae.compareTout.repositories.Customer.CustomerRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -54,11 +58,19 @@ public class CustomerService {
       //          (id,"CUSTOMER").get();
   //  }
 
-    public String create(CustomerInscriptionDto cusDto) {
-        Customer customer =this.customerInscriptionConverter.dtoFromFrontEntity(cusDto);
-        this.customerRepository.save(customer);
-        return "Customer has been correctly created";
+    public Optional<Customer> findCustomerByEmail(String email){
+        return this.customerRepository.findByEmail(email);
     }
+
+    public CustomerDto create(CustomerInscriptionDto cusDto) {
+        Customer customer = customerInscriptionConverter.dtoToEntity(cusDto);
+        if(findCustomerByEmail(customer.getEmail()).isPresent()){
+            throw new ApplicationException(HttpStatus.CONFLICT, "This email already exist");
+        }
+        return customerConverter.entityToDto(this.customerRepository.save(customer));
+    }
+
+
 
     public String updateCustomer(CustomerDto cusDto) {
         if(this.isCustomer(cusDto.getId())) {
