@@ -9,6 +9,10 @@ export class AuthUtils {
 
   constructor() { }
 
+  public static getCurrentRoleUser(): string {
+    return this.getCurrentUser() ? this.getCurrentUser().type : null;
+  }
+
   public static getCurrentUser(): any {
     const cuStr = localStorage.getItem(AuthUtils.AuthNamespaces.CURRENT_USER);
     if (cuStr) {

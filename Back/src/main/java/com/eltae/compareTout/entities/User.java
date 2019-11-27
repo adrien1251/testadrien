@@ -1,6 +1,8 @@
 package com.eltae.compareTout.entities;
 
 import com.eltae.compareTout.constants.Tables;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -19,6 +21,15 @@ import java.util.Random;
 @AllArgsConstructor
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = Supplier.class, name = "supplier"),
+        @JsonSubTypes.Type(value = Admin.class, name = "admin"),
+        @JsonSubTypes.Type(value = Customer.class, name = "customer")
+})
 public class User implements Cloneable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,32 +40,6 @@ public class User implements Cloneable {
     private String password;
     private String resetToken;
     private LocalDate creationDate;
-
-
-
-    public String getRandomPassword() {
-        char[] chars = new char[26 + 26 + 10]; //
-        int i = 0;
-        for (char c = 'a'; c <= 'z'; c++, i++) { // on remplit avec les minuscules
-            chars[i] = c;
-        }
-        for (char c = 'A'; c <= 'Z'; c++, i++) { // on remplit avec les majuscules
-            chars[i] = c;
-        }
-        for (char c = '0'; c <= '9'; c++, i++) { // on remplit avec les chiffres
-            chars[i] = c;
-        }
-
-        Random random = new Random();
-        StringBuilder sb = new StringBuilder();
-
-        for (int j = 0; j < 10 + random.nextInt(20 - 10); j++) {
-            char c = chars[random.nextInt(chars.length)];
-            sb.append(c);
-        }
-
-        return sb.toString();
-    }
 
     public User clone() throws CloneNotSupportedException {
         return (User) super.clone();

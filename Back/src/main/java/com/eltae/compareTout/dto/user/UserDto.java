@@ -1,5 +1,10 @@
 package com.eltae.compareTout.dto.user;
 
+import com.eltae.compareTout.dto.admin.AdminDto;
+import com.eltae.compareTout.dto.customer.CustomerDto;
+import com.eltae.compareTout.dto.supplier.SupplierDto;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -11,6 +16,15 @@ import java.time.LocalDate;
 @SuperBuilder
 @NoArgsConstructor
 @EqualsAndHashCode
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = SupplierDto.class, name = "supplier"),
+        @JsonSubTypes.Type(value = AdminDto.class, name = "admin"),
+        @JsonSubTypes.Type(value = CustomerDto.class, name = "customer")
+})
 public class UserDto implements  Cloneable {
     private Long id;
 
