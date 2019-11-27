@@ -1,6 +1,7 @@
 
 import { Component, Input, OnInit } from '@angular/core';
 import { Product } from 'src/app/shared/models/product.interface';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-product-display',
@@ -10,9 +11,14 @@ import { Product } from 'src/app/shared/models/product.interface';
 export class ProductDisplayComponent implements OnInit {
 
     @Input() product: Product;
-    constructor() { }
+    constructor(
+        private router: Router,
+    ) { }
 
     ngOnInit(): void {
-        // .
+    }
+
+    goToDetails(): void {
+        this.router.navigate(['/product', this.product.id], { state: { product: this.product } });
     }
 }

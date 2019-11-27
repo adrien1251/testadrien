@@ -30,11 +30,13 @@ import {AuthUtils} from './shared/services/utils/auth-utils.service';
 import { MatSliderModule } from '@angular/material/slider';
 import { FiltersSliderComponent } from './main-page/components/filters-slider/filters-slider.component';
 import { Ng5SliderModule } from 'ng5-slider';
+import { ProductDetailsPageComponent } from './product-details/pages/product-details-page.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     MainPageComponent,
+    ProductDetailsPageComponent,
     HeaderComponent,
     MenuCategoriesComponent,
     FiltersComponent,
@@ -69,6 +71,7 @@ import { Ng5SliderModule } from 'ng5-slider';
   ],
   exports: [
     MainPageComponent,
+    ProductDetailsPageComponent,
     CommonModule,
     MatToolbarModule,
     MatButtonModule,

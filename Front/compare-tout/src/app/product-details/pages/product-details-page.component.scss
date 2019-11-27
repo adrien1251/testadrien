@@ -1,0 +1,35 @@
+.product-details-content {
+  text-align: center;
+  margin: 10px 0px;
+  .title {
+    font-size: 20px;
+    line-height: 30px;
+  }
+
+  .description {
+    font-size: 14px;
+    color: #555555;
+    .seeNext {
+        text-decoration: underline;
+    }
+  }
+
+  table {
+    width: 100vw;
+    td {
+        width: 50%;
+    }
+    .all-criterias:nth-child(even) {
+        background-color: #a6d6db;
+    }
+    .criteria-contener {
+        text-align: left;
+        padding: 5px;
+        display: flex;
+        width: 100%;
+    }
+  }
+
+  // .price {
+  // }
+}
