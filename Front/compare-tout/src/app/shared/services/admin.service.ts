@@ -17,7 +17,7 @@ export class AdminService {
     return this.httpClient.get<Supplier[]>(`${environment.back_url}${apiEndpoints.findAllSupplierWhoNeedValidate}`);
   }
 
-  public validateSupplier(supplier: Supplier): Observable<void> {
-    return this.httpClient.post<void>(`${environment.back_url}${apiEndpoints.validateSupplierAccount}`, {supplier});
+  public validateSupplier(idSupplier: string): Observable<void> {
+    return this.httpClient.put<void>(`${environment.back_url}${apiEndpoints.validateSupplierAccount(idSupplier)}`, {});
   }
 }

@@ -2,6 +2,8 @@ import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {ModalService} from './shared/services/modal/modal.service';
 import {DomService} from './shared/services/modal/dom.service';
 import {AuthUtils} from './shared/services/utils/auth-utils.service';
+import {AuthComponent} from './Auth/pages/auth/auth.component';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +18,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private modalService: ModalService,
+    private router: Router,
     private authUtils: AuthUtils) {}
 
   ngOnInit(): void {
@@ -29,7 +32,12 @@ export class AppComponent implements OnInit {
     this.modalService.destroy();
   }
 
+  openConnexion(){
+    this.modalService.init(AuthComponent, {}, {});
+  }
+
   logout() {
     this.authUtils.dispose();
+    this.router.navigate(['/']);
   }
 }

@@ -21,12 +21,19 @@ import java.util.Optional;
 @Transactional
 public class SupplierService {
     private final SupplierRepository supplierRepository;
+    private final SupplierConverter supplierConverter;
     private final SupplierConverter supConv;
     private final SupplierInscriptionConverter supInsconv;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public SupplierService(SupplierRepository supRep, SupplierConverter supConv, SupplierInscriptionConverter supInsconv, BCryptPasswordEncoder bCryptPasswordEncoder){
+    public SupplierService(
+            SupplierRepository supRep,
+            SupplierConverter supplierConverter,
+            SupplierConverter supConv,
+            SupplierInscriptionConverter supInsconv,
+            BCryptPasswordEncoder bCryptPasswordEncoder){
         this.supplierRepository=supRep;
+        this.supplierConverter = supplierConverter;
         this.supConv = supConv;
         this.supInsconv = supInsconv;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
@@ -59,14 +66,13 @@ public class SupplierService {
         return this.supplierRepository.findByEmailAndDiscriminatorValue(email,"SUPPLIER");
     }
 
-    public String create(SupplierInscriptionDto supDto) {
+    public SupplierDto create(SupplierInscriptionDto supDto) {
         Supplier sup =this.supInsconv.dtoFromFrontEntity(supDto);
         if(findSupplierByEmail(sup.getEmail()).isPresent()){
             throw new ApplicationException(HttpStatus.CONFLICT, "This email already exist");
         }
         sup.setPassword(bCryptPasswordEncoder.encode(sup.getPassword()));
-        this.supplierRepository.save(sup);
-        return "ok";
+        return this.supplierConverter.entityToDto(this.supplierRepository.save(sup));
     }
 
     public String updateSupplier(SupplierDto supDto) {
@@ -82,9 +88,11 @@ public class SupplierService {
         Supplier supplier = supplierRepository
                 .findById(supplierId)
                 .orElseThrow(() -> new ApplicationException(HttpStatus.resolve(400), "invalid supplier ID"));
+
         if (supplier.getValidationDate() != null)
             throw new ApplicationException(HttpStatus.PRECONDITION_FAILED, "Already validated supplier");
         supplier.setValidationDate(LocalDate.now());
+
         return supConv.entityToDto(supplierRepository.save(supplier));
     }
 

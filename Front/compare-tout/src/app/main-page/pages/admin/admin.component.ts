@@ -10,19 +10,24 @@ import {Supplier} from '../../../shared/models/supplier.interface';
   styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent implements OnInit {
-
+  validateInProgress = true;
   displayedColumns: string[] = ['select', 'firstName', 'lastName', 'webSite', 'siret'];
-  dataSource = null;
+  dataSource = new MatTableDataSource<Supplier>();
   selection = new SelectionModel<Supplier>(true, []);
 
   constructor(private adminService: AdminService) { }
 
   ngOnInit() {
-    this.adminService.findAllSupplierWhoNeedValidate().subscribe(supplier => {
-      this.dataSource = new MatTableDataSource<Supplier>(supplier);
-    });
+    this.loadDataSource();
   }
 
+  loadDataSource() {
+    this.adminService.findAllSupplierWhoNeedValidate().subscribe(supplier => {
+      this.dataSource = new MatTableDataSource<Supplier>(supplier);
+      this.selection = new SelectionModel<Supplier>(true, []);
+      this.validateInProgress = false;
+    });
+  }
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {
     const numSelected = this.selection.selected.length;
@@ -45,10 +50,29 @@ export class AdminComponent implements OnInit {
     return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id}`;
   }
 
-  validerFourn() {
+  buttonMessage() {
+    return this.dataSource.data.length === 0 ?
+      "Il n'y a pas de nouvelle demande fournisseur" :
+      "Valider tout les fournisseurs selectionné";
+  }
+
+
+  canNotValidate() {
+    return this.validateInProgress ||
+      this.dataSource.data.length === 0 ||
+      this.selection.selected.length === 0;
+  }
+
+  validateSupplier() {
+    if (this.selection.selected.length === 0) { return; }
+    this.validateInProgress = true;
+    let idx = this.selection.selected.length;
     this.selection.selected.forEach((supplier) => {
-      this.adminService.validateSupplier(supplier).subscribe();
+      this.adminService.validateSupplier(`${supplier.id}`).subscribe( () => {
+        if (--idx === 0) {
+          this.loadDataSource();
+        }
+      });
     });
-    console.log('tout valide');
   }
 }

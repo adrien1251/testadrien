@@ -43,7 +43,7 @@ public class SupplierController extends ExceptionCatcher {
             @ApiResponse(code = 200, message = "The supplier account has correctly been created"),
             @ApiResponse(code = 500, message = "ThIs email is already attached to an account")})
     @PostMapping(produces="application/json")
-    public ResponseEntity<?> createSupplier(@RequestBody SupplierInscriptionDto supDto) {
+    public ResponseEntity<SupplierDto> createSupplier(@RequestBody SupplierInscriptionDto supDto) {
         return ResponseEntity.status(200).body(this.supplierService.create(supDto));
     }
 

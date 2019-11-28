@@ -1,6 +1,8 @@
+<mat-progress-spinner class="spinner-wait" mode="indeterminate" *ngIf="validateInProgress"></mat-progress-spinner>
+
 <div>
   <h2>Gestion des fournisseurs</h2>
-  <table *ngIf="dataSource" mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
     <!-- Checkbox Column -->
     <ng-container matColumnDef="select">
       <th mat-header-cell *matHeaderCellDef>
@@ -45,6 +47,6 @@
         (click)="selection.toggle(row)">
     </tr>
   </table>
-  <button mat-stroked-button (click)="validerFourn()" >Valider tout les fournisseurs selectionné</button>
+  <button mat-raised-button class="btn-validate" (click)="validateSupplier()" disabled="{{canNotValidate()}}" >{{buttonMessage()}}</button>
 </div>
 
