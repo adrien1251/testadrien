@@ -78,14 +78,14 @@ public class SupplierService {
             return "Supplier not found";
     }
 
-    public SupplierDto confirmSupplierAccount(SupplierDto supplierDto) {
-        Optional<Supplier> supplier = supplierRepository.findById(supplierDto.getId());
-        if (supplier.isPresent()) {
-            Supplier s = supplier.get();
-            s.setValidationDate(LocalDate.now());
-            return supConv.entityToDto(supplierRepository.save(s));
-        }
-        return null;
+    public SupplierDto confirmSupplierAccount(long supplierId) {
+        Supplier supplier = supplierRepository
+                .findById(supplierId)
+                .orElseThrow(() -> new ApplicationException(HttpStatus.resolve(400), "invalid supplier ID"));
+        if (supplier.getValidationDate() != null)
+            throw new ApplicationException(HttpStatus.PRECONDITION_FAILED, "Already validated supplier");
+        supplier.setValidationDate(LocalDate.now());
+        return supConv.entityToDto(supplierRepository.save(supplier));
     }
 
 }

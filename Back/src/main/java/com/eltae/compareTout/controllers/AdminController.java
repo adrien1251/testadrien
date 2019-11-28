@@ -54,12 +54,9 @@ public class AdminController extends ExceptionCatcher {
     }
 
     @ApiOperation(value = "Confirm a supplier account")
-    @PostMapping(produces = "application/json", value = "/validateSupplierAccount")
-    public ResponseEntity<SupplierDto> validationSupplierAccount(@RequestBody SupplierDto supplierDto) {
-        SupplierDto supplier = this.supplierService.confirmSupplierAccount(supplierDto);
-        if (supplier == null)
-            throw new ApplicationException(HttpStatus.resolve(400), "Validation failed");
-        return ResponseEntity.status(201).body(supplier);
+    @PutMapping(produces = "application/json", value = "/validateSupplierAccount/{supplierId}")
+    public ResponseEntity<SupplierDto> validationSupplierAccount(@PathVariable Long supplierId) {
+        return ResponseEntity.status(201).body(this.supplierService.confirmSupplierAccount(supplierId));
     }
 
     @ApiOperation(value = "Get all suppliers accounts to valid")
