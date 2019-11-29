@@ -39,12 +39,15 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    if (!this.fromProduct) {
+    console.log(this.categoryService.getCurrentCategory());
+    if (!this.fromProduct && !this.currentCategory) {
       this.fetchCategories();
     } else {
       const idRoute = this.route.snapshot.paramMap.get('id');
-      if (idRoute) {
+      if (idRoute && idRoute !== 'all') {
         this.fetchCurrentCategory(this.currentCategory, this.fromProduct);
+      } else {
+        this.fetchCategories();
       }
     }
   }
@@ -54,10 +57,13 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   fetchCategories(): void {
+    this.subCategories = null;
+    this.currentCategory = null;
+    this.categories = null;
+    console.log('main categories');
     this.categoryService.getCategories().subscribe(res => {
       if (res != null && res.length !== 0) {
         this.categories = res;
-
       }
     }
     );
@@ -66,6 +72,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
   fetchCurrentCategory(event, fromRoute?: boolean): void {
     if (event != null) {
       if (fromRoute) {
+        console.log(this.categoryService.getCurrentCategory());
         this.categoryService.getCategoriesChild(event.id).subscribe((res) => {
           this.isChildCategory = res.length === 0;
           this.subCategories = res;
@@ -79,7 +86,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
         });
         this.currentCategory = event;
       }
-
+      this.categoryService.setCurrentCategory(this.currentCategory);
       if (this.currentCategory) {
         this.criteriaService.getCriterias(this.currentCategory.id).subscribe((res) => {
           this.currentCategory.criteriaList = res;
@@ -88,7 +95,10 @@ export class MainPageComponent implements OnInit, OnDestroy {
         });
       }
     } else {
+      this.productList = null;
       this.currentCategory = null;
+      this.subCategories = null;
+      this.fetchCategories();
     }
 
   }
