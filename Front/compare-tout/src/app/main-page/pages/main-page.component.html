@@ -1,5 +1,5 @@
 <div class="category-menu">
-  <app-menu-categories *ngIf="categories != null" [categories]="categories" [subCategories]="subCategories"
+  <app-menu-categories *ngIf="categories != null || subCategories != null" [categories]="categories" [subCategories]="subCategories"
     (currentCategory)="fetchCurrentCategory($event)"></app-menu-categories>
 </div>
 <app-filters *ngIf="currentCategory!= null && isChildCategory && criteriaValues.length > 0" 
@@ -8,6 +8,6 @@
 <div class="display" *ngIf="isChildCategory && productList != null">
   <div class="result-title">Résultats : {{productList.length}} produits</div>
   <div class="result-list">
-    <app-product-display *ngFor="let product of productList" [product]="product"></app-product-display>
+    <app-product-display *ngFor="let product of productList" [category]="currentCategory" [product]="product"></app-product-display>
   </div>
 </div>

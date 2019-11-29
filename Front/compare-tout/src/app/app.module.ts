@@ -5,7 +5,6 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {HttpClientModule} from '@angular/common/http';
 import {TestService} from './shared/services/test.service';
-import {SearchResultModule} from './search-result/search-result.module';
 import {MainPageComponent} from './main-page/pages/main-page.component';
 import {HeaderComponent} from './shared/header/header.component';
 import {CategoryService} from './shared/services/category.service';
@@ -42,8 +41,9 @@ import {
 } from '@angular/material';
 import {ReactiveFormsModule} from '@angular/forms';
 import {AuthUtils} from './shared/services/utils/auth-utils.service';
-import {FiltersSliderComponent} from './main-page/components/filters-slider/filters-slider.component';
-import {Ng5SliderModule} from 'ng5-slider';
+import { FiltersSliderComponent } from './main-page/components/filters-slider/filters-slider.component';
+import { Ng5SliderModule } from 'ng5-slider';
+import { ProductDetailsPageComponent } from './product-details/pages/product-details-page.component';
 import {AuthComponent} from './Auth/pages/auth/auth.component';
 import {InscriptionFournComponent} from './Auth/pages/inscription-fourn/inscription-fourn.component';
 import {InscriptionCustomerComponent} from './Auth/pages/inscription-customer/inscription-customer.component';
@@ -54,6 +54,7 @@ import {AdminComponent} from './main-page/pages/admin/admin.component';
     AppComponent,
     AdminComponent,
     MainPageComponent,
+    ProductDetailsPageComponent,
     HeaderComponent,
     MenuCategoriesComponent,
     FiltersComponent,
@@ -70,7 +71,6 @@ import {AdminComponent} from './main-page/pages/admin/admin.component';
     ReactiveFormsModule,
     AppRoutingModule,
     HttpClientModule,
-    SearchResultModule,
     MainPageModule,
     BrowserAnimationsModule,
     CommonModule,
@@ -96,6 +96,7 @@ import {AdminComponent} from './main-page/pages/admin/admin.component';
   ],
   exports: [
     MainPageComponent,
+    ProductDetailsPageComponent,
     CommonModule,
     MatToolbarModule,
     MatButtonModule,

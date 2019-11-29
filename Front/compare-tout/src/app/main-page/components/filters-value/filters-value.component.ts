@@ -28,7 +28,6 @@ export class FiltersValueComponent implements OnInit, OnDestroy {
 
   updateFilter(value: string) {
     this.checked = !this.checked;
-    console.log(this.checked);
     const valueSelect = {
       idCriteria: this.criteria.id,
       value: [value],
