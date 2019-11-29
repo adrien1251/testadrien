@@ -64,6 +64,11 @@ public class CriteriaController   extends ExceptionCatcher {
         }
     }
 
+    @ApiOperation(value = "Retrieves all the values associated with the criteria of a category")
+    @GetMapping(produces = "application/json", value = "/getAllValueForEachCriteriaOfACategory")
+    protected ResponseEntity<?> getAllCriteriaAndAllValuesAssociatesToACategory(@ApiParam(value = "Category identification number") @RequestParam(value="id_category",required = false)Long id_category) {
+        return ResponseEntity.ok(this.criteriaService.getAllCriteriaAndAllValuesAssociatesToACategory(id_category));
 
+    }
 
 }

@@ -1,7 +1,6 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MenuCategoriesComponent } from './components/menu-categories/menu-categories.component';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 
 @NgModule({
@@ -10,7 +9,6 @@ import { MenuCategoriesComponent } from './components/menu-categories/menu-categ
     MatCheckboxModule,
   ],
   declarations: [
-    // MenuCategoriesComponent,
   ],
   exports: [
     MatCheckboxModule,

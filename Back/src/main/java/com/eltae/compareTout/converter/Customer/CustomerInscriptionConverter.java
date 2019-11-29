@@ -32,7 +32,17 @@ public class CustomerInscriptionConverter extends GenericsConverter<Customer, Cu
 
     @Override
     public Customer dtoToEntity(CustomerInscriptionDto supplierInscriptionDto) {
-        return null;
+        Customer customer = Customer.builder()
+                .birthday(supplierInscriptionDto.getBirthday())
+                .password(supplierInscriptionDto.getPassword())
+                .lastName(supplierInscriptionDto.getLastName())
+                .firstName(supplierInscriptionDto.getFirstName())
+                .email(supplierInscriptionDto.getEmail())
+                .phoneNum(supplierInscriptionDto.getPhoneNum())
+                .creationDate(LocalDate.now())
+                .sexe(supplierInscriptionDto.getSexe())
+                .build();
+        return customer;
     }
 
 

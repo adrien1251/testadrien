@@ -2,7 +2,12 @@ export const apiEndpoints = {
     // Users
     getUsers: 'users',
     login: 'login',
+    registerSupplier: 'supplier',
+    registerCustomer: 'customer',
 
+    // Admin
+    findAllSupplierWhoNeedValidate: 'admin/getAllSuppliersAccountToValid',
+    validateSupplierAccount: (idSupplier: string) => `admin/validateSupplierAccount/${idSupplier}`,
     // Categories
     getMainCategories: 'main-categories',
     getCategories: 'categories',
