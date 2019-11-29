@@ -1,7 +1,6 @@
 import { Component, OnInit, OnDestroy, Input, EventEmitter, Output, OnChanges } from '@angular/core';
 import { Category } from 'src/app/shared/models/category.interface';
-import { criteriaMock1 } from 'src/app/shared/mocks/critere-mock';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-menu-categories',
@@ -18,7 +17,6 @@ export class MenuCategoriesComponent implements OnInit, OnChanges, OnDestroy {
 
   constructor(
     private router: Router,
-    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {

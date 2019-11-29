@@ -1,11 +1,8 @@
-import { Component, OnInit, OnDestroy, ɵConsole } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Category } from 'src/app/shared/models/category.interface';
 import { CategoryService } from 'src/app/shared/services/category.service';
-import { categoryMock1, categoryMock2 } from 'src/app/shared/mocks/category-mock';
-import { criteriaMock1, criteriaMock2 } from 'src/app/shared/mocks/critere-mock';
 import { CriteriaService } from 'src/app/shared/services/criteria.service';
 import { Product } from 'src/app/shared/models/product.interface';
-import { productMock } from 'src/app/shared/mocks/product-mock';
 import { ProductService } from 'src/app/shared/services/product.service';
 import { Criteria, UniqueCriteria } from 'src/app/shared/models/criteria.interface';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -39,7 +36,6 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log(this.categoryService.getCurrentCategory());
     if (!this.fromProduct && !this.currentCategory) {
       this.fetchCategories();
     } else {
@@ -60,7 +56,6 @@ export class MainPageComponent implements OnInit, OnDestroy {
     this.subCategories = null;
     this.currentCategory = null;
     this.categories = null;
-    console.log('main categories');
     this.categoryService.getCategories().subscribe(res => {
       if (res != null && res.length !== 0) {
         this.categories = res;
@@ -72,7 +67,6 @@ export class MainPageComponent implements OnInit, OnDestroy {
   fetchCurrentCategory(event, fromRoute?: boolean): void {
     if (event != null) {
       if (fromRoute) {
-        console.log(this.categoryService.getCurrentCategory());
         this.categoryService.getCategoriesChild(event.id).subscribe((res) => {
           this.isChildCategory = res.length === 0;
           this.subCategories = res;
@@ -90,7 +84,6 @@ export class MainPageComponent implements OnInit, OnDestroy {
       if (this.currentCategory) {
         this.criteriaService.getCriterias(this.currentCategory.id).subscribe((res) => {
           this.currentCategory.criteriaList = res;
-          // this.criteriaList = res;
           this.fetchProducts();
         });
       }

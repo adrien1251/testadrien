@@ -5,7 +5,6 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {HttpClientModule} from '@angular/common/http';
 import {TestService} from './shared/services/test.service';
-import {SearchResultModule} from './search-result/search-result.module';
 import {MainPageComponent} from './main-page/pages/main-page.component';
 import {HeaderComponent} from './shared/header/header.component';
 import {CategoryService} from './shared/services/category.service';
@@ -72,7 +71,6 @@ import {AdminComponent} from './main-page/pages/admin/admin.component';
     ReactiveFormsModule,
     AppRoutingModule,
     HttpClientModule,
-    SearchResultModule,
     MainPageModule,
     BrowserAnimationsModule,
     CommonModule,

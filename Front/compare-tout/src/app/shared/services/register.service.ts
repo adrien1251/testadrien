@@ -19,7 +19,6 @@ export class RegisterService {
     }
 
     public registerCustomer(supplier: Customer): Observable<any> {
-        console.log('cc');
         return this.httpClient.post<any>(`${environment.back_url}${apiEndpoints.registerCustomer}`, supplier);
     }
 }
