@@ -10,6 +10,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LoginDto implements Serializable {
-    String email;
-    String password;
+    private static final long serialVersionUID = 5926468583005150707L;
+
+    private String email;
+    private String password;
 }

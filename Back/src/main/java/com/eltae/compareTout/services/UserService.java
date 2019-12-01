@@ -2,10 +2,12 @@ package com.eltae.compareTout.services;
 
 import com.eltae.compareTout.converter.UserConverter;
 import com.eltae.compareTout.dto.user.UserDto;
+import com.eltae.compareTout.entities.Supplier;
 import com.eltae.compareTout.entities.User;
 import com.eltae.compareTout.exceptions.ApplicationException;
 import com.eltae.compareTout.exceptions.NotFoundException;
 import com.eltae.compareTout.repositories.UserRepository;
+import com.eltae.compareTout.security.AuthAuthorityEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.GrantedAuthority;
@@ -40,8 +42,14 @@ public class UserService implements UserDetailsService {
             throw new ApplicationException(HttpStatus.BAD_REQUEST, "Invalid email or password.");
         }
 
+        if (user.get() instanceof Supplier){
+            if(((Supplier) user.get()).getValidationDate() == null) {
+                throw new ApplicationException(HttpStatus.FORBIDDEN, "Your account reach the process of validation. Be patient");
+            }
+        }
+
         List<GrantedAuthority> grantedAuths =
-                AuthorityUtils.commaSeparatedStringToAuthorityList("user");
+                AuthorityUtils.commaSeparatedStringToAuthorityList(AuthAuthorityEnum.getRole(user.get()).toString());
 
         return new org.springframework.security.core.userdetails.User(
                 user.get().getEmail(),
