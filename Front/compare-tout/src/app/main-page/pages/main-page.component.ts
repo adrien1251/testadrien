@@ -99,29 +99,24 @@ export class MainPageComponent implements OnInit, OnDestroy {
   fetchProducts(): void {
     this.productService.getProductsByCategoryAndCriteria(this.currentCategory.id, null).subscribe((res) => {
       this.productList = res;
-      this.productList.forEach(product => {
-        this.productService.getCriteriasOfProduct(product.id).subscribe(criterias => {
-          criterias.forEach(criteria => {
-            const alreadyIn = this.criteriaValues.find(c => c.id === criteria.id) != null;
-            if (!alreadyIn) {
-              const newCrit: UniqueCriteria = {
-                id: criteria.id,
-                name: criteria.criteriaName,
-                type: criteria.type,
-                unit: criteria.criteriaUnit,
-                values: [criteria.value]
-              };
-              this.criteriaValues.push(newCrit);
-            } else {
-              const idx = this.criteriaValues.findIndex(c => c.id === criteria.id);
-              if (idx !== -1) {
-                if (this.criteriaValues[idx].values.find(v => v === criteria.value) == null) {
-                  this.criteriaValues[idx].values.push(criteria.value);
-                }
+      this.criteriaService.getCriteriasValues(this.currentCategory.id).subscribe(criterias => {
+        this.productList.forEach(product => {
+          this.productService.getCriteriasOfProduct(product.id).subscribe(crit => {
+            crit.forEach(criteria => {
+              const alreadyIn = this.criteriaValues.find(c => c.id === criteria.id) != null;
+              if (!alreadyIn) {
+                const newCrit: UniqueCriteria = {
+                  id: criteria.id,
+                  name: criteria.criteriaName,
+                  type: criteria.type,
+                  unit: criteria.criteriaUnit,
+                  values: criterias[criteria.id],
+                };
+                this.criteriaValues.push(newCrit);
               }
-            }
+            });
+            this.canShowFilters = true;
           });
-          this.canShowFilters = true;
         });
       });
     });
@@ -129,7 +124,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
 
   sendCriterias(event): void {
     if (event == null || event.length === 0) { event = null; }
-    this.productService.getProductsByCategoryAndCriteria(this.currentCategory.id, event).subscribe( res => {
+    this.productService.getProductsByCategoryAndCriteria(this.currentCategory.id, event).subscribe(res => {
       this.productList = res;
     }
     );

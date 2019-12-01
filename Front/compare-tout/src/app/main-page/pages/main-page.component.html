@@ -2,7 +2,7 @@
   <app-menu-categories *ngIf="categories != null || subCategories != null" [categories]="categories" [subCategories]="subCategories"
     (currentCategory)="fetchCurrentCategory($event)"></app-menu-categories>
 </div>
-<app-filters *ngIf="currentCategory!= null && isChildCategory && criteriaValues.length > 0" 
+<app-filters *ngIf="currentCategory!= null && isChildCategory && canShowFilters" 
 [criteriaList]="criteriaValues" (valueHasChanged)="sendCriterias($event)">
 </app-filters>
 <div class="display" *ngIf="isChildCategory && productList != null">
