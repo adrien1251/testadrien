@@ -23,8 +23,12 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.user = AuthUtils.getCurrentUser();
-    this.authUtils.userEmitter.subscribe((user) => {
-      this.user = user;
+    this.authUtils.userEmitter.subscribe((userAndToken) => {
+      if (userAndToken) {
+        this.user = userAndToken.user;
+      } else {
+        this.user = null;
+      }
     });
   }
 
@@ -32,7 +36,7 @@ export class AppComponent implements OnInit {
     this.modalService.destroy();
   }
 
-  openConnexion(){
+  openConnexion() {
     this.modalService.init(AuthComponent, {}, {});
   }
 

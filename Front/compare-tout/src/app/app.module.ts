@@ -3,7 +3,7 @@ import {NgModule} from '@angular/core';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {TestService} from './shared/services/test.service';
 import {SearchResultModule} from './search-result/search-result.module';
 import {MainPageComponent} from './main-page/pages/main-page.component';
@@ -48,6 +48,7 @@ import {AuthComponent} from './Auth/pages/auth/auth.component';
 import {InscriptionFournComponent} from './Auth/pages/inscription-fourn/inscription-fourn.component';
 import {InscriptionCustomerComponent} from './Auth/pages/inscription-customer/inscription-customer.component';
 import {AdminComponent} from './main-page/pages/admin/admin.component';
+import {BasicAuthInterceptorService} from './shared/services/interceptor/basic-auth-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -92,7 +93,7 @@ import {AdminComponent} from './main-page/pages/admin/admin.component';
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatTableModule,
+    MatTableModule
   ],
   exports: [
     MainPageComponent,
@@ -113,7 +114,9 @@ import {AdminComponent} from './main-page/pages/admin/admin.component';
     ProductService,
     AuthUtils,
     MatDatepickerModule,
-    MatTableModule
+    MatTableModule,
+    {provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptorService, multi: true},
+
   ],
   entryComponents: [
     AuthComponent

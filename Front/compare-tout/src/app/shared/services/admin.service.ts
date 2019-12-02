@@ -1,9 +1,10 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { apiEndpoints } from './utils/api-endpoints';
-import { environment } from '../../../environments/environment';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {apiEndpoints} from './utils/api-endpoints';
+import {environment} from '../../../environments/environment';
 import {Supplier} from '../models/supplier.interface';
+import {AuthUtils} from './utils/auth-utils.service';
 
 
 @Injectable({
@@ -14,6 +15,10 @@ export class AdminService {
   constructor(private httpClient: HttpClient) { }
 
   public findAllSupplierWhoNeedValidate(): Observable<Supplier[]> {
+    let headers: HttpHeaders = new HttpHeaders();
+    // headers.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    // headers.append('Authorization', ('Bearer ' + AuthUtils.getCurrentToken()));
+    // console.log(AuthUtils.getCurrentToken());
     return this.httpClient.get<Supplier[]>(`${environment.back_url}${apiEndpoints.findAllSupplierWhoNeedValidate}`);
   }
 

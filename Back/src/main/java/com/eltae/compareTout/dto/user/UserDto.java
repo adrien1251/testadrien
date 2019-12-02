@@ -3,6 +3,7 @@ package com.eltae.compareTout.dto.user;
 import com.eltae.compareTout.dto.admin.AdminDto;
 import com.eltae.compareTout.dto.customer.CustomerDto;
 import com.eltae.compareTout.dto.supplier.SupplierDto;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.Data;
@@ -16,6 +17,7 @@ import java.time.LocalDate;
 @SuperBuilder
 @NoArgsConstructor
 @EqualsAndHashCode
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,

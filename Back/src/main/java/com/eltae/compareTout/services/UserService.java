@@ -39,7 +39,7 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) {
         Optional<User> user = userRepository.findByEmail(email);
         if (!user.isPresent()) {
-            throw new ApplicationException(HttpStatus.BAD_REQUEST, "Invalid email or password.");
+            throw new ApplicationException(HttpStatus.NOT_FOUND, "Invalid email or password.");
         }
 
         if (user.get() instanceof Supplier){
@@ -57,12 +57,12 @@ public class UserService implements UserDetailsService {
                 grantedAuths);
     }
 
-    public User findByEmail(String email) {
-        return userRepository
+    public UserDto findByEmail(String email) {
+        return this.userConverter.entityToDtoMinimumParams(userRepository
                 .findByEmail(email)
                 .orElseThrow(
                     () -> new ApplicationException(HttpStatus.BAD_REQUEST, "Invalid email or password.")
-                );
+                ));
     }
 
     public UserDto create(UserDto userDto) {

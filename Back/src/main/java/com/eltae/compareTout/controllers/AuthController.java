@@ -5,6 +5,7 @@ import com.eltae.compareTout.dto.user.JwtResponse;
 import com.eltae.compareTout.dto.user.LoginDto;
 import com.eltae.compareTout.exceptionHandler.ExceptionCatcher;
 import com.eltae.compareTout.exceptions.ApplicationException;
+import com.eltae.compareTout.repositories.UserRepository;
 import com.eltae.compareTout.security.JwtTokenUtil;
 import com.eltae.compareTout.services.AuthService;
 import com.eltae.compareTout.services.UserService;
@@ -27,9 +28,6 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(value = "Connexion", description = "Connexion", tags = {"Connexion"})
 public class AuthController extends ExceptionCatcher {
     @Autowired
-    private AuthService authService;
-
-    @Autowired
     private AuthenticationManager authenticationManager;
 
     @Autowired
@@ -37,6 +35,9 @@ public class AuthController extends ExceptionCatcher {
 
     @Autowired
     private UserService userDetailsService;
+
+    @Autowired
+    private UserService userService;
 
 //    @PostMapping()
 //    public ResponseEntity<?> auth(@RequestBody LoginDto login) {
@@ -48,7 +49,7 @@ public class AuthController extends ExceptionCatcher {
         authenticate(login.getEmail(), login.getPassword());
         final UserDetails userDetails = userDetailsService.loadUserByUsername(login.getEmail());
         final String token = jwtTokenUtil.generateToken(userDetails);
-        return ResponseEntity.ok(new JwtResponse(token));
+        return ResponseEntity.ok(new JwtResponse(token, userService.findByEmail(login.getEmail())));
     }
     private void authenticate(String username, String password) {
         try {
@@ -56,7 +57,7 @@ public class AuthController extends ExceptionCatcher {
         } catch (DisabledException e) {
             throw new ApplicationException(HttpStatus.NOT_FOUND, "USER_DISABLED");
         } catch (BadCredentialsException e) {
-            throw new ApplicationException(HttpStatus.NOT_FOUND, "INVALID_CREDENTIALS");
+            throw new ApplicationException(HttpStatus.NOT_FOUND, "Invalid email or password");
         }
     }
 }
