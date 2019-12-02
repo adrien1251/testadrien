@@ -118,9 +118,9 @@ public class ProductService {
         query.multiselect(productRoot);
         query.having(criteriaBuilder.equal(criteriaBuilder.count(productRoot.get("id")), criteriaFilterDtos.size()));
         TypedQuery<Product> typedQuery = entityManager.createQuery(query);
-        List<ProductDtoForFront> list = productForFrontConverter.entityListToDtoList(typedQuery.getResultList());
+        List<ProductDtoForFront> productDtoForFrontList = productForFrontConverter.entityListToDtoList(typedQuery.getResultList());
         entityManager.close();
-        return list;
+        return productDtoForFrontList;
     }
 
     public JSONObject insertProductsFromFile(MultipartFile multipartFile, Supplier supplier) {
