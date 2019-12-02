@@ -9,9 +9,9 @@
         <app-filters-value *ngIf="criteria.type === 'STRING'" [criteria]="criteria" [value]="value"
           (valueChecked)="updateCriteria($event)"></app-filters-value>
       </div>
-      <!-- <app-filters-slider *ngIf="criteria.type !== 'STRING' && criteria.minValue != criteria.maxValue" [criteria]="criteria" 
+      <app-filters-slider *ngIf="criteria.type !== 'STRING' && valueMin && valueMax" [criteria]="criteria" 
       [min]="valueMin" [max]="valueMax"
-        (valueChecked)="updateCriteria($event)"></app-filters-slider> -->
+        (valueChecked)="updateCriteria($event)"></app-filters-slider>
     </div>
   </div>
 </div>

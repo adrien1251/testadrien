@@ -2,7 +2,8 @@ export interface Criteria {
     isMandatory: boolean;
     name: string;
     type: string;
-    unit?: string;
+    unit: string;
+    criteriaUnit?: string;
     value: string;
 }
 

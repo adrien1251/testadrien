@@ -15,6 +15,8 @@ export const apiEndpoints = {
 
     // Criterias
     getCriteriaOfCategory: (idCat: string) =>  `criteria?id_category=${idCat}`,
+    getCriteriaValuesOfCategory: (idCat: string) =>  `criteria/getAllValueForEachCriteriaOfACategory?id_category=${idCat}`,
+
 
     // Products
     getProductsByCategoryAndCriteria: (idCat: string) => `products/${idCat}`,

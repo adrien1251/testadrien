@@ -13,26 +13,24 @@ export class FiltersSliderComponent implements OnInit, OnDestroy {
   @Input() min;
   @Input() max;
   @Input() value: string;
-  minValue = this.min;
-  maxValue = this.max;
-  options: Options  = {
+  options: Options = {
   };
 
   @Output() valueChecked: EventEmitter<any> = new EventEmitter<any>();
 
   constructor(
   ) {
-    this.options  = {
-        floor: this.min ? this.min : 0,
-        ceil: this.max ? this.max : 50,
-        translate: (value: number): string => {
-              return value + '€';
-        }
-      };
   }
 
   ngOnInit(): void {
-    if (this.criteria.unit === 'null' && this.options.floor ) {
+    this.options = {
+      floor: Math.floor(this.min),
+      ceil: Math.ceil(this.max),
+      translate: (value: number): string => {
+        return value + '€';
+      }
+    };
+    if (this.criteria.unit === 'null' && this.options.floor) {
       this.criteria.unit = '';
     }
   }
@@ -42,20 +40,29 @@ export class FiltersSliderComponent implements OnInit, OnDestroy {
   }
 
   updateLow(event) {
-      this.updateFilter(event, null);
+    this.updateFilter(event, null);
   }
 
   updateHigh(event) {
     this.updateFilter(null, event);
-}
+  }
 
   updateFilter(min, max) {
-    const valueSelect = {
-      idCriteria: this.criteria.id,
-      minValue: this.minValue,
-      maxValue: this.maxValue,
-      selected: true
-    };
-    this.valueChecked.emit(valueSelect);
+    if (min) {
+      const valueSelect = {
+        idCriteria: this.criteria.id,
+        minValue: min,
+        selected: true
+      };
+      this.valueChecked.emit(valueSelect);
+    }
+    if (max) {
+      const valueSelect = {
+        idCriteria: this.criteria.id,
+        maxValue: max,
+        selected: true
+      };
+      this.valueChecked.emit(valueSelect);
+    }
   }
 }

@@ -18,4 +18,8 @@ export class CriteriaService {
     public getCriterias(idCat: string): Observable<any> {
         return this.httpClient.get<any>(`${this.env}${apiEndpoints.getCriteriaOfCategory(idCat)}`);
     }
+
+    public getCriteriasValues(idCat: string): Observable<any> {
+        return this.httpClient.get<any>(`${this.env}${apiEndpoints.getCriteriaValuesOfCategory(idCat)}`);
+    }
 }
