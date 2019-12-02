@@ -7,7 +7,7 @@ import {AuthUtils} from '../utils/auth-utils.service';
 export class BasicAuthInterceptorService implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = AuthUtils.getCurrentToken();
-    if (currentUser) {
+    if (token) {
       request = request.clone({
         setHeaders: {
           Authorization: `Bearer ${token}`
