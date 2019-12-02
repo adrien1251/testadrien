@@ -15,10 +15,6 @@ export class AdminService {
   constructor(private httpClient: HttpClient) { }
 
   public findAllSupplierWhoNeedValidate(): Observable<Supplier[]> {
-    let headers: HttpHeaders = new HttpHeaders();
-    // headers.append('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-    // headers.append('Authorization', ('Bearer ' + AuthUtils.getCurrentToken()));
-    // console.log(AuthUtils.getCurrentToken());
     return this.httpClient.get<Supplier[]>(`${environment.back_url}${apiEndpoints.findAllSupplierWhoNeedValidate}`);
   }
 
