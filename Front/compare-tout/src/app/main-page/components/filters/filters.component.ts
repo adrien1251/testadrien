@@ -34,16 +34,22 @@ export class FiltersComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   fetchCriteria(): void {
+    console.log(this.criteriaList);
     this.criteriaList.forEach(c => {
       if (c.type === 'INT' || c.type === 'FLOAT') {
-        this.valueMin = Math.floor(+c.values[0]);
-        this.valueMax = +c.values[c.values.length - 1];
+        c.valueMin = Math.floor(+c.values[0].value);
+        c.valueMax = +c.values[c.values.length - 1].value;
       }
+      if (c.unit === 'null') {
+        c.unit = '';
+      }
+
     });
   }
 
   updateCriteria(event) {
     if (event.selected) {
+      console.log(event);
       const i = this.criteriaSelected.findIndex(t => t.id === event.id);
       if (i === -1) {
         this.criteriaSelected.push(
@@ -56,6 +62,8 @@ export class FiltersComponent implements OnInit, OnChanges, OnDestroy {
       this.criteriaSelected.splice(i, 1);
     }
     this.valueHasChanged.emit(this.criteriaSelected);
+    const idx = this.criteriaList.findIndex(c => c.id === event.id);
+    this.criteriaList[idx] = event;
   }
 
   showFilters() {

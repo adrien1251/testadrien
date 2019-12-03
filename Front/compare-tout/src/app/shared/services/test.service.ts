@@ -19,9 +19,7 @@ export class TestService {
   }
 
 
-  env = environment.back_url;
-
   public displayBack(): Observable<any> {
-    return this.httpClient.get<any>(`${this.env}${apiEndpoints.getUsers}`);
+    return this.httpClient.get<any>(`${environment.back_url}${apiEndpoints.getUsers}`);
   }
 }

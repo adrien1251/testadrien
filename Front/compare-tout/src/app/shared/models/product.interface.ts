@@ -8,4 +8,5 @@ export interface Product {
     nameShort?: string;
     imageUrl: string;
     criteriaDtoList: Criteria[];
+    selected?: boolean;
 }

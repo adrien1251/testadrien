@@ -14,17 +14,12 @@ export class CategoryService {
         private httpClient: HttpClient,
     ) { }
 
-    env = environment.back_url;
-    // public getMainCategories(): Observable<any> {
-    //     return this.httpClient.get<any>(`${this.env}${apiEndpoints.getMainCategories}`);
-    // }
-
     public getCategories(): Observable<any> {
-        return this.httpClient.get<any>(`${this.env}${apiEndpoints.getCategories}`);
+        return this.httpClient.get<any>(`${environment.back_url}${apiEndpoints.getCategories}`);
     }
 
     public getCategoriesChild(id?: string): Observable<any> {
-        return this.httpClient.get<any>(`${this.env}${apiEndpoints.getCategoriesChild(id)}`);
+        return this.httpClient.get<any>(`${environment.back_url}${apiEndpoints.getCategoriesChild(id)}`);
     }
 
     public isTopCategory(id?: number): boolean {

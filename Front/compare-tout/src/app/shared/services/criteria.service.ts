@@ -14,13 +14,11 @@ export class CriteriaService {
         private httpClient: HttpClient,
     ) { }
 
-    env = environment.back_url;
-
     public getCriterias(idCat: string): Observable<any> {
-        return this.httpClient.get<any>(`${this.env}${apiEndpoints.getCriteriaOfCategory(idCat)}`);
+        return this.httpClient.get<any>(`${environment.back_url}${apiEndpoints.getCriteriaOfCategory(idCat)}`);
     }
 
     public getCriteriasValues(idCat: string): Observable<any> {
-        return this.httpClient.get<any>(`${this.env}${apiEndpoints.getCriteriaValuesOfCategory(idCat)}`);
+        return this.httpClient.get<any>(`${environment.back_url}${apiEndpoints.getCriteriaValuesOfCategory(idCat)}`);
     }
 }

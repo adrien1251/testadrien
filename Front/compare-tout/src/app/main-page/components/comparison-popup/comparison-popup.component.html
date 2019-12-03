@@ -1,0 +1,8 @@
+<div *ngIf="this.products">
+    Comparer 
+    {{ products[0].name }}
+    et 
+    {{ products[1].name }}
+    <button (click)="doCompare()">Comparer</button>
+    <button (click)="cancel()">Annuler</button>
+</div>

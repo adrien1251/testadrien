@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 export class ProductDetailsPageComponent implements OnInit, OnDestroy {
 
   product: Product;
+  product2: Product;
   category: any;
 
 
@@ -17,6 +18,7 @@ export class ProductDetailsPageComponent implements OnInit, OnDestroy {
     private router: Router,
   ) {
     this.product = this.router.getCurrentNavigation().extras.state.product;
+    this.product2 = this.router.getCurrentNavigation().extras.state.product2;
     this.category = this.router.getCurrentNavigation().extras.state.cat;
   }
 

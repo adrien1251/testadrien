@@ -1,6 +1,13 @@
-<div *ngIf="product != null" class="product-content" (click)="goToDetails()">
+<div *ngIf="product != null" class="product-content">
+  <div (click)="goToDetails()">
     <img src="{{ product.imageUrl }}">
     <div class="product-name">
-        {{ product.name }}
+      {{ product.name }}
     </div>
+  </div>
+  <div class="compare">
+    <mat-checkbox id="check" name="product" disableRipple [checked]="this.product.selected" (click)="updateComparison(product)" [disabled]="hasReachedComparison > 2" color="primary">
+      Comparer
+    </mat-checkbox>
+  </div>
 </div>

@@ -49,6 +49,8 @@ import {InscriptionFournComponent} from './Auth/pages/inscription-fourn/inscript
 import {InscriptionCustomerComponent} from './Auth/pages/inscription-customer/inscription-customer.component';
 import {AdminComponent} from './main-page/pages/admin/admin.component';
 import {BasicAuthInterceptorService} from './shared/services/interceptor/basic-auth-interceptor.service';
+import { ComparisonPopupComponent } from './main-page/components/comparison-popup/comparison-popup.component';
+import { ProductCompareComponent } from './product-details/components/product-compare.component';
 
 @NgModule({
   declarations: [
@@ -66,6 +68,8 @@ import {BasicAuthInterceptorService} from './shared/services/interceptor/basic-a
     AuthComponent,
     InscriptionFournComponent,
     InscriptionCustomerComponent,
+    ComparisonPopupComponent,
+    ProductCompareComponent
   ],
   imports: [
     BrowserModule,
@@ -107,6 +111,7 @@ import {BasicAuthInterceptorService} from './shared/services/interceptor/basic-a
     MatMenuModule,
     MatIconModule,
     MatProgressSpinnerModule,
+    ComparisonPopupComponent,
   ],
   providers: [
     TestService,
@@ -120,7 +125,8 @@ import {BasicAuthInterceptorService} from './shared/services/interceptor/basic-a
 
   ],
   entryComponents: [
-    AuthComponent
+    AuthComponent,
+    ComparisonPopupComponent
   ],
   bootstrap: [AppComponent]
 })

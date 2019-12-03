@@ -9,7 +9,7 @@ import { Criteria, UniqueCriteria } from 'src/app/shared/models/criteria.interfa
 export class FiltersValueComponent implements OnInit, OnDestroy {
 
   @Input() criteria: UniqueCriteria;
-  @Input() value: string;
+  @Input() value: any;
   @Output() valueChecked: EventEmitter<any> = new EventEmitter<any>();
   public checked = false;
 
@@ -19,6 +19,8 @@ export class FiltersValueComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     if (this.criteria.unit === 'null') {
       this.criteria.unit = '';
+      console.log(this.criteria);
+      console.log(this.value);
     }
   }
 
@@ -26,12 +28,13 @@ export class FiltersValueComponent implements OnInit, OnDestroy {
 
   }
 
-  updateFilter(value: string) {
-    this.checked = !this.checked;
+  updateFilter(value: any) {
+    this.value.selected = !this.value.selected;
+    this.value = value;
     const valueSelect = {
       idCriteria: this.criteria.id,
-      value: [value],
-      selected: this.checked
+      value: [this.value.value],
+      selected: this.value.selected
     };
     this.valueChecked.emit(valueSelect);
   }

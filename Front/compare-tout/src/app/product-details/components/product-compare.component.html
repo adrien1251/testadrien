@@ -1,0 +1,45 @@
+<div *ngIf="this.product" class="product-details-content">
+  <div class="title" *ngIf="product.nameShort">
+    {{product.nameShort}}
+    <div class="seeNext" (click)="seeMoreTitle()">voir la suite</div>
+  </div>
+  <div class="title" *ngIf="!product.nameShort">
+    {{product.name}}
+    <div class="seeNext" *ngIf="product.name.length > 25" (click)="seeLessTitle()">voir moins</div>
+  </div>
+  <table>
+    <tr>
+      <div *ngFor="let crit of product.criteriaDtoList" class="all-criterias">
+        <div class="criteria-contener">
+          <td>
+            {{ crit.criteriaName }}
+          </td>
+          <td>
+            {{ crit.value }} {{ crit.criteriaUnit }}
+          </td>
+        </div>
+      </div>
+    </tr>
+  </table>
+</div>
+<div *ngIf="this.product2" class="product-details-content">
+  <div class="title" *ngIf="product.nameShort">
+    {{product2.nameShort}}
+    <div class="seeNext" (click)="seeMoreTitle()">voir la suite</div>
+  </div>
+  <div class="title" *ngIf="!product2.nameShort">
+    {{product2.name}}
+    <div class="seeNext" *ngIf="product2.name.length > 25" (click)="seeLessTitle()">voir moins</div>
+  </div>
+  <table>
+    <tr>
+      <div *ngFor="let crit of product2.criteriaDtoList" class="all-criterias">
+        <div class="criteria-contener">
+          <td>
+            {{ crit.value }} {{ crit.criteriaUnit }}
+          </td>
+        </div>
+      </div>
+    </tr>
+  </table>
+</div>

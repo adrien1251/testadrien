@@ -4,13 +4,13 @@
   <div class="show-hide-filters" (click)="showFilters()">Cacher les filtres</div>
   <div *ngFor="let criteria of criteriaList">
     <div class="criteria">
-      <p class="title">{{ criteria.name | uppercase }}</p>
+      <p class="title">{{ criteria.name | uppercase }} {{ criteria.unit | uppercase }}</p>
       <div *ngFor="let value of criteria.values">
         <app-filters-value *ngIf="criteria.type === 'STRING'" [criteria]="criteria" [value]="value"
           (valueChecked)="updateCriteria($event)"></app-filters-value>
       </div>
-      <app-filters-slider *ngIf="criteria.type !== 'STRING' && valueMin && valueMax" [criteria]="criteria" 
-      [min]="valueMin" [max]="valueMax"
+      <app-filters-slider *ngIf="criteria.type !== 'STRING' && criteria.valueMin && criteria.valueMax" [criteria]="criteria" 
+      [min]="criteria.valueMin" [max]="criteria.valueMax"
         (valueChecked)="updateCriteria($event)"></app-filters-slider>
     </div>
   </div>

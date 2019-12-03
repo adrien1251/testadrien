@@ -6,6 +6,10 @@ import { Product } from 'src/app/shared/models/product.interface';
 import { ProductService } from 'src/app/shared/services/product.service';
 import { Criteria, UniqueCriteria } from 'src/app/shared/models/criteria.interface';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatDialog, MatDialogRef } from '@angular/material';
+import { ComparisonPopupComponent } from '../components/comparison-popup/comparison-popup.component';
+import { timer } from 'rxjs';
+import { debounce } from 'rxjs/operators';
 
 @Component({
   selector: 'app-main-page',
@@ -20,8 +24,11 @@ export class MainPageComponent implements OnInit, OnDestroy {
   public productList: Product[];
   public criteriaList: Criteria[] = [];
   public criteriaValues: UniqueCriteria[] = [];
+  public dialogRefCompareProd: MatDialogRef<ComparisonPopupComponent>;
+  comparisonProduct: Product[] = [];
   canShowFilters = false;
   fromProduct = false;
+  numberOfComparison = 1;
 
 
   constructor(
@@ -30,6 +37,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
     private productService: ProductService,
     private route: ActivatedRoute,
     private router: Router,
+    public dialog: MatDialog,
   ) {
     this.currentCategory = this.router.getCurrentNavigation().extras.state ? this.router.getCurrentNavigation().extras.state.cat : null;
     this.fromProduct = this.currentCategory != null;
@@ -44,6 +52,8 @@ export class MainPageComponent implements OnInit, OnDestroy {
         this.fetchCurrentCategory(this.currentCategory, this.fromProduct);
       } else {
         this.fetchCategories();
+        this.numberOfComparison = 0;
+        this.comparisonProduct = [];
       }
     }
   }
@@ -105,6 +115,15 @@ export class MainPageComponent implements OnInit, OnDestroy {
             crit.forEach(criteria => {
               const alreadyIn = this.criteriaValues.find(c => c.id === criteria.id) != null;
               if (!alreadyIn) {
+                const criteriaSelected = [];
+                criterias[criteria.id].forEach(value => {
+                  const v = {
+                    value,
+                    selected: false,
+                  };
+                  criteriaSelected.push(v);
+                });
+                criterias[criteria.id] = criteriaSelected;
                 const newCrit: UniqueCriteria = {
                   id: criteria.id,
                   name: criteria.criteriaName,
@@ -124,10 +143,31 @@ export class MainPageComponent implements OnInit, OnDestroy {
 
   sendCriterias(event): void {
     if (event == null || event.length === 0) { event = null; }
-    this.productService.getProductsByCategoryAndCriteria(this.currentCategory.id, event).subscribe(res => {
+    this.productService.getProductsByCategoryAndCriteria(this.currentCategory.id, event)
+    .pipe(debounce(val => timer(1500)))
+    .subscribe(res => {
       this.productList = res;
     }
     );
+  }
+
+  compareProduct(event) {
+    this.numberOfComparison += 1;
+    this.comparisonProduct.push(event);
+    if (this.comparisonProduct.length === 2) {
+      this.dialogRefCompareProd = this.dialog.open(ComparisonPopupComponent, {
+        data: {
+          products : this.comparisonProduct,
+          category: this.currentCategory,
+        }
+      });
+      this.dialogRefCompareProd.afterClosed().subscribe(res => {
+        this.numberOfComparison = 0;
+        this.comparisonProduct = [];
+        this.fetchProducts();
+
+      });
+    }
   }
 
 }
