@@ -19,8 +19,6 @@ export class FiltersValueComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     if (this.criteria.unit === 'null') {
       this.criteria.unit = '';
-      console.log(this.criteria);
-      console.log(this.value);
     }
   }
 

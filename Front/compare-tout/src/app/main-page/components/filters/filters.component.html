@@ -2,12 +2,15 @@
 <div *ngIf="displayFilters && criteriaList != null && criteriaList.length > 0">
   <div class="show-hide-filters" (click)="resetFilters()">X Effacer les filtres</div>
   <div class="show-hide-filters" (click)="showFilters()">Cacher les filtres</div>
+  <div class="do-filter"(click)="sendFilters()">Appliquer les filtres</div>
   <div *ngFor="let criteria of criteriaList">
     <div class="criteria">
-      <p class="title">{{ criteria.name | uppercase }} {{ criteria.unit | uppercase }}</p>
-      <div *ngFor="let value of criteria.values">
-        <app-filters-value *ngIf="criteria.type === 'STRING'" [criteria]="criteria" [value]="value"
-          (valueChecked)="updateCriteria($event)"></app-filters-value>
+      <p class="title" (click)="animFilters(criteria)">{{ criteria.name | uppercase }} {{ criteria.unit | uppercase }}</p>
+      <div *ngFor="let value of criteria.values" class="values">
+        <div [@slideInOut]="showFilter">
+            <app-filters-value *ngIf="criteria.type === 'STRING'" [criteria]="criteria" [value]="value"
+            (valueChecked)="updateCriteria($event)" ></app-filters-value>
+        </div>
       </div>
       <app-filters-slider *ngIf="criteria.type !== 'STRING' && criteria.valueMin && criteria.valueMax" [criteria]="criteria" 
       [min]="criteria.valueMin" [max]="criteria.valueMax"
