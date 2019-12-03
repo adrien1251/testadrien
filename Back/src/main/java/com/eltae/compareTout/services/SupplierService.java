@@ -40,7 +40,6 @@ public class SupplierService {
     }
 
     public List<Supplier> getAllSuppliers() {
-
         return this.supplierRepository.findByDiscriminatorValue("SUPPLIER");
     }
 
@@ -75,24 +74,21 @@ public class SupplierService {
         return this.supplierConverter.entityToDto(this.supplierRepository.save(sup));
     }
 
-    public String updateSupplier(SupplierDto supDto) {
+    public SupplierDto updateSupplier(SupplierDto supDto) {
         if (this.supplierRepository.findByIdAndDiscriminatorValue(supDto.getId(), "SUPPLIER") != null) {
             Supplier supplier = this.supConv.dtoToEntity(supDto);
-            this.supplierRepository.save(supplier);
-            return "Supplier account has been update";
+            return supplierConverter.entityToDto(this.supplierRepository.save(supplier));
         } else
-            return "Supplier not found";
+            throw new ApplicationException(HttpStatus.NOT_FOUND, "invalid supplier ID");
     }
 
     public SupplierDto confirmSupplierAccount(long supplierId) {
         Supplier supplier = supplierRepository
                 .findById(supplierId)
                 .orElseThrow(() -> new ApplicationException(HttpStatus.resolve(400), "invalid supplier ID"));
-
         if (supplier.getValidationDate() != null)
             throw new ApplicationException(HttpStatus.PRECONDITION_FAILED, "Already validated supplier");
         supplier.setValidationDate(LocalDate.now());
-
         return supConv.entityToDto(supplierRepository.save(supplier));
     }
 
