@@ -27,7 +27,7 @@ public class AdminService {
     public AdminService(
             AdminRepository adminRepository,
             AdminConverter adminConverter,
-            @Lazy BCryptPasswordEncoder bCryptPasswordEncoder){
+            @Lazy BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.adminRepository = adminRepository;
         this.adminConverter = adminConverter;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
@@ -45,16 +45,18 @@ public class AdminService {
 
     public AdminDto update(AdminDto adminDto) {
         Optional<Admin> a = adminRepository.findById(adminDto.getId());
-        if (a.isPresent()){
+        if (a.isPresent()) {
             Admin admin = this.adminConverter.dtoToEntity(adminDto);
             return adminConverter.entityToDto(this.adminRepository.save(admin));
-        }
-        return null;
+        } else
+            throw new ApplicationException(HttpStatus.NOT_FOUND, "invalid admin ID");
     }
 
 
-    public AdminDto getAdminWithId(long idAdmin) {
-        return  null;
+    public AdminDto getAdminWithId(Long idAdmin) {
+        return adminConverter.entityToDto(adminRepository
+                .findById(idAdmin)
+                .orElseThrow(() -> new ApplicationException(HttpStatus.NOT_FOUND, "invalid admin ID")));
     }
 
 
