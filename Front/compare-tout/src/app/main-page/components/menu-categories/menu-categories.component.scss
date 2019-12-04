@@ -8,9 +8,15 @@
 
     }
     .back {
-        color: #0700a0;
-        font-size:12px;
-        text-decoration: underline;
+        color: #a6d6db;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        padding: 8px;
+        border-radius: 5px;
+        width: fit-content;
+        background-color: white;
+        margin-top: 10px;
     }
     .subcategory-list {
         font-size: 12px;

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, OnChanges } from '@angular/core';
 import { Category } from 'src/app/shared/models/category.interface';
 import { CategoryService } from 'src/app/shared/services/category.service';
 import { CriteriaService } from 'src/app/shared/services/criteria.service';
@@ -16,7 +16,7 @@ import { debounce } from 'rxjs/operators';
   templateUrl: './main-page.component.html',
   styleUrls: ['./main-page.component.scss'],
 })
-export class MainPageComponent implements OnInit, OnDestroy {
+export class MainPageComponent implements OnInit, OnChanges, OnDestroy {
   public categories: Category[];
   public currentCategory: Category;
   public subCategories: Category[];
@@ -29,6 +29,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
   canShowFilters = false;
   fromProduct = false;
   numberOfComparison = 1;
+  filArianne: string[] = [];
 
 
   constructor(
@@ -49,12 +50,21 @@ export class MainPageComponent implements OnInit, OnDestroy {
     } else {
       const idRoute = this.route.snapshot.paramMap.get('id');
       if (idRoute && idRoute !== 'all') {
+        this.filArianne = [];
         this.fetchCurrentCategory(this.currentCategory, this.fromProduct);
       } else {
         this.fetchCategories();
         this.numberOfComparison = 0;
         this.comparisonProduct = [];
       }
+    }
+  }
+
+  ngOnChanges() {
+    const idRoute = this.route.snapshot.paramMap.get('id');
+    if (idRoute && idRoute !== 'all') {
+      this.filArianne = [];
+      this.fetchCurrentCategory(this.currentCategory, this.fromProduct);
     }
   }
 
@@ -75,6 +85,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   fetchCurrentCategory(event, fromRoute?: boolean): void {
+    this.filArianne.push(event);
     if (event != null) {
       if (fromRoute) {
         this.categoryService.getCategoriesChild(event.id).subscribe((res) => {
@@ -144,11 +155,11 @@ export class MainPageComponent implements OnInit, OnDestroy {
   sendCriterias(event): void {
     if (event == null || event.length === 0) { event = null; }
     this.productService.getProductsByCategoryAndCriteria(this.currentCategory.id, event)
-    .pipe(debounce(val => timer(1500)))
-    .subscribe(res => {
-      this.productList = res;
-    }
-    );
+      .pipe(debounce(val => timer(1500)))
+      .subscribe(res => {
+        this.productList = res;
+      }
+      );
   }
 
   compareProduct(event) {
@@ -157,7 +168,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
     if (this.comparisonProduct.length === 2) {
       this.dialogRefCompareProd = this.dialog.open(ComparisonPopupComponent, {
         data: {
-          products : this.comparisonProduct,
+          products: this.comparisonProduct,
           category: this.currentCategory,
         }
       });
@@ -170,4 +181,12 @@ export class MainPageComponent implements OnInit, OnDestroy {
     }
   }
 
+  fromBack() {
+    this.filArianne = [];
+  }
+
+  goToCategory(f) {
+    console.log(f);
+    this.router.navigate(['/category', f.id]);
+  }
 }

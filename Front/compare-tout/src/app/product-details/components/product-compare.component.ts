@@ -40,11 +40,11 @@ export class ProductCompareComponent implements OnInit, OnDestroy {
   }
 
   seeLessTitle() {
-    if (this.product.name.length > 17) {
-      this.product.nameShort = this.product.name.slice(0, 17);
+    if (this.product.name.length > 15) {
+      this.product.nameShort = this.product.name.slice(0, 15);
     }
-    if (this.product2.name.length > 17) {
-        this.product.nameShort = this.product.name.slice(0, 17);
+    if (this.product2.name.length > 15) {
+        this.product.nameShort = this.product.name.slice(0, 15);
       }
   }
 

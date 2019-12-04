@@ -1,8 +1,12 @@
 .category-menu {
     background-color: #a6d6db; //72c0c9
     padding: 10px;
+    .arianne {
+        display: flex;
+        font-weight: bold;
+        font-size: 12px;
+    }
 }
 .result-list {
     display:contents;
-    // width: 50%;
 }
