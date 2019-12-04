@@ -113,7 +113,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
         this.productList.forEach(product => {
           this.productService.getCriteriasOfProduct(product.id).subscribe(crit => {
             crit.forEach(criteria => {
-              const alreadyIn = this.criteriaValues.find(c => c.id === criteria.id) != null;
+              const alreadyIn = this.criteriaValues.find(c => c.idCriteria === criteria.id) != null;
               if (!alreadyIn) {
                 const criteriaSelected = [];
                 criterias[criteria.id].forEach(value => {
@@ -125,7 +125,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
                 });
                 criterias[criteria.id] = criteriaSelected;
                 const newCrit: UniqueCriteria = {
-                  id: criteria.id,
+                  idCriteria: criteria.id,
                   name: criteria.criteriaName,
                   type: criteria.type,
                   unit: criteria.criteriaUnit,

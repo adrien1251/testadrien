@@ -9,10 +9,15 @@ export interface Criteria {
 
 export interface UniqueCriteria {
     isMandatory?: boolean;
+    idCriteria?: string;
     id?: string;
     name: string;
     type: string;
     unit?: string;
+    defMinValue?: number;
+    defMaxValue?: number;
+    minValue?: number;
+    maxValue?: number;
     values: CriteriaValue[];
 }
 

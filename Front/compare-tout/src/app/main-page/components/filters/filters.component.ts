@@ -75,8 +75,10 @@ export class FiltersComponent implements OnInit, OnChanges, OnDestroy {
   fetchCriteria(): void {
     this.criteriaList.forEach(c => {
       if (c.type === 'INT' || c.type === 'FLOAT') {
-        c.valueMin = Math.floor(+c.values[0].value);
-        c.valueMax = Math.ceil(+c.values[c.values.length - 1].value);
+        c.defMinValue = Math.floor(+c.values[0].value);
+        c.defMaxValue = Math.ceil(+c.values[c.values.length - 1].value);
+        c.minValue = c.minValue != null ? c.minValue : Math.floor(+c.values[0].value);
+        c.maxValue = c.maxValue != null ? c.maxValue : Math.ceil(+c.values[c.values.length - 1].value);
       }
       if (c.unit === 'null') {
         c.unit = '';
@@ -89,11 +91,30 @@ export class FiltersComponent implements OnInit, OnChanges, OnDestroy {
     if (event.selected) {
       const i = this.criteriaSelected.findIndex(t => t.idCriteria === event.idCriteria);
       if (i === -1) {
+        let v;
+        if (event.values) {
+          v = [];
+          event.values.forEach(val => {
+            if (val.selected) {
+              v.push(val.value);
+            }
+          });
+        }
         this.criteriaSelected.push(
-          { idCriteria: event.idCriteria, value: event.value, minValue: event.minValue, maxValue: event.maxValue });
+          { idCriteria: event.idCriteria, value: v, minValue: event.minValue, maxValue: event.maxValue });
       } else {
+        let v;
+        if (event.values) {
+          v = [];
+          event.values.forEach(val => {
+            if (val.selected) {
+              v.push(val.value);
+            }
+          });
+        }
+
         if (this.criteriaSelected[i].value) {
-          this.criteriaSelected[i].value.push(event.value[0]);
+          this.criteriaSelected[i].value = v;
         }
         this.criteriaSelected[i].minValue = event.minValue;
         this.criteriaSelected[i].maxValue = event.maxValue;
@@ -103,7 +124,14 @@ export class FiltersComponent implements OnInit, OnChanges, OnDestroy {
       this.criteriaSelected.splice(i, 1);
     }
     this.valueHasChanged.emit(this.criteriaSelected);
-    const idx = this.criteriaList.findIndex(c => c.idCriteria === event.idCriteria);
+    const idx = this.criteriaList.findIndex(c => {
+      if (c.id) {
+        return c.id === event.idCriteria;
+
+      } else {
+        return c.idCriteria === event.idCriteria;
+      }
+    });
     this.criteriaList[idx] = event;
   }
 

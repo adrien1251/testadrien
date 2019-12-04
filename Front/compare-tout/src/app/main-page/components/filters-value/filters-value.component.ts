@@ -29,10 +29,14 @@ export class FiltersValueComponent implements OnInit, OnDestroy {
   updateFilter(value: any) {
     this.value.selected = !this.value.selected;
     this.value = value;
+    this.criteria.values.find(v => v.value === value.value);
     const valueSelect = {
-      idCriteria: this.criteria.id,
-      value: [this.value.value],
-      selected: this.value.selected
+      idCriteria: this.criteria.id ? this.criteria.id : this.criteria.idCriteria,
+      values: this.criteria.values,
+      name: this.criteria.name,
+      selected: this.value.selected,
+      type: this.criteria.type,
+      unit: this.criteria.unit,
     };
     this.valueChecked.emit(valueSelect);
   }
