@@ -261,4 +261,69 @@ public class SupplierServiceTest {
         supplierService.confirmSupplierAccount(supplierEntry.getId());
     }
 
+
+    @Test (expected = ApplicationException.class)
+    public void testUpdateSupplierCheckIfTheExceptionIsCorrectlyThrowedWhenSupplierEmailAlreadyExist() throws CloneNotSupportedException {
+        //Entry
+        Long supplierIdEntry = 100L;
+        SupplierDto supplierEntry = SupplierDto.builder()
+                .id(supplierIdEntry)
+                .email("emailTest@email.fr")
+                .firstName("test" + supplierIdEntry)
+                .lastName("TEST" + supplierIdEntry)
+                .siret("0102030405")
+                .webSite("https://myWebSite.com")
+                .password("password" + supplierIdEntry + "Test").build();
+
+        //Effective
+        Supplier supplierReturnByEntity = this.supplierConverter.dtoToEntity(supplierEntry);
+        Supplier entrySupplierSave = supplierReturnByEntity.clone();
+        Supplier supplierReturnBySave = entrySupplierSave.clone();
+        //Mocks
+        Mockito.when(this.supplierRepository.findByIdAndDiscriminatorValue(supplierReturnBySave.getId(), "SUPPLIER"))
+                .thenReturn(null);
+
+        //Call
+        supplierService.updateSupplier(supplierEntry);
+
+    }
+
+    @Test
+    public void testUpdateSupplier() throws CloneNotSupportedException {
+        //Entry
+        Long supplierIdEntry = 100L;
+        SupplierDto supplierEntry = SupplierDto.builder()
+                .id(supplierIdEntry)
+                .email("emailTest@email.fr")
+                .firstName("test" + supplierIdEntry)
+                .lastName("TEST" + supplierIdEntry)
+                .siret("0102030405")
+                .webSite("https://myWebSite.com")
+                .password("password" + supplierIdEntry + "Test").build();
+
+        //Effective
+        supplierEntry.setId(1L);
+        SupplierDto supplierExpected = SupplierDto.builder()
+                .id(1L)
+                .email("emailTest@email.fr")
+                .firstName("test" + supplierIdEntry)
+                .lastName("TEST" + supplierIdEntry)
+                .siret("0102030405")
+                .webSite("https://myWebSite.com")
+                .password("password" + supplierIdEntry + "Test").build();
+        Supplier supplierReturnByEntity = this.supplierConverter.dtoToEntity(supplierEntry);
+        Supplier entrySupplierSave = supplierReturnByEntity.clone();
+        Supplier supplierReturnBySave = entrySupplierSave.clone();
+        //Mocks
+        Optional<Supplier> supplierOptional = Optional.ofNullable(supplierReturnBySave);
+        Mockito.when(this.supplierRepository.findByIdAndDiscriminatorValue(supplierReturnBySave.getId(), "SUPPLIER"))
+                .thenReturn(supplierOptional);
+        Mockito.when(this.supplierRepository.save(supplierOptional.get())).thenReturn(supplierOptional.get());
+        //Call
+        SupplierDto supplierTest = supplierService.updateSupplier(supplierEntry);
+
+        assertEquals(supplierExpected,supplierTest);
+
+    }
+
 }
