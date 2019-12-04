@@ -7,8 +7,10 @@
 </app-filters>
 <div class="display" *ngIf="isChildCategory && productList != null">
   <div class="result-title">Résultats : {{productList.length}} produits</div>
-  <div class="result-list" *ngFor="let product of productList">
-    <app-product-display  [hasReachedComparison]="numberOfComparison"
-    (compareProduct)="compareProduct($event)" [category]="currentCategory" [product]="product"></app-product-display>
+  <div class="result-list">
+      <div *ngFor="let product of productList">
+          <app-product-display  [hasReachedComparison]="numberOfComparison"
+          (compareProduct)="compareProduct($event)" [category]="currentCategory" [product]="product"></app-product-display>
+        </div>
   </div>
 </div>
