@@ -240,7 +240,7 @@ public class ProductService {
                         primaryKey.setProduct(product);
                         cp = CriteriaProduct.builder()
                                 .pk(primaryKey)
-                                .value(records[i + 1])
+                                .value(records[i + 1].toUpperCase())
                                 .build();
                         product.addCriteriaProduct(cp);
                         criteriaProductRepository.save(cp);
