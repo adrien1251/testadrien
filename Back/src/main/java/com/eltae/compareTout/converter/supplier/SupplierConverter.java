@@ -43,6 +43,9 @@ public class SupplierConverter extends GenericsConverter<Supplier, SupplierDto> 
                     .webSite(supplierDto.getWebSite())
                     .id(supplierDto.getId())
                     .siret(supplierDto.getSiret())
+                    .validationDate(supplierDto.getValidationDate())    //Genant ?
+                    .creationDate(supplierDto.getCreationDate())        //Genant ?
+                    .resetToken(supplierDto.getResetToken())            //Genant ?
                     .build();
     }
 

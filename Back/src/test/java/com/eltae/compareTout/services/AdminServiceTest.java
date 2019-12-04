@@ -23,8 +23,6 @@ import static org.junit.Assert.assertEquals;
 @RunWith(SpringRunner.class)
 public class AdminServiceTest {
 
-
-    @SpyBean
     @Autowired
     AdminService adminService;
 
