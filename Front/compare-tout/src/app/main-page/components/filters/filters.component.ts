@@ -92,7 +92,11 @@ export class FiltersComponent implements OnInit, OnChanges, OnDestroy {
         this.criteriaSelected.push(
           { idCriteria: event.idCriteria, value: event.value, minValue: event.minValue, maxValue: event.maxValue });
       } else {
-        this.criteriaSelected[i].value.push(event.value[0]);
+        if (this.criteriaSelected[i].value) {
+          this.criteriaSelected[i].value.push(event.value[0]);
+        }
+        this.criteriaSelected[i].minValue = event.minValue;
+        this.criteriaSelected[i].maxValue = event.maxValue;
       }
     } else {
       const i = this.criteriaSelected.findIndex(x => x.idCriteria === event.idCriteria);
