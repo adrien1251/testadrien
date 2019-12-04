@@ -195,7 +195,7 @@ public class ProductService {
         String actualColumn;
         CriteriaProduct cp;
         int added = 0;
-        Category category = categoryService.getCategoryWithId(Long.parseLong(records[3]));
+        Category category = categoryService.getCategoryWithId(Long.parseLong(records[4]));
         if (category == null) {
             this.errorMap.put(line, "Category identification not exits in database, can't add product (for the product :  " + records[0] + ")");
             return false;
@@ -219,12 +219,10 @@ public class ProductService {
                 .build();
         productRepository.save(product);
 
-
-
-        for (int i = 4; i < records.length; i++) {
+        for (int i = 5; i < records.length; i++) {
             actualColumn = records[i];
             if (actualColumn.trim().length() == 0) return added > 0;
-            if (i % 2 == 0) {
+            if ((i - 1) % 2 == 0) {
                 Criteria criteria = criteriaService.getCriteriaProductWithIdCriteria(Long.parseLong(actualColumn));
                 if (criteria == null) {
                     this.errorMap.put(line, "Criteria identification not exits in database, can't add product (for product :  " + product.getName() + ")");
@@ -240,7 +238,7 @@ public class ProductService {
                         primaryKey.setProduct(product);
                         cp = CriteriaProduct.builder()
                                 .pk(primaryKey)
-                                .value(records[i + 1])
+                                .value(records[i + 1].toLowerCase())
                                 .build();
                         product.addCriteriaProduct(cp);
                         criteriaProductRepository.save(cp);
@@ -258,7 +256,7 @@ public class ProductService {
     private boolean checkAllMandatoryCriteriaPresentInFile(String[] records, ArrayList<Long> mandatoryCriteriaList) {
         ArrayList<Long> res = new ArrayList<>();
         String actualColumn;
-        for (int i = 4; i < records.length; i++) {
+        for (int i = 5; i < records.length; i++) {
             actualColumn = records[i];
             if (actualColumn.trim().length() > 0) {
                 for (Long id : mandatoryCriteriaList) {
