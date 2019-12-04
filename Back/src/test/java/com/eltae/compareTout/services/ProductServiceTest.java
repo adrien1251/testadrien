@@ -1,9 +1,14 @@
 package com.eltae.compareTout.services;
 
 
+import com.eltae.compareTout.converter.CategoryConverter;
+import com.eltae.compareTout.converter.product.ProductConverter;
 import com.eltae.compareTout.dto.criteria.CriteriaFilterDto;
+import com.eltae.compareTout.dto.criteria.CriteriaProductDto;
+import com.eltae.compareTout.dto.product.ProductDto;
 import com.eltae.compareTout.dto.product.ProductDtoForFront;
 import com.eltae.compareTout.entities.Category;
+import com.eltae.compareTout.entities.CriteriaProduct;
 import com.eltae.compareTout.entities.Product;
 import com.eltae.compareTout.exceptions.ApplicationException;
 import com.eltae.compareTout.repositories.CategoryRepository;
@@ -34,6 +39,9 @@ public class ProductServiceTest {
 
     @MockBean
     CategoryRepository categoryRepository;
+
+    @MockBean
+    ProductConverter productConverter;
 
     @MockBean
     CriteriaRepository criteriaRepository;
@@ -100,4 +108,25 @@ public class ProductServiceTest {
 
         productService.getAllProductByCategoryAndCriteria(categoryId, criteriaFilterDtos);
     }
+
+
+
+    @Test(expected = ApplicationException.class)
+    public void testGetAllCriteriaByProductReturnExceptionIfProductNotExist(){
+        //Entry
+        Long categoryId = 1L;
+        List<CriteriaFilterDto> criteriaFilterDtos = new ArrayList<>();
+        criteriaFilterDtos.add(CriteriaFilterDto.builder()
+                .idCriteria(1L)
+                .build());
+        //Effective
+
+        //Mock
+
+        Mockito.when(categoryRepository.findById(categoryId)).thenReturn(null);
+
+        productService.getAllCriteriaByProduct(categoryId);
+    }
+
+
 }
