@@ -26,8 +26,8 @@ export class FiltersSliderComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.options = {
-      floor: Math.floor(this.min),
-      ceil: Math.ceil(this.max),
+      floor: this.min,
+      ceil: this.max,
     };
     if (this.criteria.unit === 'null' && this.options.floor) {
       this.criteria.unit = '';
@@ -39,12 +39,16 @@ export class FiltersSliderComponent implements OnInit, OnDestroy {
   }
 
   updateLow(event) {
+    console.log(event);
+    console.log(this.tempMin);
     if (event !== this.tempMin) {
       this.updateFilter(event, this.max);
     }
   }
 
   updateHigh(event) {
+    console.log(event);
+    console.log(this.tempMax);
     if (event !== this.tempMax) {
       this.updateFilter(this.min, event);
     }

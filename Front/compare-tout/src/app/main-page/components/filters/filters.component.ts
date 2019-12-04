@@ -76,7 +76,7 @@ export class FiltersComponent implements OnInit, OnChanges, OnDestroy {
     this.criteriaList.forEach(c => {
       if (c.type === 'INT' || c.type === 'FLOAT') {
         c.valueMin = Math.floor(+c.values[0].value);
-        c.valueMax = +c.values[c.values.length - 1].value;
+        c.valueMax = Math.ceil(+c.values[c.values.length - 1].value);
       }
       if (c.unit === 'null') {
         c.unit = '';
