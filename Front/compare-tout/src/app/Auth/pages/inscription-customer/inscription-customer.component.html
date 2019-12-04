@@ -2,10 +2,10 @@
 
 <mat-card>
   <mat-card-content>
-    <form [formGroup]="form" (ngSubmit)="submit()">
+    <form [formGroup]="form" (ngSubmit)="submit()" >
       <p>
         <mat-form-field>
-          <input type="text" matInput placeholder="First name" formControlName="firstName" required>
+          <input type="text" matInput placeholder="First name" formControlName="firstName" value="value" required>
         </mat-form-field>
       </p>
       <p>
@@ -54,9 +54,8 @@
       <p *ngIf="error" class="error">
         {{ error }}
       </p>
-
       <div class="button">
-        <button type="submit" mat-button>S'inscription</button>
+        <button type="submit" mat-button>S'inscrire</button>
       </div>
     </form>
   </mat-card-content>

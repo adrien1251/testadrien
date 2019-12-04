@@ -1,0 +1,10 @@
+<mat-progress-spinner class="spinner-wait" mode="indeterminate" *ngIf="isWaiting"></mat-progress-spinner>
+<div>
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <input type='file' #fileImportInput name='File Upload' formControlName="file" accept='.csv' />
+
+    <div class="button">
+      <button type="submit" mat-button>Ajouter les produits</button>
+    </div>
+  </form>
+</div>

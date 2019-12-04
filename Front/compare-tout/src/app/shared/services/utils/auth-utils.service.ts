@@ -1,5 +1,4 @@
 import {EventEmitter} from '@angular/core';
-import {HttpHeaders} from '@angular/common/http';
 
 export class AuthUtils {
   private static AuthNamespaces = {
@@ -17,13 +16,6 @@ export class AuthUtils {
 
   public static getCurrentToken(): string {
     return this.getCurrentUser() ? this.getCurrentUser().jwttoken : null;
-  }
-
-  public static getBearerToken(){
-    return new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': AuthUtils.getCurrentToken()
-    });
   }
 
   public static getCurrentUser(): any {

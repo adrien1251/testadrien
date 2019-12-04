@@ -51,6 +51,8 @@ import {AdminComponent} from './main-page/pages/admin/admin.component';
 import {BasicAuthInterceptorService} from './shared/services/interceptor/basic-auth-interceptor.service';
 import { ComparisonPopupComponent } from './main-page/components/comparison-popup/comparison-popup.component';
 import { ProductCompareComponent } from './product-details/components/product-compare.component';
+import {SupplierSendProductComponent} from './main-page/pages/supplier-send-product/supplier-send-product.component';
+import {SupplierGetProductComponent} from './main-page/pages/supplier-get-product/supplier-get-product.component';
 
 @NgModule({
   declarations: [
@@ -68,6 +70,8 @@ import { ProductCompareComponent } from './product-details/components/product-co
     AuthComponent,
     InscriptionFournComponent,
     InscriptionCustomerComponent,
+    SupplierSendProductComponent,
+    SupplierGetProductComponent,
     ComparisonPopupComponent,
     ProductCompareComponent
   ],

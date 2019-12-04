@@ -13,14 +13,14 @@ import java.util.Optional;
 @Repository
 public interface SupplierRepository extends JpaRepository<Supplier, Long> {
 
-    @Query("SELECT p FROM User p where p.class=:discriminatorValue")
+    @Query("SELECT p FROM User p where p.class=?1")
     List<Supplier> findByDiscriminatorValue(String discriminatorValue);
 
     Optional<Supplier> findById(Long id);
 
     List<Supplier> findAllByValidationDateIsNull();
 
-    @Query("SELECT p FROM User p where p.id=:id and  p.class=:discriminatorValue")
+    @Query("SELECT p FROM User p where p.id=?1 and  p.class=?2")
     Optional<Supplier> findByIdAndDiscriminatorValue(Long id, String discriminatorValue);
 
     @Query("SELECT p FROM User p where p.email=?1 and  p.class=?2")

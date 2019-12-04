@@ -8,7 +8,13 @@ export const apiEndpoints = {
     // Admin
     findAllSupplierWhoNeedValidate: 'admin/getAllSuppliersAccountToValid',
     validateSupplierAccount: (idSupplier: string) => `admin/validateSupplierAccount/${idSupplier}`,
-    // Categories
+
+    // Supplier
+    sendProducts: 'products',
+    getSupplier: (id?: string) => `supplier/?id_supplier=${id}`,
+
+
+  // Categories
     getMainCategories: 'main-categories',
     getCategories: 'categories',
     getCategoriesChild: (id?: string) => `categories?id=${id}`,

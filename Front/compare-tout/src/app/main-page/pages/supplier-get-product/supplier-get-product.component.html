@@ -1,0 +1,25 @@
+<mat-progress-spinner class="spinner-wait" mode="indeterminate" *ngIf="waiting"></mat-progress-spinner>
+<ng-template #noSupplier>
+  <div>No supplier found for this id {{idSupplier}}</div>
+</ng-template>
+<div *ngIf="supplier; else noSupplier">
+  <h2>{{supplier.lastName}}</h2>
+  <form [formGroup]="form" class="form" (submit)="submit()" >
+    <mat-form-field class="form-full-width" disabled>
+      <input matInput placeholder="Company name" formControlName="lastName">
+    </mat-form-field>
+    <mat-form-field class="form-full-width">
+      <input matInput placeholder="Email" formControlName="email">
+    </mat-form-field>
+    <mat-form-field class="form-full-width">
+      <input matInput placeholder="Web site" formControlName="webSite">
+    </mat-form-field>
+    <mat-form-field class="form-full-width">
+      <input matInput placeholder="No. Siret" formControlName="siret">
+    </mat-form-field>
+
+    <div *ngIf="!idSupplier" class="button">
+      <button type="submit" class="btn-validate" mat-raised-button disabled="{{!form.valid}}" >Update my account</button>
+    </div>
+  </form>
+</div>

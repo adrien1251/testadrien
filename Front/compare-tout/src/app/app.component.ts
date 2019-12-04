@@ -22,7 +22,7 @@ export class AppComponent implements OnInit {
     private authUtils: AuthUtils) {}
 
   ngOnInit(): void {
-    this.user = AuthUtils.getCurrentUser();
+    this.user = AuthUtils.getCurrentUser().user;
     this.authUtils.userEmitter.subscribe((userAndToken) => {
       if (userAndToken) {
         this.user = userAndToken.user;
