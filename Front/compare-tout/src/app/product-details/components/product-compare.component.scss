@@ -29,12 +29,16 @@
     table {
       td {
           min-width: 50%;
+          .name {
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
       }
       td:first-child {
           min-width:30%;
       }
       .all-criterias:nth-child(even) {
-          background-color: #a6d6db;
+          background-color: #d4f3f7;
       }
       .criteria-contener {
           text-align: left;

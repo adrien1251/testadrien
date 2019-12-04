@@ -13,6 +13,8 @@ export class MenuCategoriesComponent implements OnInit, OnChanges, OnDestroy {
   isTopCategory = true;
   seeMore = false;
   @Output() currentCategory: EventEmitter<Category> = new EventEmitter<Category>();
+  @Output() retour: EventEmitter<any> = new EventEmitter<any>();
+
   @Input() subCategories: Category[];
 
   constructor(
@@ -37,6 +39,7 @@ export class MenuCategoriesComponent implements OnInit, OnChanges, OnDestroy {
     this.categoriesDisplay = this.categories;
     this.subCategories = null;
     this.currentCategory.emit(null);
+    this.retour.emit(true);
     this.router.navigate(['/category/all']);
   }
 

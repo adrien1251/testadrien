@@ -1,6 +1,9 @@
 <div class="category-menu">
+  <div *ngIf="filArianne.length > 0" class="arianne">
+      <div *ngFor="let f of filArianne" (click)="goToCategory(f)"> {{ f.name }}></div>
+  </div>
   <app-menu-categories *ngIf="categories != null || subCategories != null" [categories]="categories" [subCategories]="subCategories"
-    (currentCategory)="fetchCurrentCategory($event)"></app-menu-categories>
+    (retour)="fromBack()" (currentCategory)="fetchCurrentCategory($event)"></app-menu-categories>
 </div>
 <app-filters *ngIf="currentCategory!= null && isChildCategory && canShowFilters" 
 [criteriaList]="criteriaValues" (valueHasChanged)="sendCriterias($event)">
