@@ -119,6 +119,33 @@ public class SupplierServiceTest {
         assertEquals(LocalDate.now(), userEffective.getCreationDate());
     }
 
+
+    @Test (expected = ApplicationException.class)
+    public void testCreateSupplierCheckIfTheExceptionIsCorrectlyThrowedWhenSupplierEmailAlreadyExist() throws CloneNotSupportedException {
+        //Entry
+        Long supplierIdEntry = 100L;
+        SupplierInscriptionDto supplierEntry = SupplierInscriptionDto.builder()
+                .email("emailTest@email.fr")
+                .firstName("test" + supplierIdEntry)
+                .lastName("TEST" + supplierIdEntry)
+                .siret("0102030405")
+                .webSite("https://myWebSite.com")
+                .password("password" + supplierIdEntry + "Test").build();
+
+        //Effective
+        Supplier supplierReturnByEntity = this.supplierInscriptionConverter.dtoFromFrontEntity(supplierEntry);
+        Supplier entrySupplierSave = supplierReturnByEntity.clone();
+        Supplier supplierReturnBySave = entrySupplierSave.clone();
+        //Mocks
+        Optional<Supplier> supplierOptional = Optional.ofNullable(supplierReturnBySave);
+        Mockito.when(this.supplierService.findSupplierByEmail(supplierReturnByEntity.getEmail()))
+                .thenReturn(supplierOptional);
+
+        //Call
+        supplierService.create(supplierEntry);
+
+    }
+
     @Test
     public void testConfirmSupplierAccount() throws CloneNotSupportedException {
         //Entry
