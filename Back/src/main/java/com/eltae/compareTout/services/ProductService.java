@@ -191,7 +191,7 @@ public class ProductService {
             }
     }
 
-    private boolean insertProduct(String[] records, int line,Supplier supplier) {
+    protected boolean insertProduct(String[] records, int line,Supplier supplier) {
         String actualColumn;
         CriteriaProduct cp;
         int added = 0;
@@ -253,7 +253,7 @@ public class ProductService {
         return true;
     }
 
-    private boolean checkAllMandatoryCriteriaPresentInFile(String[] records, ArrayList<Long> mandatoryCriteriaList) {
+    protected boolean checkAllMandatoryCriteriaPresentInFile(String[] records, ArrayList<Long> mandatoryCriteriaList) {
         ArrayList<Long> res = new ArrayList<>();
         String actualColumn;
         for (int i = 5; i < records.length; i++) {
