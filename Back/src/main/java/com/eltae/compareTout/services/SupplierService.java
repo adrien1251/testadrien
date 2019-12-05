@@ -52,9 +52,11 @@ public class SupplierService {
     }
 
     public SupplierDto getSupplierInfo(Long id) {
-
-        return this.supConv.entityToDto(this.supplierRepository.findByIdAndDiscriminatorValue(id, "SUPPLIER").get());
+        return supConv.entityToDto(supplierRepository
+                .findById(id)
+                .orElseThrow(() -> new ApplicationException(HttpStatus.NOT_FOUND, "Invalid supplier ID")));
     }
+
 
     public Supplier getEntitySupplier(Long id) {
         return this.supplierRepository.findByIdAndDiscriminatorValue(id, "SUPPLIER").get();

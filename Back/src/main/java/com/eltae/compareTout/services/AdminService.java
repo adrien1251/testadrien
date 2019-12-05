@@ -52,7 +52,6 @@ public class AdminService {
             throw new ApplicationException(HttpStatus.NOT_FOUND, "invalid admin ID");
     }
 
-
     public AdminDto getAdminWithId(Long idAdmin) {
         return adminConverter.entityToDto(adminRepository
                 .findById(idAdmin)

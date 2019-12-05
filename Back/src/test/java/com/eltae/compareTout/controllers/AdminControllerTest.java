@@ -56,7 +56,7 @@ public class AdminControllerTest {
 
 
         //Call
-        adminController.updateAdminProfile(adminEntry);
+        adminController.updateAdmin(adminEntry);
     }
 
 }

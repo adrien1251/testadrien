@@ -44,16 +44,12 @@ public class CustomerService {
 
     public boolean isCustomer(Long id) {
         return this.customerRepository.findByIdAndDiscriminatorValue(id, "CUSTOMER").get() != null;
-        //return this.customerRepository.findById(id).get()!=null;
-    }
+      }
 
     public CustomerDto getCustomerInfo(Long id) {
-        System.out.println(this.isCustomer(id));
-        if (this.isCustomer(id))
-            return this.customerConverter.entityToDto(this.customerRepository.findByIdAndDiscriminatorValue
-                    (id, "CUSTOMER").get());
-        else
-            return null;
+        return customerConverter.entityToDto(customerRepository
+                .findById(id)
+                .orElseThrow(() -> new ApplicationException(HttpStatus.NOT_FOUND, "Invalid customer ID")));
     }
 
     public Optional<Customer> findCustomerByEmail(String email) {
@@ -70,14 +66,12 @@ public class CustomerService {
     }
 
 
-    public String updateCustomer(CustomerDto cusDto) {
-        if (this.isCustomer(cusDto.getId())) {
+    public CustomerDto updateCustomer(CustomerDto cusDto) {
+       if (this.isCustomer(cusDto.getId())) {
             Customer customer = this.customerConverter.dtoToEntity(cusDto);
             this.customerRepository.save(customer);
-            return "Customer has been correctly updated";
+            return customerConverter.entityToDto((this.customerRepository.save(customer)));
         } else
-            return "Customer not found";
+            throw new ApplicationException(HttpStatus.NOT_FOUND, "invalid customer ID");
     }
-
-
 }
