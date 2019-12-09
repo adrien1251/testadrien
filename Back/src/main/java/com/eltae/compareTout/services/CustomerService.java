@@ -44,9 +44,6 @@ public class CustomerService {
 
 
 
-    public boolean isCustomer(Long id) {
-        return this.customerRepository.findByIdAndDiscriminatorValue(id, "CUSTOMER").get() != null;
-      }
 
     public CustomerDto getCustomerInfo(Long id) {
         return customerConverter.entityToDto(customerRepository
@@ -68,7 +65,7 @@ public class CustomerService {
     }
 
     public CustomerDto updateCustomer(CustomerDto cusDto) {
-       if (this.isCustomer(cusDto.getId())) {
+       if (this.customerRepository.findByIdAndDiscriminatorValue(cusDto.getId(), "CUSTOMER").isPresent()) {
             Customer customer = this.customerConverter.dtoToEntity(cusDto);
             this.customerRepository.save(customer);
             return customerConverter.entityToDto((this.customerRepository.save(customer)));
