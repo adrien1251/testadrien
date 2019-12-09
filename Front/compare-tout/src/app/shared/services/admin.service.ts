@@ -1,10 +1,9 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {apiEndpoints} from './utils/api-endpoints';
 import {environment} from '../../../environments/environment';
 import {Supplier} from '../models/supplier.interface';
-import {AuthUtils} from './utils/auth-utils.service';
 
 
 @Injectable({

@@ -4,7 +4,6 @@ import {NgModule} from '@angular/core';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
-import {TestService} from './shared/services/test.service';
 import {MainPageComponent} from './main-page/pages/main-page.component';
 import {HeaderComponent} from './shared/header/header.component';
 import {CategoryService} from './shared/services/category.service';
@@ -118,7 +117,6 @@ import {SupplierGetProductComponent} from './main-page/pages/supplier-get-produc
     ComparisonPopupComponent,
   ],
   providers: [
-    TestService,
     CategoryService,
     CriteriaService,
     ProductService,
