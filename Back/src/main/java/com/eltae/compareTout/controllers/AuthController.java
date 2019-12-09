@@ -5,9 +5,7 @@ import com.eltae.compareTout.dto.user.JwtResponse;
 import com.eltae.compareTout.dto.user.LoginDto;
 import com.eltae.compareTout.exceptionHandler.ExceptionCatcher;
 import com.eltae.compareTout.exceptions.ApplicationException;
-import com.eltae.compareTout.repositories.UserRepository;
 import com.eltae.compareTout.security.JwtTokenUtil;
-import com.eltae.compareTout.services.AuthService;
 import com.eltae.compareTout.services.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,11 +36,6 @@ public class AuthController extends ExceptionCatcher {
 
     @Autowired
     private UserService userService;
-
-//    @PostMapping()
-//    public ResponseEntity<?> auth(@RequestBody LoginDto login) {
-//        return ResponseEntity.status(200).body(this.authService.login(login));
-//    }
 
     @PostMapping()
     public ResponseEntity<?> createAuthenticationToken(@RequestBody LoginDto login) {

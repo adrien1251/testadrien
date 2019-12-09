@@ -47,8 +47,9 @@ public class SupplierService {
         return this.supConv.entityListToDtoListSup(supplierRepository.findAllByValidationDateIsNull());
     }
 
-    public boolean getSupplierWithId(Long id) {
-        return this.supplierRepository.findByIdAndDiscriminatorValue(id, "SUPPLIER").get() == null;
+    public boolean supplierExists(Long id) {
+        return this.supplierRepository
+                .findByIdAndDiscriminatorValue(id, "SUPPLIER").isPresent();
     }
 
     public SupplierDto getSupplierInfo(Long id) {
@@ -59,7 +60,11 @@ public class SupplierService {
 
 
     public Supplier getEntitySupplier(Long id) {
+        if(supplierExists(id))
         return this.supplierRepository.findByIdAndDiscriminatorValue(id, "SUPPLIER").get();
+        else
+            throw new ApplicationException(HttpStatus.NOT_FOUND, "invalid supplier ID");
+
     }
 
 
@@ -77,7 +82,7 @@ public class SupplierService {
     }
 
     public SupplierDto updateSupplier(SupplierDto supDto) {
-        if (this.supplierRepository.findByIdAndDiscriminatorValue(supDto.getId(), "SUPPLIER") != null) {
+        if (supplierExists(supDto.getId())) {
             Supplier supplier = this.supConv.dtoToEntity(supDto);
             return supplierConverter.entityToDto(this.supplierRepository.save(supplier));
         } else

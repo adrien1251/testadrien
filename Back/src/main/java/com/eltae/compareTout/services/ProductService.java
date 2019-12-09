@@ -4,7 +4,6 @@ import com.eltae.compareTout.converter.product.ProductConverter;
 import com.eltae.compareTout.converter.product.ProductForFrontConverter;
 import com.eltae.compareTout.dto.criteria.CriteriaFilterDto;
 import com.eltae.compareTout.dto.criteria.CriteriaProductDto;
-import com.eltae.compareTout.dto.product.ProductDto;
 import com.eltae.compareTout.dto.product.ProductDtoForFront;
 import com.eltae.compareTout.dto.product.ShortProductDto;
 import com.eltae.compareTout.entities.*;
@@ -270,13 +269,6 @@ public class ProductService {
         if (mandatoryCriteriaList.size() == res.size())  //true si tous les criteres sont présents
             return true;
         return false;
-    }
-
-
-    public List<ProductDto> getAllProductsBySupplier(Long id) {
-
-        return productConverter.entityListToDtoList(this.productRepository.findAllBySupplierId(id));
-
     }
 
     public List<ShortProductDto> getSupplierProducts(Long id) {

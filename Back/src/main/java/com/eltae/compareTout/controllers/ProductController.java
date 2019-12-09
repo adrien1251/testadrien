@@ -40,7 +40,7 @@ public class ProductController extends ExceptionCatcher {
             @ApiResponse(code = 200, message = "Query is successfully treated with both parameters"),
             @ApiResponse(code = 201, message = "Query is successfully treated categoryId parameter"),
             @ApiResponse(code = 404, message = "CategoryId or criteria are not present in database") })
-    @PostMapping(produces="application/json",value = "/{categoryId}")
+    @PostMapping(produces="application/json",value = "/_search/{categoryId}")
     public ResponseEntity<List<ProductDtoForFront>> getAllProductByCategoryAndCriteria(
             @ApiParam(value = "The identification number of the category. Must not be null",required = true)
             @PathVariable( value="categoryId") Long categoryId,
@@ -52,16 +52,7 @@ public class ProductController extends ExceptionCatcher {
         return ResponseEntity.status(200).body(this.productService.getAllProductByCategoryAndCriteria(categoryId, criteriaFilterDtos));
     }
 
-    @ApiOperation(value = "Provide a json of all the criteria for a product")
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Query is successfully treated "),
-            @ApiResponse(code = 404, message = "The identification number of the product is unknown") })
-    @GetMapping(produces="application/json",value = "/{idProduct}")
-    public ResponseEntity<?> getAllCriteriaByProduct(
-            @ApiParam(value = "The identification number of the product. Must not be null",required = true)
-            @PathVariable long idProduct) {
-        return ResponseEntity.status(200).body(this.productService.getAllCriteriaByProduct(idProduct));
-    }
+
 
     @ApiOperation(value = "Add products with a CSV file (delimiter: ';')" +
             "Example of a ligne :" +
@@ -81,26 +72,27 @@ public class ProductController extends ExceptionCatcher {
         }
         Supplier supplier =supplierService.getEntitySupplier(id);
 
-        //if(supplier.getValidationDate()!=null) { // attendre la validation par l'admin
-            String response = this.productService.insertProductsFromFile(file,supplier).toJSONString();
+               String response = this.productService.insertProductsFromFile(file,supplier).toJSONString();
             return ResponseEntity.status(200).body(response);
-        //}
-        //else return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Supplier account don't have credentials");
+
     }
 
+
+
+
     @ApiOperation(value = "Produce a json with all supplier products.")
-    @GetMapping(value = "/Supplier",produces="application/json")
+    @GetMapping(produces="application/json",value="/_search/{id_supplier}")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Request is successfully treated"),
-            @ApiResponse(code = 500, message = "Invalid supplier identification number.")})
+            @ApiResponse(code = 404, message = "Wrong supplier identification number.")})
     public ResponseEntity<?> getSupplierProducts(
             @ApiParam(value = "Identification number of the supplier",required = true)
-            @RequestParam long id_supplier)
+            @PathVariable long id_supplier)
     {
-        if(!this.supplierService.getSupplierWithId(id_supplier))
+        if(this.supplierService.supplierExists(id_supplier))
             return ResponseEntity.ok().body(this.productService.getSupplierProducts(id_supplier));
         else
-            return ResponseEntity.ok().body("");
+            throw new ApplicationException(HttpStatus.NOT_FOUND,"Invalid identification number for supplier");
 
     }
 
