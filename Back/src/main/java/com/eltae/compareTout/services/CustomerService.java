@@ -37,7 +37,7 @@ public class CustomerService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder1;
     }
 
-<<<<<<< HEAD
+
     public List<Customer> getAllCustomers() {
         return this.customerRepository.findByDiscriminatorValue("CUSTOMER");
     }
