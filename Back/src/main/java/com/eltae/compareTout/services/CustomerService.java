@@ -48,7 +48,7 @@ public class CustomerService {
             return this.customerConverter.entityToDto(this.customerRepository.findByIdAndDiscriminatorValue
                     (id, "CUSTOMER").get());
         else
-            return null;
+            throw new ApplicationException(HttpStatus.NOT_FOUND, "Customer not found");
     }
 
     public CustomerDto create(CustomerInscriptionDto cusDto) {
