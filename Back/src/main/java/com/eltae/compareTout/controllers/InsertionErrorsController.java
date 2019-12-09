@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(Routes.INSERTIONERRORS)
-@Api(value = "InsertionErrors", description = "Insertions errors gesture", tags = {"Insertions"})
+@Api(value = "InsertionErrors", description = "Insertions errors gesture", tags = {"InsertionsErrors"})
 
 
 public class InsertionErrorsController extends ExceptionCatcher {
