@@ -15,7 +15,8 @@ export class SupplierService {
   constructor(private httpClient: HttpClient) { }
 
   public sendProducts(file: FormData): Observable<void> {
-    return this.httpClient.post<void>(`${environment.back_url}${apiEndpoints.sendProducts}`, file);
+    return null; //TODO : send Product with file
+    // return this.httpClient.post<void>(`${environment.back_url}${apiEndpoints.sendProducts(file)}`, {});
   }
 
   public getSupplier(idSupplier: string): Observable<Supplier> {

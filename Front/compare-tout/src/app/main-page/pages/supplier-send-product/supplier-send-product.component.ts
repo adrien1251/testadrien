@@ -23,31 +23,31 @@ export class SupplierSendProductComponent implements OnInit {
   }
 
   submit() {
-    if (this.form.valid) {
-      this.isWaiting = true;
-      const formData = new FormData();
-      formData.append('file', this.form.value.file);
-      console.log(this.form.value.file);
-      this.supplierService.sendProducts(formData).subscribe(
-        (user: any) => {
-          this.error = "ok";
-        },
-        (error: Error) => {
-          if (error.error.statusErrorCode === 404) {
-            this.error = error.error.errorMessage;
-          } else if (error.error.statusErrorCode === 403) {
-            this.error = error.error.errorMessage;
-          } else {
-            this.error = "Une erreur innatendu s'est produite";
-          }
-          this.isWaiting = false;
-        },
-        () => {
-          this.isWaiting = false;
-        }
-      );
-    } else {
-      this.error = "L'un des champs n'est pas remplit";
-    }
+  //   if (this.form.valid) {
+  //     this.isWaiting = true;
+  //     const formData = new FormData();
+  //     formData.append('file', this.form.value.file);
+  //     console.log(this.form.value.file);
+  //     this.supplierService.sendProducts(formData).subscribe(
+  //       (user: any) => {
+  //         this.error = "ok";
+  //       },
+  //       (error: Error) => {
+  //         if (error.error.statusErrorCode === 404) {
+  //           this.error = error.error.errorMessage;
+  //         } else if (error.error.statusErrorCode === 403) {
+  //           this.error = error.error.errorMessage;
+  //         } else {
+  //           this.error = "Une erreur innatendu s'est produite";
+  //         }
+  //         this.isWaiting = false;
+  //       },
+  //       () => {
+  //         this.isWaiting = false;
+  //       }
+  //     );
+  //   } else {
+  //     this.error = "L'un des champs n'est pas remplit";
+  //   }
   }
 }
