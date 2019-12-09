@@ -48,7 +48,7 @@ public class SupplierController extends ExceptionCatcher {
             @ApiResponse(code = 201, message = "The supplier account has correctly been validated"),
             @ApiResponse(code = 400, message = "Invalid supplier ID"),
             @ApiResponse(code = 412, message = "Already validated supplier")})
-    @PatchMapping (produces = "application/json")
+    @PatchMapping (produces = "application/json",value="/{supplierId}")
     public ResponseEntity<SupplierDto> validationSupplierAccount(@PathVariable Long supplierId) {
         return ResponseEntity.status(201).body(this.supplierService.confirmSupplierAccount(supplierId));
     }
