@@ -19,6 +19,7 @@ export class AdminService {
   }
 
   public validateSupplier(idSupplier: string): Observable<void> {
-    return this.httpClient.put<void>(`${environment.back_url}${apiEndpoints.validateSupplierAccount(idSupplier)}`, {});
+    return this.httpClient.patch<void>(`${environment.back_url}${apiEndpoints.validateSupplierAccount(idSupplier)}`, {});
   }
+
 }

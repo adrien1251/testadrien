@@ -48,17 +48,17 @@ const routes: Routes = [
     }
   },
   {
-    path: 'supplier/:id',
-    component: SupplierGetProductComponent,
-  },
-  {
     path: 'supplier/sendProduct',
     component: SupplierSendProductComponent,
     canActivate: [AuthGuardAdminService],
     data: {
       expectedRole: 'supplier'
     }
-  }
+  },
+  {
+    path: 'supplier/:id',
+    component: SupplierGetProductComponent,
+  },
 ];
 
 @NgModule({
