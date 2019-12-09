@@ -42,6 +42,7 @@ public class CustomerService {
     }
 
 
+
     public boolean isCustomer(Long id) {
         return this.customerRepository.findByIdAndDiscriminatorValue(id, "CUSTOMER").get() != null;
       }
@@ -59,7 +60,7 @@ public class CustomerService {
     public CustomerDto create(CustomerInscriptionDto cusDto) {
         Customer customer = customerInscriptionConverter.dtoToEntity(cusDto);
         customer.setPassword(bCryptPasswordEncoder.encode(customer.getPassword()));
-        if (findCustomerByEmail(customer.getEmail()).isPresent()) {
+        if (this.customerRepository.findByEmail(customer.getEmail()).isPresent()) {
             throw new ApplicationException(HttpStatus.CONFLICT, "This email already exist");
         }
         return customerConverter.entityToDto(this.customerRepository.save(customer));
