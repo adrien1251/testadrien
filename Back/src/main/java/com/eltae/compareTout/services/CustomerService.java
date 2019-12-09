@@ -37,12 +37,6 @@ public class CustomerService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder1;
     }
 
-    public List<Customer> getAllCustomers() {
-        return this.customerRepository.findByDiscriminatorValue("CUSTOMER");
-    }
-
-
-
     public CustomerDto getCustomerInfo(Long id) {
         if (this.customerRepository.findByIdAndDiscriminatorValue(id,"CUSTOMER").isPresent())
             return this.customerConverter.entityToDto(this.customerRepository.findByIdAndDiscriminatorValue
@@ -59,7 +53,6 @@ public class CustomerService {
         }
         return customerConverter.entityToDto(this.customerRepository.save(customer));
     }
-
 
     public CustomerDto updateCustomer(CustomerDto cusDto) {
         if (this.customerRepository.findByIdAndDiscriminatorValue(cusDto.getId(),"CUSTOMER").isPresent()) {
