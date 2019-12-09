@@ -5,6 +5,7 @@ import com.eltae.compareTout.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -65,6 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             .antMatchers(Routes.LOGIN + "/authenticate").permitAll()
             .antMatchers(Routes.ADMIN+ "/*").hasRole("ADMIN")
+            .antMatchers(HttpMethod.PATCH,Routes.SUPPLIER+ "/**").hasRole("ADMIN")
             .anyRequest().permitAll()
             .and()
             .httpBasic()
