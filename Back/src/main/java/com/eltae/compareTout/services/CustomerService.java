@@ -37,6 +37,7 @@ public class CustomerService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder1;
     }
 
+<<<<<<< HEAD
     public List<Customer> getAllCustomers() {
         return this.customerRepository.findByDiscriminatorValue("CUSTOMER");
     }
@@ -65,7 +66,6 @@ public class CustomerService {
         }
         return customerConverter.entityToDto(this.customerRepository.save(customer));
     }
-
 
     public CustomerDto updateCustomer(CustomerDto cusDto) {
        if (this.isCustomer(cusDto.getId())) {
