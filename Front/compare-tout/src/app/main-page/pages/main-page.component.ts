@@ -186,7 +186,6 @@ export class MainPageComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   goToCategory(f) {
-    console.log(f);
     this.router.navigate(['/category', f.id]);
   }
 }

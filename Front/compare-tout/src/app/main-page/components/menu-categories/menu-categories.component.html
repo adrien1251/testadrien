@@ -1,18 +1,31 @@
-<div  class="category-list">
-        <div *ngIf="!isTopCategory" class="back" (click)="goBack()"> Retour </div> 
-    <div class="main-list">
-            <div *ngFor="let category of categoriesDisplay">
-                    <div class="category-title" 
-                    (click)="goToSubcategory(category)"><img src="{{category.image}}"> {{ category.name }}</div>
-                </div>
+<div class="category-list">
+
+  <div class="main-list">
+    <div *ngIf="!isTopCategory">
+      <button id="back" mat-icon-button (click)="goBack()">
+        <mat-icon>keyboard_arrow_left</mat-icon>
+        <!-- <div class="back-text">
+                                    Retour
+                                  </div> -->
+      </button>
     </div>
-    <div class="subcategory-list" *ngIf="subCategories">
-            <div *ngFor="let sub of subCategories; let i = index">
-                <div *ngIf="i<5" (click)="goToSubcategory(sub)"> {{ sub.name }}</div>
-            </div>
-            <div *ngIf = "!seeMore" class="back" (click)="displayMore()">Voir plus</div>
-            <div *ngFor="let sub of subCategories; let i = index">
-                    <div *ngIf="seeMore && i >= 5" (click)="goToSubcategory(sub)"> {{ sub.name }}</div>
-                </div>
-        </div>
+    <div *ngFor="let category of categoriesDisplay">
+      <div class="category-title" (click)="goToSubcategory(category)"><img src="{{category.image}}"> {{ category.name }}
+      </div>
+    </div>
+  </div>
+  <div class="subcategory-list" *ngIf="subCategories">
+    <div *ngFor="let sub of subCategories; let i = index">
+      <div *ngIf="i<5" (click)="goToSubcategory(sub)"> {{ sub.name }}</div>
+    </div>
+    <div *ngIf="!seeMore">
+      <button id="back" mat-raised-button (click)="displayMore()">
+        <mat-icon>keyboard_arrow_down</mat-icon>
+        Voir plus
+      </button>
+    </div>
+    <div *ngFor="let sub of subCategories; let i = index">
+      <div *ngIf="seeMore && i >= 5" (click)="goToSubcategory(sub)"> {{ sub.name }}</div>
+    </div>
+  </div>
 </div>
