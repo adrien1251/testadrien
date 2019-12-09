@@ -1,31 +1,27 @@
 package com.eltae.compareTout.services;
-
 import com.eltae.compareTout.converter.CategoryConverter;
 import com.eltae.compareTout.converter.CriteriaConverter;
-import com.eltae.compareTout.converter.product.ProductConverter;
-import com.eltae.compareTout.dto.CategoryDto;
-import com.eltae.compareTout.dto.CriteriaProductDto;
-import com.eltae.compareTout.dto.ShortCategoryDto;
-import com.eltae.compareTout.dto.product.ShortProductDto;
+import com.eltae.compareTout.dto.category.CategoryDto;
+import com.eltae.compareTout.dto.criteria.CriteriaDto;
+import com.eltae.compareTout.dto.category.ShortCategoryDto;
 import com.eltae.compareTout.entities.Category;
+import com.eltae.compareTout.entities.CategoryCriteria;
 import com.eltae.compareTout.entities.Criteria;
-import com.eltae.compareTout.exceptions.BadCsvLine;
+import com.eltae.compareTout.exceptions.ApplicationException;
 import com.eltae.compareTout.repositories.CategoryRepository;
-import com.eltae.compareTout.repositories.ProductRepository;
-import com.opencsv.CSVReader;
-import com.opencsv.CSVWriter;
+
+import com.opencsv.*;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+
 import javax.transaction.Transactional;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Transactional
@@ -34,52 +30,64 @@ public class CategoryService {
     private final CategoryRepository categoryRepository;
     private final CategoryConverter categoryConverter;
     private final CriteriaConverter criteriaConverter;
-    private final ProductConverter productConverter;
-    private final ProductRepository productRepository;
     private File cat_file;
+    private Map<Integer,String> errorMap;
+
 
     @Autowired
-    public CategoryService(CategoryRepository categoryRepository, CategoryConverter catConv, CriteriaConverter critConv, ProductConverter prodConv, ProductRepository productRepository) {
+    public CategoryService(CategoryRepository categoryRepository, CategoryConverter catConv, CriteriaConverter criteriaConverter) {
         this.categoryRepository = categoryRepository;
         this.categoryConverter = catConv;
-        this.criteriaConverter =critConv;
-        this.productConverter=prodConv;
-        this.productRepository = productRepository;
+        this.criteriaConverter = criteriaConverter;
     }
 
-    public int create(MultipartFile multipartFile) {
+    public JSONObject create(MultipartFile multipartFile) throws ApplicationException {
         try {
             return this.readCSV(multipartFile.getInputStream());
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new ApplicationException(HttpStatus.resolve(400),"Wrong format file");
         }
-        return 0;
     }
-
     public Category getCategoryWithId(long id){
         Optional<Category> cat = categoryRepository.findById(id);
         if (cat.isPresent())
             return cat.get();
         return null;
     }
-
-    private int readCSV(InputStream inputStream) throws IOException {
-        CSVReader csvReader = new CSVReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8), ';');
+    private JSONObject readCSV(InputStream inputStream) throws IOException {
+        errorMap=new HashMap<>();
+        CSVParser parser = new CSVParserBuilder()
+                .withSeparator(';')
+                .withIgnoreQuotations(true)
+                .build();
+        CSVReader csvReader = new CSVReaderBuilder(new InputStreamReader(inputStream, StandardCharsets.UTF_8)).withCSVParser(parser).build();
         String[] nextRecord;
+        Map<Integer,String> notAdded=new HashMap<Integer,String>();
         int nbLineAdd = 0;
-        while ((nextRecord = csvReader.readNext()) != null) if (this.saveCat(nextRecord)) nbLineAdd++;
-        return nbLineAdd;
+        int line=0;
+        JSONObject json = new JSONObject();
+        while ((nextRecord = csvReader.readNext()) != null) {
+            line++;
+            String myline=Arrays.asList(nextRecord).toString();
+            if (this.saveCat(nextRecord,line))
+                nbLineAdd++;
+            else
+                notAdded.put(line,myline);
+        }
+         json.put("Lines_Added", nbLineAdd);
+         json.put("Lines_not_Added",notAdded);
+         json.put("Error_lines",this.errorMap);
+        return json;
     }
-
-
-    private boolean saveCat(String[] records){
+    private boolean saveCat(String[] records,int line){
         String actualCategoryName;
         Category parent=null;
         Category child;
+        int added=0;
         for(int i=1;i<records.length;i++){
             actualCategoryName=records[i];
             Optional<Category> ActCat = this.categoryRepository.findByName(actualCategoryName);
-            if(actualCategoryName.trim().length()==0)return false;
+            if(actualCategoryName.trim().length()==0) return added>0;
             List<Category> childList;
             if(i==1) {
                 if (!ActCat.isPresent()) {
@@ -87,14 +95,15 @@ public class CategoryService {
                     childList = new ArrayList<>();
                     parent.setChildList(childList);
                     this.categoryRepository.save(parent);
+                    added=1;
                 }
-                else
-                    parent=ActCat.get();
+                else  parent = ActCat.get();
             }
             else{
                 if(ActCat.isPresent()) {
                     if((ActCat.get().getParent() != null) && !ActCat.get().getParent().getId().equals(parent.getId())) {
-                        throw new BadCsvLine(HttpStatus.resolve(566), "Child category `" + ActCat.get().getName() + "` has already parent[`" + ActCat.get().getParent().getName() + "`]");
+                        this.errorMap.put(line,"Child category `" + ActCat.get().getName() + "` has already parent[`" + ActCat.get().getParent().getName() + "`]");
+                        added=0;
                     }
                         if(ActCat.get().getParent()==null){
                              ActCat.get().setParent(parent);
@@ -103,11 +112,10 @@ public class CategoryService {
                              parent.setChildList(childList);
                              this.categoryRepository.save(parent);
                              this.categoryRepository.save(ActCat.get());
+                             added=1;
                              parent=ActCat.get();
                             }
-                         else{
-                             parent=ActCat.get();
-                            }
+                         else parent=ActCat.get();
                 }
                 else{
                     child=Category.builder().name(actualCategoryName).childList(new ArrayList<>()).parent(parent).build();
@@ -116,76 +124,14 @@ public class CategoryService {
                     parent.setChildList(childList);
                     this.categoryRepository.save(child);
                     parent=child;
-                }
-                }
-        }
-        return true;
-    }
-    private boolean saveCategorie(String[] records, int idx) {
-        if (!(idx < records.length) || records[idx].isEmpty()) return true;
-        String actualCategoryName = records[idx];
-        String childCategoryName = idx + 1 < records.length && !records[idx + 1].isEmpty() ? records[idx + 1] : null;
-        idx++;
-
-        Optional<Category> OActualCategory = this.categoryRepository.findByName(actualCategoryName);
-        if (!OActualCategory.isPresent()) {
-            Category actualCategory = Category.builder().name(actualCategoryName).build();
-            List<Category> childList = new ArrayList<>();
-            /* Crée le fils uniquement si il peut en avoir un */
-            if (childCategoryName != null) {
-                Optional<Category> OChildCategory = this.categoryRepository.findByName(childCategoryName);
-                Category childCategory = null;
-                if (!OChildCategory.isPresent()) {
-                    childCategory = Category.builder().name(childCategoryName).parent(actualCategory).build();
-                } else {
-                    childCategory = OChildCategory.get();
-                    if (childCategory.getParent() != null) {
-                        throw new BadCsvLine(HttpStatus.resolve(566), "Child category `" + childCategory.getName() + "` has already parent[`" + childCategory.getParent().getName() + "`]");
+                    added=1;
                     }
                 }
-                childList.add(childCategory);
-            }
-            actualCategory.setChildList(childList);
-            this.categoryRepository.save(actualCategory);
-        } else {
-            if (childCategoryName == null) {
-                return this.saveCategorie(records, idx);
-            }
-            //Categ existe et on doit lui rajouter un fils
-            Category actualCategory = OActualCategory.get();
-            Optional<Category> OChildCategory = this.categoryRepository.findByName(childCategoryName);
-            if (OChildCategory.isPresent()) {
-                if (OChildCategory.get().getParent() == null) {
-                    OChildCategory.get().setParent(actualCategory);
-                    List<Category> childList = actualCategory.getChildList();
-                    if (childList == null) childList = new ArrayList<>();
-                    childList.add(OChildCategory.get());
-                    this.categoryRepository.save(actualCategory);
-
-                } else {
-                    if (actualCategory.getId().equals(OChildCategory.get().getParent().getId())) {
-                        return this.saveCategorie(records, idx);
-                    } else {
-                        throw new BadCsvLine(HttpStatus.resolve(566), "Child category `" + OChildCategory.get().getName() + "` has already parent[`" + OChildCategory.get().getParent().getName() + "`]");
-                    }
-                }
-            }
-
-            Category childCategory = Category.builder().name(childCategoryName).childList(new ArrayList<>()).parent(actualCategory).build();
-            List<Category> childList = actualCategory.getChildList();
-            if(childList == null) childList = new ArrayList<>();
-            childList.add(childCategory);
-
-            this.categoryRepository.save(actualCategory);
-//            this.categoryRepository.save(childCategory);
         }
-        return this.saveCategorie(records, idx);
-
+        return added>0;
     }
     public File getCategories(){
-
         List<Category> mother;
-
         mother = this.categoryRepository.findByParent_idIsNull();
         CSVWriter writer=  writeDataLineByLine("Categorie_file.csv");
        for (Category c:mother) {
@@ -228,31 +174,25 @@ public class CategoryService {
             for(int i=row1.length;i<6;i++)
                 pathcate=pathcate+"/";
         }
-        for(Criteria critete: crit){
-//            pathcate=pathcate+"/"+critete.isMandatory();
-            pathcate=pathcate+"/"+critete.getName();
-            pathcate=pathcate+"/"+critete.getUnit();
-            pathcate=pathcate+"/"+critete.getType();
+        for(Criteria critere: crit){
+            CategoryCriteria categoryCriteriaToFind = g.getCriteriaProductWithCriteriaId(critere.getId());
+            pathcate=pathcate+"/"+categoryCriteriaToFind.getIsMandatory();
+            pathcate=pathcate+"/"+critere.getName();
+            pathcate=pathcate+"/"+critere.getUnit();
+            pathcate=pathcate+"/"+critere.getType();
         }
 
         String[] row=pathcate.split("/");
         c.writeNext(row);
     }
     private  CSVWriter writeDataLineByLine(String filePath) {
-        // first create file object for file placed at location
-        // specified by filepath
         cat_file = new File(filePath);
         try {
-            // create FileWriter object with file as parameter
             FileWriter outputfile = new FileWriter(cat_file);
-
-            // create CSVWriter object filewriter object as parameter
             CSVWriter writer = new CSVWriter(outputfile, ';',
                     CSVWriter.NO_QUOTE_CHARACTER,
                     CSVWriter.DEFAULT_ESCAPE_CHARACTER,
                     CSVWriter.DEFAULT_LINE_END);
-
-            // adding header to csv
             String[] header = {"Category's last child Id"  ,"Main category", "Child_1 category", "Child_2 category", "Child_3 category", "Child_4 category",
                                 "Is_mandatory_criteria_1","Criteria_1","Unit_1","Type_1", "Is_mandatory_criteria_2","Criteria_2","Unit_2","Type_2", "Is_mandatory_criteria_3","Criteria_3","Unit_3","Type_3",
                                 "Is_mandatory_criteria_4","Criteria_4","Unit_4","Type_4","Is_mandatory_criteria_5","Criteria_5","Unit_5","Type_5", "Is_mandatory_criteria_6","Criteria_6","Unit_6","Type_6",
@@ -267,22 +207,14 @@ public class CategoryService {
             }
         return null;
     }
-
-
     public List<CategoryDto> getMainCategories() {
             return categoryConverter.entityListToDtoList(categoryRepository.findByParent_idIsNull());
     }
-
     public List<ShortCategoryDto> getChildCategories(long id) {
         return  categoryConverter.entityListToShortDtoList(categoryRepository.findById(id).get().getChildList());
+
             }
-
-    public List<CriteriaProductDto> getCriteriaCategories(Long id) {
-        return criteriaConverter.entityListToDtoList(categoryRepository.findById(id).get().getCriteriaList());
-
-    }
-
-    public List<ShortProductDto> getProductsCategory(Long id) {
-        return productConverter.listEntityToShortDto(productRepository.findAllByCategoryId(id));
+    public List<CriteriaDto> getCategoryCriteria(Category id_category) {
+        return this.criteriaConverter.entityListToDtoListWithMandatory(id_category.getCriteriaList(),id_category);
     }
 }

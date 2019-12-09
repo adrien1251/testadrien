@@ -1,0 +1,36 @@
+.hidden{
+  display:none;
+}
+.show{
+  display:block;
+}
+
+.side-nav-menu-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+#modal-container {
+  position:  fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 375px;
+  background: white;
+  text-align: center;
+  box-shadow: 0px 0px 2px 1px black;
+  z-index: 100;
+}
+
+#overlay {
+  position: absolute;
+  top: 0px;
+  left:  0px;
+  z-index:  99;
+  background:  rgba(0,0,0,0.8);
+  width:  100%;
+  height: 100%;
+}

@@ -1,0 +1,183 @@
+Category's last child Id;Main category;Child_1 category;Child_2 category;Child_3 category;Child_4 category;Is_mandatory_criteria_1;Criteria_1;Unit_1;Type_1;Is_mandatory_criteria_2;Criteria_2;Unit_2;Type_2;Is_mandatory_criteria_3;Criteria_3;Unit_3;Type_3;Is_mandatory_criteria_4;Criteria_4;Unit_4;Type_4;Is_mandatory_criteria_5;Criteria_5;Unit_5;Type_5;Is_mandatory_criteria_6;Criteria_6;Unit_6;Type_6;Is_mandatory_criteria_7;Criteria_7;Unit_7;Type_7;Is_mandatory_criteria_8;Criteria_8;Unit_8;Type_8;Is_mandatory_criteria_9;Criteria_9;Unit_9;Type_9;Is_mandatory_criteria_10;Criteria_10;Unit_10;Type_10
+3;Jeux et jouets;Jeux;Accessoires poker
+4;Jeux et jouets;Jeux;Accessoires pour jeux de cartes
+5;Jeux et jouets;Jeux;Dés & jeux de dés
+6;Jeux et jouets;Jeux;Jeux de cartes
+7;Jeux et jouets;Jeux;Jeux de plateau
+8;Jeux et jouets;Jeux;Jeux de société
+9;Jeux et jouets;Jeux;Jeux de rôle
+10;Jeux et jouets;Jeux;Machines à sous
+12;Jeux et jouets;Jeux de plein air;Jeux d'eau
+13;Jeux et jouets;Jeux de plein air;Bacs à sable
+14;Jeux et jouets;Jeux de plein air;Balançoires
+15;Jeux et jouets;Jeux de plein air;Structures gonflables
+16;Jeux et jouets;Jeux de plein air;Toboggans
+17;Jeux et jouets;Jeux de plein air;Trampolines
+19;Jeux et jouets;Jeux de puzzle;Casse-tête
+20;Jeux et jouets;Jeux de puzzle;Puzzles classiques
+21;Jeux et jouets;Jeux de puzzle;Puzzles à encastrement
+22;Jeux et jouets;Armes jouets et gadgets
+24;Jeux et jouets;Jeux de conduite;Véhiciles à pédales et à traction
+25;Jeux et jouets;Jeux de conduite;Véhicules électriques
+26;Jeux et jouets;Jeux de dessin
+28;Jeux et jouets;Jouets d'activité;Balles rebondissantes
+29;Jeux et jouets;Jouets d'activité;Billes
+30;Jeux et jouets;Jouets d'activité;Toupies
+31;Jeux et jouets;Jouets d'activité;Yo-yo
+33;Jeux et jouets;Jouets d'imitation;Dînettes
+34;Jeux et jouets;Jouets d'imitation;Jeux de jardinage
+35;Jeux et jouets;Jouets d'imitation;Jeux de la marchande et de l'épicier
+36;Jeux et jouets;Jouets d'imitation;Jeux de ménage
+37;Jeux et jouets;Jouets de construction
+38;Jeux et jouets;Jouets de sable et de plage
+40;Jeux et jouets;Jouets de sport;Ballons pour jeux de plein air
+41;Jeux et jouets;Jouets de sport;Jeux de raquettes
+42;Jeux et jouets;Jouets musicaux
+43;Jeux et jouets;Jouets pour le bain
+45;Jeux et jouets;Jouets télécommandés;Robots télécommandés
+46;Jeux et jouets;Jouets télécommandés;Véhicules télécommandés
+47;Jeux et jouets;Jouets volants
+49;Jeux et jouets;Jouets éducatifs;Coffrets de science et d'exploration
+50;Jeux et jouets;Jouets éducatifs;Jouets d'apprentissage de la lecture
+51;Jeux et jouets;Jouets éducatifs;Maquettes et jouets d'astronomie
+53;Jeux et jouets;Poupées""coffrets et figurines;Figurines jouets
+54;Jeux et jouets;Poupées""coffrets et figurines;Figurines à tête mobile
+55;Jeux et jouets;Poupées""coffrets et figurines;Maisons de poupées
+56;Jeux et jouets;Poupées""coffrets et figurines;Marionnettes
+57;Jeux et jouets;Poupées""coffrets et figurines;Peluches
+58;Jeux et jouets;Poupées""coffrets et figurines;Poupées miniatures
+59;Jeux et jouets;Véhicules de jeu
+61;Jeux et jouets;Jeux vidéo;Pour consoles de jeu portables
+62;Jeux et jouets;Jeux vidéo;Pour consoles de jeu de salon
+64;Logiciels;Antivirus et logiciels de sécurité
+65;Logiciels;Disques de restauration
+68;Logiciels;Logiciels informatique;Graphisme et multimédia;Création musicale
+69;Logiciels;Logiciels informatique;Graphisme et multimédia;Logiciels de création de sites Web
+70;Logiciels;Logiciels informatique;Graphisme et multimédia;Logiciels de décoration d'intérieur
+71;Logiciels;Logiciels informatique;Graphisme et multimédia;Logiciels de lecture multimédia
+72;Logiciels;Logiciels informatique;Graphisme et multimédia;Logiciels de modélisation 3D
+73;Logiciels;Logiciels informatique;Graphisme et multimédia;Logiciels de montage vidéo
+74;Logiciels;Logiciels informatique;Graphisme et multimédia;Logiciels de publication
+75;Logiciels;Logiciels informatique;Graphisme et multimédia;Logiciels de traitement d'image
+76;Logiciels;Logiciels informatique;Graphisme et multimédia;Montage audio
+77;Logiciels;Logiciels informatique;Graphisme et multimédia;Éditeurs d'animations
+78;Logiciels;Logiciels bureautiques
+79;Logiciels;Logiciels de comptabilité
+80;Logiciels;Logiciels dictionnaires et traducteurs
+81;Logiciels;Logiciels et données cartographiques GPS
+82;Logiciels;Logiciels éducatifs
+83;Logiciels;Outils de compilation et de programmation
+84;Logiciels;Systèmes d'exploitation
+87;Appareils électroniques;Accessoires pour GPS;Housses pour GPS
+88;Appareils électroniques;Accessoires pour GPS;Supports de GPS
+90;Appareils électroniques;Accessoires pour consoles de jeu vidéo;Accessoires pour consoles de jeu de salon
+91;Appareils électroniques;Accessoires pour consoles de jeu vidéo;Accessoires pour consoles de jeu portables
+94;Appareils électroniques;Accessoires électroniques;Accessoires mémoire;Étuis pour cartes mémoire
+96;Appareils électroniques;Accessoires électroniques;Accessoires pour ordinateurs;Coques et skins pour ordinateurs
+97;Appareils électroniques;Accessoires électroniques;Accessoires pour ordinateurs;Ensembles d'accessoires pour ordinateurs
+98;Appareils électroniques;Accessoires électroniques;Accessoires pour ordinateurs;Repose-poignets pour clavier et souris
+99;Appareils électroniques;Accessoires électroniques;Accessoires pour ordinateurs;Stations d'accueil pour ordinateurs portables
+100;Appareils électroniques;Accessoires électroniques;Accessoires pour ordinateurs;Stylets
+101;Appareils électroniques;Accessoires électroniques;Accessoires pour ordinateurs;Supports et stands pour tablettes
+102;Appareils électroniques;Accessoires électroniques;Accessoires pour ordinateurs;Supports pour ordinateurs
+103;Appareils électroniques;Accessoires électroniques;Accessoires pour ordinateurs;Clavier pour tablettes
+104;Appareils électroniques;Accessoires électroniques;Accessoires pour ordinateurs;Tapis de souris
+106;Appareils électroniques;Accessoires électroniques;Adaptateurs;Adaptateurs USB
+107;Appareils électroniques;Accessoires électroniques;Adaptateurs;Adaptateurs de carte mémoire
+109;Appareils électroniques;Accessoires électroniques;Alimentation;Accessoires pour adaptateurs de courant et chargeurs
+110;Appareils électroniques;Accessoires électroniques;Alimentation;Blocs d'alimentation
+111;Appareils électroniques;Accessoires électroniques;Alimentation;Multiprises & parasurtenseurs
+112;Appareils électroniques;Accessoires électroniques;Alimentation;Piles & batteries
+114;Appareils électroniques;Accessoires électroniques;Composants d'ordinateur;Périphériques de saisie & accessoires
+115;Appareils électroniques;Accessoires électroniques;Composants d'ordinateur;Boîtiers pour ordinateurs de bureau et serveurs
+116;Appareils électroniques;Accessoires électroniques;Composants d'ordinateur;Cartes E;S
+117;Appareils électroniques;Accessoires électroniques;Composants d'ordinateur;Plaques arrières et connecteurs d'entrée-sortie
+118;Appareils électroniques;Accessoires électroniques;Composants d'ordinateur;Processeurs
+119;Appareils électroniques;Accessoires électroniques;Composants d'ordinateur;Périphériques de stockage
+121;Appareils électroniques;Accessoires électroniques;Câbles pour appareils électroniques;Câbles audio et vidéo
+122;Appareils électroniques;Accessoires électroniques;Câbles pour appareils électroniques;Câbles réseau
+123;Appareils électroniques;Accessoires électroniques;Câbles pour appareils électroniques;Câbles système et d'alimentation
+124;Appareils électroniques;Accessoires électroniques;Câbles pour appareils électroniques;Câbles téléphoniques
+125;Appareils électroniques;Accessoires électroniques;Films de protection
+127;Appareils électroniques;Accessoires électroniques;Mémoire;Mémoire cache
+128;Appareils électroniques;Accessoires électroniques;Mémoire;Mémoire flash
+129;Appareils électroniques;Accessoires électroniques;Mémoire;RAM
+130;Appareils électroniques;Accessoires électroniques;Télécommandes
+133;Appareils électroniques;Audio;Accessoires audio;Accessoires pour enceintes
+134;Appareils électroniques;Audio;Accessoires audio;Accessoires pour lecteurs MP3
+135;Appareils électroniques;Audio;Accessoires audio;Accessoires pour microphones
+136;Appareils électroniques;Audio;Accessoires audio;Accessoires pour écouteurs et casques audio
+138;Appareils électroniques;Audio;Composants audio;Amplificateurs audio
+139;Appareils électroniques;Audio;Composants audio;Casques Audio & Écouteurs
+140;Appareils électroniques;Audio;Composants audio;Enceintes et haut-parleurs
+141;Appareils électroniques;Audio;Composants audio;Microphones
+143;Appareils électroniques;Audio;Lecteurs et enregistreurs audio;Lecteurs MP3-MP4
+144;Appareils électroniques;Audio;Lecteurs et enregistreurs audio;Lecteurs-enregistreurs CD
+145;Appareils électroniques;Audio;Lecteurs et enregistreurs audio;Radios
+146;Appareils électroniques;Audio;Lecteurs et enregistreurs audio;Systèmes home cinéma
+147;Appareils électroniques;Audio;Lecteurs et enregistreurs audio;Systèmes stéréo
+148;Appareils électroniques;Audio;Lecteurs et enregistreurs audio;Tourne-disques
+149;Appareils électroniques;Audio;Équipement de DJ
+150;Appareils électroniques;Accessoires de communication
+152;Appareils électroniques;Téléphonie;Accessoires pour téléphones
+153;Appareils électroniques;Téléphonie;Accessoires pour téléphones mobiles
+154;Appareils électroniques;Téléphonie;Téléphones mobiles
+155;Appareils électroniques;Visioconférence
+156;Appareils électroniques;Consoles de jeu vidéo
+158;Appareils électroniques;Impression copie numérisation et télécopie;Accessoires pour imprimantes 3D
+160;Appareils électroniques;Impression copie numérisation et télécopie;Accessoires pour imprimantes;copieurs et télécopieurs
+161;Appareils électroniques;Impression copie numérisation et télécopie;Imprimantes 3D
+162;Appareils électroniques;Impression copie numérisation et télécopie;Imprimantes
+164;Appareils électroniques;Ordinateurs;Ordinateurs de bureau
+165;Appareils électroniques;Ordinateurs;Ordinateurs portables
+166;Appareils électroniques;Ordinateurs;Tablettes multimédias
+168;Appareils électroniques;Réseaux;Cartes réseau et adaptateurs
+169;Appareils électroniques;Réseaux;Modems
+170;Appareils électroniques;Réseaux;Routeurs Wi-Fi
+171;Appareils électroniques;Réseaux;Répéteurs et émetteurs-récepteurs
+172;Appareils électroniques;Systèmes de navigation GPS
+175;Appareils électroniques;Vidéo;Lecteurs et enregistreurs vidéo;Enregistreurs DVD
+176;Appareils électroniques;Vidéo;Lecteurs et enregistreurs vidéo;Lecteurs DVD et Blu-ray
+177;Appareils électroniques;Vidéo;Téléviseurs
+179;Appareils électroniques;Vidéo;Vidéoprojecteurs;Rétroprojecteurs
+180;Appareils électroniques;Vidéo;Écrans d'ordinateur
+184;Véhicules et accessoires;Pièces détachées pour véhicules;Accessoires de chargement;Coffres de toit pour voitures
+185;Véhicules et accessoires;Pièces détachées pour véhicules;Accessoires de chargement;Rampes de chargement
+186;Véhicules et accessoires;Pièces détachées pour véhicules;Accessoires de chargement;Remorques de voiture
+188;Véhicules et accessoires;Pièces détachées pour véhicules;Entretien et décoration de véhicules;Housses de véhicule
+189;Véhicules et accessoires;Pièces détachées pour véhicules;Entretien et décoration de véhicules;Jerricans
+190;Véhicules et accessoires;Pièces détachées pour véhicules;Entretien et décoration de véhicules;Liquides pour véhicules
+191;Véhicules et accessoires;Pièces détachées pour véhicules;Entretien et décoration de véhicules;Peinture de carrosserie
+193;Véhicules et accessoires;Pièces détachées pour véhicules;Pièces détachées automobiles et motos;Housses et tapis pour véhicules
+194;Véhicules et accessoires;Pièces détachées pour véhicules;Pièces détachées automobiles et motos;Moteurs de véhicules
+195;Véhicules et accessoires;Pièces détachées pour véhicules;Pièces détachées automobiles et motos;Rétroviseurs
+196;Véhicules et accessoires;Pièces détachées pour véhicules;Pièces détachées automobiles et motos;Sièges de véhicules
+197;Véhicules et accessoires;Pièces détachées pour véhicules;Pièces détachées automobiles et motos;Système de freinage
+198;Véhicules et accessoires;Pièces détachées pour véhicules;Pièces détachées automobiles et motos;Échappement
+200;Véhicules et accessoires;Pièces détachées pour véhicules;Pièces détachées et accessoires nautiques;Entretien de bateaux
+201;Véhicules et accessoires;Pièces détachées pour véhicules;Pièces détachées et accessoires nautiques;Moteurs nautiques
+202;Véhicules et accessoires;Pièces détachées pour véhicules;Pièces détachées et accessoires nautiques;Éclairage pour navigation
+215;Véhicules et accessoires;Pièces détachées pour véhicules;Électronique pour véhicules;Caissons de basse pour véhicules
+216;Véhicules et accessoires;Pièces détachées pour véhicules;Électronique pour véhicules;Caméras de recul
+217;Véhicules et accessoires;Pièces détachées pour véhicules;Électronique pour véhicules;Haut-parleurs pour véhicules
+218;Véhicules et accessoires;Pièces détachées pour véhicules;Électronique pour véhicules;Kits mains-libres pour véhicules
+219;Véhicules et accessoires;Pièces détachées pour véhicules;Électronique pour véhicules;Lecteurs de cassettes pour véhicules
+220;Véhicules et accessoires;Pièces détachées pour véhicules;Électronique pour véhicules;Lecteurs et systèmes audio et vidéo intégrés pour véhicules
+221;Véhicules et accessoires;Pièces détachées pour véhicules;Électronique pour véhicules;Supports d'écrans vidéo pour véhicules
+205;Véhicules et accessoires;Sécurité;Equipements de protection moto;Casques de moto
+206;Véhicules et accessoires;Sécurité;Equipements de protection moto;Gants de moto
+207;Véhicules et accessoires;Sécurité;Equipements de protection moto;Genouillères et protège-tibias pour motards
+208;Véhicules et accessoires;Sécurité;Equipements de protection moto;Lunettes de moto
+209;Véhicules et accessoires;Sécurité;Equipements de protection moto;Protections torse et dos pour motards
+210;Véhicules et accessoires;Sécurité;Equipements de protection moto;Protège-coudes et protège-poignets pour motards
+211;Véhicules et accessoires;Sécurité;Equipements de protection moto;Protège-mains pour moto
+212;Véhicules et accessoires;Sécurité;Equipements de protection moto;Tours de cou pour motards
+213;Véhicules et accessoires;Sécurité;Systèmes d'alarme et de verrouillage de véhicule
+223;Véhicules et accessoires;Véhicules;Avions
+225;Véhicules et accessoires;Véhicules;Bateaux;Bateaux à moteur
+226;Véhicules et accessoires;Véhicules;Bateaux;Scooters des mers
+227;Véhicules et accessoires;Véhicules;Bateaux;Voiliers
+228;Véhicules et accessoires;Véhicules;Bateaux;Yachts
+230;Véhicules et accessoires;Véhicules;Véhicules terrestres;Motoneiges
+231;Véhicules et accessoires;Véhicules;Véhicules terrestres;Motos et scooters
+233;Véhicules et accessoires;Véhicules;Véhicules terrestres;Voitures;camions et fourgons

@@ -1,22 +1,70 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, OnChanges } from '@angular/core';
 import { Criteria, UniqueCriteria } from 'src/app/shared/models/criteria.interface';
+import { trigger, transition, style, animate, state, keyframes  } from '@angular/animations';
 
 @Component({
   selector: 'app-filters',
   templateUrl: './filters.component.html',
   styleUrls: ['./filters.component.scss'],
+  animations: [
+    trigger('slideInOut', [
+      state('1', style({
+        height: '*',
+      })),
+      state('0', style({
+        opacity: '0',
+        overflow: 'scroll',
+        height: '0px',
+      })),
+      transition('1 <=> 0', animate('100ms ease-in-out')),
+    ]),
+  ],
+  // animations: [
+  //   trigger('slideInOut', [
+  //     state('1', style({
+  //       overflow: 'visible',
+  //       opacity: '1',
+  //       height: '*',
+  //     })),
+  //     state('0', style({
+  //       overflow: 'hidden',
+  //       opacity: '0',
+  //       height: '0px',
+  //     })),
+  //     transition('0 => 1', animate('400ms ease-in-out', keyframes([
+  //       style({ height: 0, opacity: 0, offset: 0 }),
+  //       style({ height: '*', opacity: 0, offset: 0.7 }),
+  //       style({ height: '*', opacity: 1, offset: 1 }),
+  //     ]))),
+  //     transition('1 => 0', animate('250ms ease-in-out', keyframes([
+  //       style({ height: '*', opacity: 1, offset: 0 }),
+  //       style({ height: '*', opacity: 0, offset: 0.1 }),
+  //       style({ height: 0, opacity: 0, offset: 1 }),
+  //     ]))),
+  //   ])],
 })
-export class FiltersComponent implements OnInit, OnDestroy {
+export class FiltersComponent implements OnInit, OnChanges, OnDestroy {
 
-  @Input() criteriaList: Criteria[];
-  public uniqueCriteria: UniqueCriteria[] = [];
+  @Input() criteriaList: any[];
+  criteriaSelected: any[] = [];
   @Output() valueHasChanged: EventEmitter<any> = new EventEmitter<any>();
+  displayFilters = false;
+  valueMin: number;
+  valueMax: number;
+  showFilter = false;
+  currentCriteria: any = 1;
 
   constructor(
   ) { }
 
   ngOnInit(): void {
-    if (this.criteriaList != null) {
+    if (this.criteriaList != null && this.criteriaList.length > 0) {
+      this.fetchCriteria();
+    }
+  }
+
+  ngOnChanges(): void {
+    if (this.criteriaList != null && this.criteriaList.length > 0) {
       this.fetchCriteria();
     }
   }
@@ -25,29 +73,80 @@ export class FiltersComponent implements OnInit, OnDestroy {
   }
 
   fetchCriteria(): void {
-    this.criteriaList.forEach(crit => {
-      const alreadyIn = this.uniqueCriteria.find(c => c.name === crit.name) != null;
-      if (!alreadyIn) {
-        const criteria: UniqueCriteria = {
-          name: crit.name,
-          isMandatory: crit.isMandatory,
-          type: crit.type,
-          unit: crit.unit,
-          values: [crit.value]
-        };
-        this.uniqueCriteria.push(criteria);
-      } else {
-        const idx = this.uniqueCriteria.findIndex(c => c.name === crit.name);
-        if (idx !== -1) {
-          this.uniqueCriteria[idx].values.push(crit.value);
-          // this.criteriaList.values.push(crit.value);
-        }
+    this.criteriaList.forEach(c => {
+      if (c.type === 'INT' || c.type === 'FLOAT') {
+        c.defMinValue = Math.floor(+c.values[0].value);
+        c.defMaxValue = Math.ceil(+c.values[c.values.length - 1].value);
+        c.minValue = c.minValue != null ? c.minValue : Math.floor(+c.values[0].value);
+        c.maxValue = c.maxValue != null ? c.maxValue : Math.ceil(+c.values[c.values.length - 1].value);
       }
+      if (c.unit === 'null') {
+        c.unit = '';
+      }
+
     });
   }
 
   updateCriteria(event) {
-    this.valueHasChanged.emit(event);
+    if (event.selected) {
+      const i = this.criteriaSelected.findIndex(t => t.idCriteria === event.idCriteria);
+      if (i === -1) {
+        let v;
+        if (event.values) {
+          v = [];
+          event.values.forEach(val => {
+            if (val.selected) {
+              v.push(val.value);
+            }
+          });
+        }
+        this.criteriaSelected.push(
+          { idCriteria: event.idCriteria, value: v, minValue: event.minValue, maxValue: event.maxValue });
+      } else {
+        let v;
+        if (event.values) {
+          v = [];
+          event.values.forEach(val => {
+            if (val.selected) {
+              v.push(val.value);
+            }
+          });
+        }
+
+        if (this.criteriaSelected[i].value) {
+          this.criteriaSelected[i].value = v;
+        }
+        this.criteriaSelected[i].minValue = event.minValue;
+        this.criteriaSelected[i].maxValue = event.maxValue;
+      }
+    } else {
+      const i = this.criteriaSelected.findIndex(x => x.idCriteria === event.idCriteria);
+      this.criteriaSelected.splice(i, 1);
+    }
+    this.valueHasChanged.emit(this.criteriaSelected);
+    const idx = this.criteriaList.findIndex(c => {
+      if (c.id) {
+        return c.id === event.idCriteria;
+
+      } else {
+        return c.idCriteria === event.idCriteria;
+      }
+    });
+    this.criteriaList[idx] = event;
+  }
+
+  showFilters() {
+    this.displayFilters = !this.displayFilters;
+  }
+
+  resetFilters(): void {
+    this.criteriaSelected = [];
+    this.valueHasChanged.emit(this.criteriaSelected);
+  }
+
+  animFilters(crit) {
+    this.showFilter = !this.showFilter;
+    return this.showFilter;
   }
 
 }

@@ -1,21 +1,22 @@
 package com.eltae.compareTout.services;
 
 import com.eltae.compareTout.converter.UserConverter;
-import com.eltae.compareTout.dto.UserDto;
-import com.eltae.compareTout.entities.Customer;
+import com.eltae.compareTout.dto.user.UserDto;
+import com.eltae.compareTout.entities.Supplier;
 import com.eltae.compareTout.entities.User;
+import com.eltae.compareTout.exceptions.ApplicationException;
 import com.eltae.compareTout.exceptions.NotFoundException;
-import com.eltae.compareTout.repositories.CustomerRepository;
 import com.eltae.compareTout.repositories.UserRepository;
+import com.eltae.compareTout.security.AuthAuthorityEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,10 +39,30 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String email) {
         Optional<User> user = userRepository.findByEmail(email);
         if (!user.isPresent()) {
-            throw new UsernameNotFoundException("Invalid username or password.");
+            throw new ApplicationException(HttpStatus.NOT_FOUND, "Invalid email or password.");
         }
-        return new org.springframework.security.core.userdetails.User(user.get().getEmail(),
-                user.get().getPassword(), null);
+
+        if (user.get() instanceof Supplier){
+            if(((Supplier) user.get()).getValidationDate() == null) {
+                throw new ApplicationException(HttpStatus.FORBIDDEN, "Your account reach the process of validation. Be patient");
+            }
+        }
+
+        List<GrantedAuthority> grantedAuths =
+                AuthorityUtils.commaSeparatedStringToAuthorityList(AuthAuthorityEnum.getRole(user.get()).toString());
+
+        return new org.springframework.security.core.userdetails.User(
+                user.get().getEmail(),
+                user.get().getPassword(),
+                grantedAuths);
+    }
+
+    public UserDto findByEmail(String email) {
+        return this.userConverter.entityToDtoMinimumParams(userRepository
+                .findByEmail(email)
+                .orElseThrow(
+                    () -> new ApplicationException(HttpStatus.BAD_REQUEST, "Invalid email or password.")
+                ));
     }
 
     public UserDto create(UserDto userDto) {
@@ -57,13 +78,13 @@ public class UserService implements UserDetailsService {
 
     public UserDto getById(Long id) {
         return userRepository.findById(id).map(this.userConverter::entityToDtoMinimumParams)
-                .orElseThrow(() -> new NotFoundException(HttpStatus.NOT_FOUND, id));
+                .orElseThrow(() -> new ApplicationException(HttpStatus.BAD_REQUEST,"Invalid username or password."));
     }
 
     public UserDto getByToken(String token) {
         Optional<User> user = userRepository.findByResetToken(token);
         if(!user.isPresent()){
-            throw new NotFoundException(HttpStatus.UNPROCESSABLE_ENTITY, token);
+            throw new ApplicationException(HttpStatus.UNPROCESSABLE_ENTITY,"Invalid username or password.");
         }
         return this.userConverter.entityToDto(user.get());
     }

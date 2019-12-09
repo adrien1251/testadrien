@@ -45,7 +45,7 @@ public class CriteriaFilterSpecification {
     private Predicate criteriaIsString(Join<Product, CriteriaProduct> join,  CriteriaBuilder criteriaBuilder, OurCriteria ourCriteria) {
         return criteriaBuilder.and(
                 criteriaBuilder.equal(join.get("pk").get("criteria"), ourCriteria.getCriteria()),
-                criteriaBuilder.like(join.get("value"), "%" + ourCriteria.getValue() + "%")
+                join.get("value").in(ourCriteria.getValue())
         );
     }
 
@@ -53,7 +53,7 @@ public class CriteriaFilterSpecification {
         Predicate decimalPredicate;
 
         if(ourCriteria.getValue() != null){
-            decimalPredicate = criteriaBuilder.equal(join.get("value"), ourCriteria.getValue());
+            decimalPredicate = join.get("value").in(ourCriteria.getValue());
         } else if(ourCriteria.getMinValue() != null && ourCriteria.getMaxValue() != null){
             decimalPredicate = criteriaBuilder.between(join.get("value").as(Double.class), ourCriteria.getMinValue(), ourCriteria.getMaxValue());
         } else if(ourCriteria.getMinValue() != null) {

@@ -1,5 +1,7 @@
 package com.eltae.compareTout.converter;
 
+import com.eltae.compareTout.entities.Admin;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +17,8 @@ public abstract class GenericsConverter<Entity, Dto> {
         return dtoList;
     }
 
+
+
     public List<Entity> dtoListToEntityList(List<Dto> dtoList) {
         List<Entity> entityList = new ArrayList<>();
         for(Dto dto : dtoList){
@@ -22,4 +26,5 @@ public abstract class GenericsConverter<Entity, Dto> {
         }
         return entityList;
     }
+
 }

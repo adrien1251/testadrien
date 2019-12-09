@@ -42,7 +42,9 @@ public class Category implements Cloneable {
     public String toString(){
         return id + ": " + name;
     }
-
+    public List<CategoryCriteria> getCriteriaFromCat(){
+        return this.categoryCriteriaList;
+    }
     public List<Criteria> getCriteriaList(){
         List<Criteria> criteriaList = new ArrayList<>();
         for (CategoryCriteria cc : this.categoryCriteriaList){
@@ -50,13 +52,25 @@ public class Category implements Cloneable {
         }
         return criteriaList;
     }
-
     public CategoryCriteria getCriteriaProductWithCriteriaName(String name){
         for (CategoryCriteria cc : this.getCategoryCriteriaList()){
-            if (cc.getCriteria().getName().equals(id))
+            if (cc.getCriteria().getName().equals(name))
                 return cc;
         }
         return null;
     }
-
+    public CategoryCriteria getCriteriaProductWithCriteriaId(Long id_criteria){
+        for (CategoryCriteria cc : this.getCategoryCriteriaList()){
+            if (cc.getCriteria().getId()==(id_criteria))
+                return cc;
+        }
+        return null;
+    }
+    public boolean isMandatory(long id_criteria){
+        for (CategoryCriteria cc : this.getCategoryCriteriaList()){
+            if (cc.getCriteria().getId()==(id_criteria))
+                return cc.getIsMandatory();
+        }
+        return false;
+    }
 }

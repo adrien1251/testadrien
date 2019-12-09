@@ -1,16 +1,16 @@
 package com.eltae.compareTout.controllers;
 
 import com.eltae.compareTout.constants.Routes;
-import com.eltae.compareTout.dto.CriteriaFilterDto;
-import com.eltae.compareTout.dto.CriteriaProductDto;
+import com.eltae.compareTout.dto.criteria.CriteriaFilterDto;
 import com.eltae.compareTout.dto.product.ProductDtoForFront;
-import com.eltae.compareTout.dto.product.ShortProductDto;
+import com.eltae.compareTout.entities.Supplier;
 import com.eltae.compareTout.exceptionHandler.ExceptionCatcher;
+import com.eltae.compareTout.exceptions.ApplicationException;
 import com.eltae.compareTout.services.ProductService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import com.eltae.compareTout.services.SupplierService;
+import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,40 +23,77 @@ import java.util.List;
 public class ProductController extends ExceptionCatcher {
 
     private ProductService productService;
+    private SupplierService supplierService;
+
 
     @Autowired
-    public ProductController(ProductService productService) {
+    public ProductController(ProductService productService,SupplierService supplierService) {
+
         this.productService = productService;
+        this.supplierService=supplierService;
+
     }
 
-    @ApiOperation(value = "Liste des produits d'une catégorie potentiellement filtré par critère")
-    @GetMapping("/category/{categoryId}")
+    @ApiOperation(value = "Provide a list of products from a category. If the list of criteria is provided " +
+            "it will only retrieve the products that matches with the criteria and values off the list.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Query is successfully treated with both parameters"),
+            @ApiResponse(code = 201, message = "Query is successfully treated categoryId parameter"),
+            @ApiResponse(code = 404, message = "CategoryId or criteria are not present in database") })
+    @PostMapping(produces="application/json",value = "/_search/{categoryId}")
     public ResponseEntity<List<ProductDtoForFront>> getAllProductByCategoryAndCriteria(
-            @PathVariable Long categoryId,
-            @ApiParam(name = "criteriaFilters", value = "Criteria list") @RequestBody(required = false) List<CriteriaFilterDto> criteriaFilterDtos) {
-
+            @ApiParam(value = "The identification number of the category. Must not be null",required = true)
+            @PathVariable( value="categoryId") Long categoryId,
+            @ApiParam(name = "criteriaFilters", value = "The list of criteria to filter products. " +
+                    "fill the example to test, if you want more than one filter, just add another object" +
+                    "in the list. ",defaultValue ="empty")@RequestBody(required = false) List<CriteriaFilterDto> criteriaFilterDtos) {
         if(criteriaFilterDtos == null)
             return ResponseEntity.status(201).body(this.productService.getAllProductsByCategory(categoryId));
         return ResponseEntity.status(200).body(this.productService.getAllProductByCategoryAndCriteria(categoryId, criteriaFilterDtos));
     }
 
-    @ApiOperation(value = "Liste des critères d'un produit ")
-    @GetMapping("/criteria/{idProduct}")
-    public ResponseEntity<List<CriteriaProductDto>> getAllCriteriaByProduct(@PathVariable long idProduct) {
-        return ResponseEntity.status(201).body(this.productService.getAllCriteriaByProduct(idProduct));
+
+
+    @ApiOperation(value = "Add products with a CSV file (delimiter: ';')" +
+            "Example of a ligne :" +
+            "product's name ; product's description ;product supplier link's ;product's category_id;" +
+            "products's criteria_id_1; product's value_1;products's criteria_id_2; product's value_2; ...")
+    @PostMapping(consumes = "multipart/form-data",produces="application/json")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "File is successful imported and treated. You can find in json response" +
+                    " number lines added, the lines not added, and the error lines"),
+            @ApiResponse(code = 400, message = "Wrong file format"),
+            @ApiResponse(code = 500, message = "Unknown supplier identification number")  })
+    public ResponseEntity<?> insertProductsFromFile(@ApiParam(value = "Your CSV file with the products to import. Cannot be empty. ",
+            required = true)@RequestParam("file") MultipartFile file,
+             @ApiParam(value="Your supplier identification number")@RequestParam("supplierId") Long id) {
+        if(!file.getOriginalFilename().endsWith("csv")) {
+            throw new ApplicationException(HttpStatus.resolve(400), "Wrong file format");
+        }
+        Supplier supplier =supplierService.getEntitySupplier(id);
+
+               String response = this.productService.insertProductsFromFile(file,supplier).toJSONString();
+            return ResponseEntity.status(200).body(response);
+
     }
 
-    @GetMapping
-    public ResponseEntity<List<ShortProductDto>> getAllProduct() {
-        return ResponseEntity.status(201).body(this.productService.getAll());
+
+
+
+    @ApiOperation(value = "Produce a json with all supplier products.")
+    @GetMapping(produces="application/json",value="/_search/{id_supplier}")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Request is successfully treated"),
+            @ApiResponse(code = 404, message = "Wrong supplier identification number.")})
+    public ResponseEntity<?> getSupplierProducts(
+            @ApiParam(value = "Identification number of the supplier",required = true)
+            @PathVariable long id_supplier)
+    {
+        if(this.supplierService.supplierExists(id_supplier))
+            return ResponseEntity.ok().body(this.productService.getSupplierProducts(id_supplier));
+        else
+            throw new ApplicationException(HttpStatus.NOT_FOUND,"Invalid identification number for supplier");
+
     }
-
-    @ApiOperation(value = "Ajout de produits par fichier csv (delimiter: ';')")
-    @PostMapping(consumes = "multipart/form-data")
-    public ResponseEntity<Integer> insertProductsFromFile(@RequestParam("file") MultipartFile file) {
-        return ResponseEntity.status(201).body(this.productService.insertProductsFromFile(file));
-    }
-
-
 
 }

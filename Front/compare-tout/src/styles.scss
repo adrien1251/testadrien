@@ -5,3 +5,25 @@
 body {
     margin: 0;
 }
+html, body { height: 100%;}
+body, h1, h2, p { margin: 0; padding: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.spinner-wait {
+  position:  fixed !important;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
+  animation: none !important;
+}
+
+.post-scriptum {
+  font-size: 10px;
+  font-style: italic;
+}
+
+.btn-validate {
+  background-color: #03c33e;
+  width: 100%;
+  color: white;
+}

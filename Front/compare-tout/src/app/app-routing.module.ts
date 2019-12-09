@@ -1,16 +1,63 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { TestComponent } from './test/test.component';
 import { MainPageComponent } from './main-page/pages/main-page.component';
+import { ProductDetailsPageComponent } from './product-details/pages/product-details-page.component';
+import {AdminComponent} from './main-page/pages/admin/admin.component';
+import {AuthGuardAdminService} from './shared/services/routeGuard/auth-guard.-admin.service';
+import {SupplierSendProductComponent} from './main-page/pages/supplier-send-product/supplier-send-product.component';
+import {SupplierGetProductComponent} from './main-page/pages/supplier-get-product/supplier-get-product.component';
 
 
 const routes: Routes = [
-  // C'est ici que l'on définit les routes
-  // @Path définit ce que va être l'url ex /test donne localhost:4200/test
-  // @component précise le nom du component à afficher ex TestComponent
+  // {path: '', component: MainPageComponent},
   {
     path: '',
+    redirectTo: 'category/all',
+    pathMatch: 'full',
+  },
+  {
+    path: 'category/:id',
     component: MainPageComponent,
+  },
+  {
+    path: 'category/all',
+    component: MainPageComponent,
+  },
+  {
+    path: 'product/:id/:id2',
+    component: ProductDetailsPageComponent,
+  },
+  {
+    path: 'product/:id',
+    component: ProductDetailsPageComponent,
+  },
+  {
+    path: 'admin/supplier',
+    component: AdminComponent,
+    canActivate: [AuthGuardAdminService],
+    data: {
+      expectedRole: 'admin'
+    }
+  },
+  {
+    path: 'supplier/me',
+    component: SupplierGetProductComponent,
+    canActivate: [AuthGuardAdminService],
+    data: {
+      expectedRole: 'supplier'
+    }
+  },
+  {
+    path: 'supplier/sendProduct',
+    component: SupplierSendProductComponent,
+    canActivate: [AuthGuardAdminService],
+    data: {
+      expectedRole: 'supplier'
+    }
+  },
+  {
+    path: 'supplier/:id',
+    component: SupplierGetProductComponent,
   },
 ];
 
@@ -18,5 +65,6 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
   declarations: [],
+  providers: [AuthGuardAdminService]
 })
 export class AppRoutingModule { }

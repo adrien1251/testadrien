@@ -1,11 +1,20 @@
-
-<div *ngIf="uniqueCriteria != null">
-    <div *ngFor="let criteria of uniqueCriteria">
-        <div class="criteria">
-            <p class="title">{{ criteria.name }}</p>
-            <div *ngFor="let value of criteria.values">
-                    <app-filters-value [value]="value" [unit]="criteria.unit" (valueChecked)="updateCriteria($event)"></app-filters-value>
-            </div>
+<div *ngIf="!displayFilters" (click)="showFilters()" class="show-hide-filters">Afficher les filtres</div>
+<div *ngIf="displayFilters && criteriaList != null && criteriaList.length > 0">
+  <div class="show-hide-filters" (click)="resetFilters()">X Effacer les filtres</div>
+  <div class="show-hide-filters" (click)="showFilters()">Cacher les filtres</div>
+  <!-- <div class="do-filter"(click)="sendFilters()">Appliquer les filtres</div> -->
+  <div *ngFor="let criteria of criteriaList">
+    <div class="criteria">
+      <p class="title" (click)="animFilters(criteria)">{{ criteria.name | uppercase }} {{ criteria.unit | uppercase }}</p>
+      <div *ngFor="let value of criteria.values" class="values">
+        <div [@slideInOut]="showFilter">
+            <app-filters-value *ngIf="criteria.type === 'STRING'" [criteria]="criteria" [value]="value"
+            (valueChecked)="updateCriteria($event)" ></app-filters-value>
         </div>
+      </div>
+      <app-filters-slider *ngIf="criteria.type !== 'STRING' && criteria.defMinValue && criteria.defMaxValue" [criteria]="criteria" 
+      [min]="criteria.minValue" [max]="criteria.maxValue"
+        (valueChecked)="updateCriteria($event)"></app-filters-slider>
     </div>
+  </div>
 </div>

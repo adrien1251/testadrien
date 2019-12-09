@@ -1,0 +1,62 @@
+<mat-progress-spinner class="spinner-wait" mode="indeterminate" *ngIf="isWaiting"></mat-progress-spinner>
+
+<mat-card>
+  <mat-card-content>
+    <form [formGroup]="form" (ngSubmit)="submit()" >
+      <p>
+        <mat-form-field>
+          <input type="text" matInput placeholder="First name" formControlName="firstName" value="value" required>
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field>
+          <input type="text" matInput placeholder="Last name" formControlName="lastName" required>
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field>
+          <input type="text" matInput placeholder="Email" formControlName="email" required>
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field>
+          <input type="password" matInput placeholder="password" formControlName="password" required>
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field>
+          <input type="password" matInput placeholder="verifier password" formControlName="password" required>
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field>
+          <input type="text" matInput placeholder="Phone num" formControlName="phoneNum" required>
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field>
+          <mat-label>Votre sexe</mat-label>
+          <mat-select [formControl]="sexeControl" required>
+            <mat-option *ngFor="let sexe of sexes" [value]="sexe">
+              {{sexe}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field>
+          <input matInput [matDatepicker]="dp3" placeholder="Votre anniversaire" formControlName="birthday" disabled={{true}} required>
+          <mat-datepicker-toggle matSuffix [for]="dp3"></mat-datepicker-toggle>
+          <mat-datepicker #dp3 disabled="false"></mat-datepicker>
+        </mat-form-field>
+      </p>
+
+      <p *ngIf="error" class="error">
+        {{ error }}
+      </p>
+      <div class="button">
+        <button type="submit" mat-button>S'inscrire</button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>
