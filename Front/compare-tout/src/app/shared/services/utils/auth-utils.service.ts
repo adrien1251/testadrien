@@ -9,21 +9,24 @@ export class AuthUtils {
 
   constructor() { }
 
-  public static getCurrentRoleUser(): string {
-    console.log(this.getCurrentUser());
-    return this.getCurrentUser() ? this.getCurrentUser().user.type : null;
-  }
-
-  public static getCurrentToken(): string {
-    return this.getCurrentUser() ? this.getCurrentUser().jwttoken : null;
-  }
-
-  public static getCurrentUser(): any {
+  private static getCurrentStorageUser(): any {
     const cuStr = localStorage.getItem(AuthUtils.AuthNamespaces.CURRENT_USER);
     if (cuStr) {
       return JSON.parse(cuStr);
     }
     return null;
+  }
+
+  public static getCurrentRoleUser(): string {
+    return this.getCurrentUser() ? this.getCurrentUser().type : null;
+  }
+
+  public static getCurrentToken(): string {
+    return this.getCurrentStorageUser() ? this.getCurrentStorageUser().jwttoken : null;
+  }
+
+  public static getCurrentUser(): any {
+    return this.getCurrentStorageUser() ? this.getCurrentStorageUser().user : null;
   }
 
   public setCurrentUser(user) {
