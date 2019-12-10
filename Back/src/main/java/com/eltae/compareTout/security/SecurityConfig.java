@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,7 +15,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 import org.springframework.web.cors.CorsConfiguration;
@@ -64,7 +62,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .csrf().disable().cors().and()
             .authorizeRequests()
-            .antMatchers(Routes.LOGIN + "/authenticate").permitAll()
             .antMatchers(Routes.ADMIN+ "/*").hasRole("ADMIN")
             .antMatchers(HttpMethod.PATCH,Routes.SUPPLIER+ "/**").hasRole("ADMIN")
             .anyRequest().permitAll()
@@ -73,7 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authenticationEntryPoint(jwtAuthenticationEntryPoint)
             .and()
             .logout()
-            .logoutUrl(Routes.USERS + "sign_out")
+            .logoutUrl(Routes.AUTH + "/_logout")
             .logoutSuccessHandler(new AuthenticationLogoutSuccessHandler())
             .invalidateHttpSession(true)
             .and()
@@ -82,19 +79,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
-
-//    @Bean
-//    public DaoAuthenticationProvider authenticationProvider() {
-//        DaoAuthenticationProvider auth = new DaoAuthenticationProvider();
-//        auth.setUserDetailsService(userService);
-//        auth.setPasswordEncoder(passwordEncoder());
-//        return auth;
-//    }
-
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) {
-//        auth.authenticationProvider(authenticationProvider());
-//    }
 
     /**
      * CORS configuration for the Application's security layer.

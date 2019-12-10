@@ -1,7 +1,7 @@
 export const apiEndpoints = {
     // Users
     // getUsers: 'users',
-    login: '_login',
+    login: 'auth/_login',
     registerSupplier: 'supplier',
     registerCustomer: 'customer',
 
