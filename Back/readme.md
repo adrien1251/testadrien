@@ -7,6 +7,10 @@ https://docs.oracle.com/javase/10/install/installation-jdk-and-jre-microsoft-win
 Maven :  
 https://docs.wso2.com/display/IS323/Installing+Apache+Maven+on+Windows  
 
+Sonar :
+mvn sonar:sonar -Dsonar.host.url=URL_SONAR
+
+
 Dans intelliJ, définir les variable d'environnement du projet :
 DATABASE_HOST=192.168.99.100
 DATABASE_PORT=5432
