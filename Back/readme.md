@@ -10,6 +10,9 @@ https://docs.wso2.com/display/IS323/Installing+Apache+Maven+on+Windows
 Sonar :
 mvn sonar:sonar -Dsonar.host.url=URL_SONAR
 
+Vous pouvez lancer un serveur sonar avec docker : 
+`docker run -d --name sonarqube -p 9000:9000 sonarqube`
+
 
 Dans intelliJ, définir les variable d'environnement du projet :
 DATABASE_HOST=192.168.99.100
