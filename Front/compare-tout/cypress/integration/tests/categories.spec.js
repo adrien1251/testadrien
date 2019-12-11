@@ -11,7 +11,7 @@ describe('Categories Scenarii', function () {
   });
 
   it('default user goes to Mobile category', function () {
-    cy.visit('/');
+    cy.visit('/category/all');
     cy.wait('@initCategories')
       .its('status')
       .should('eq', 200);
