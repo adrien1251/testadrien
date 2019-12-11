@@ -38,12 +38,6 @@ public class CustomerService {
     }
 
 
-    public List<Customer> getAllCustomers() {
-        return this.customerRepository.findByDiscriminatorValue("CUSTOMER");
-    }
-
-
-
 
     public CustomerDto getCustomerInfo(Long id) {
         return customerConverter.entityToDto(customerRepository
@@ -51,9 +45,6 @@ public class CustomerService {
                 .orElseThrow(() -> new ApplicationException(HttpStatus.NOT_FOUND, "Invalid customer ID")));
     }
 
-    public Optional<Customer> findCustomerByEmail(String email) {
-        return this.customerRepository.findByEmail(email);
-    }
 
     public CustomerDto create(CustomerInscriptionDto cusDto) {
         Customer customer = customerInscriptionConverter.dtoToEntity(cusDto);

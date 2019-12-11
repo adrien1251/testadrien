@@ -71,25 +71,13 @@ public class UserService implements UserDetailsService {
         return userDto;
     }
 
-    public UserDto update(UserDto userDto) throws NotFoundException {
-        //TODO : Update user
-        return userDto;
-    }
+
 
     public UserDto getById(Long id) {
         return userRepository.findById(id).map(this.userConverter::entityToDtoMinimumParams)
                 .orElseThrow(() -> new ApplicationException(HttpStatus.BAD_REQUEST,"Invalid username or password."));
     }
 
-    public UserDto getByToken(String token) {
-        Optional<User> user = userRepository.findByResetToken(token);
-        if(!user.isPresent()){
-            throw new ApplicationException(HttpStatus.UNPROCESSABLE_ENTITY,"Invalid username or password.");
-        }
-        return this.userConverter.entityToDto(user.get());
-    }
 
-    public List<UserDto> getAllUsers() {
-        return userConverter.entityListToDtoList(userRepository.findAll());
-    }
+
 }
