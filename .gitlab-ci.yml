@@ -6,8 +6,8 @@ variables:
   DOCKER_DRIVER: overlay
   SPRING_PROFILES_ACTIVE: gitlab-ci
   DOCKER_REGISTRY: registry.gitlab.com
-  FRONT_IMAGE: registry.gitlab.com/comparetout/ctfront:01
-  BACK_IMAGE: registry.gitlab.com/comparetout/ctback:01
+  FRONT_IMAGE: registry.gitlab.com/adrien1251/comparetout/ctfront:01
+  BACK_IMAGE: registry.gitlab.com/adrien1251/comparetout/ctback:01
   PROD_SERVER_ADDRESS: ec2-user@18.190.104.245
 #  DEV_SERVER_ADDRESS: ec2-user@18.190.29.156
   DEV_SERVER_ADDRESS: ec2-user@18.190.104.245
