@@ -1,0 +1,6 @@
+{
+  "baseUrl":"http://localhost:4200",
+  "requestTimeout": 15000,
+  "viewportWidth": 360,
+  "viewportHeight": 640
+}
