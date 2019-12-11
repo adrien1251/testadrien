@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(Routes.SUPPLIER)
-@Api(value = "Supplier", description = "Supplier gesture", tags = {"Supplier"})
+@Api(value = "Suppliers", description = "Suppliers gesture", tags = {"Suppliers"})
 public class SupplierController extends ExceptionCatcher {
     private SupplierService supplierService;
 
