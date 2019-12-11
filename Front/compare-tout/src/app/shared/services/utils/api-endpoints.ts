@@ -2,16 +2,16 @@ export const apiEndpoints = {
     // Users
     // getUsers: 'users',
     login: 'auth/_login',
-    registerSupplier: 'supplier',
-    registerCustomer: 'customer',
+    registerSupplier: 'suppliers',
+    registerCustomer: 'customers',
 
     // Admin
 
     // Supplier
     sendProducts: 'products',
-    getSupplier: (id?: string) => `supplier?id_supplier=${id}`,
-    findAllSupplierWhoNeedValidate: 'supplier?filter=notValidate',
-    validateSupplierAccount: (idSupplier: string) => `supplier/${idSupplier}`,
+    getSupplier: (id?: string) => `suppliers?id_supplier=${id}`,
+    findAllSupplierWhoNeedValidate: 'suppliers?filter=notValidate',
+    validateSupplierAccount: (idSupplier: string) => `suppliers/${idSupplier}`,
 
   // Categories
     getCategories: 'categories/_search',

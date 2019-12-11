@@ -29,7 +29,7 @@ export class MainPageComponent implements OnInit, OnChanges, OnDestroy {
   canShowFilters = false;
   fromProduct = false;
   numberOfComparison = 1;
-  filArianne: string[] = [];
+  filArianne: Category[] = [];
 
 
   constructor(
@@ -85,7 +85,9 @@ export class MainPageComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   fetchCurrentCategory(event, fromRoute?: boolean): void {
-    this.filArianne.push(event);
+    if (this.filArianne.find(c => c === event) == null) {
+      this.filArianne.push(event);
+    }
     if (event != null) {
       if (fromRoute) {
         this.categoryService.getCategoriesChild(event.id).subscribe((res) => {
@@ -186,6 +188,13 @@ export class MainPageComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   goToCategory(f) {
+    const i = this.filArianne.findIndex(c => c.id === f.id);
+    console.log(this.filArianne);
+    this.filArianne = this.filArianne.reverse().slice(i + 1, this.filArianne.length );
+    console.log(this.filArianne);
+    this.productList = null;
+    this.currentCategory = f;
+    this.fetchCurrentCategory(f);
     this.router.navigate(['/category', f.id]);
   }
 }
