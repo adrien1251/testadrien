@@ -60,19 +60,7 @@ public class CriteriaService {
         this.criteriaProductConverter = criteriaProductConverter;
         this.criteriaProductRepository = criteriaProductRepository;
     }
-    public List<ShortProductDto> getProductsCriteria(Long id, List<Long> crit) {
-        List<Product> myProducts = new ArrayList<Product>();
-        myProducts = productRepository.findAllByCategoryId(id);
-        List<Product> filterProduct = new ArrayList<Product>();
 
-        for (Product p : myProducts)
-
-            if (p.getCrit().containsAll(crit))
-                filterProduct.add(p);
-
-        return productConverter.listEntityToShortDto(filterProduct);
-
-    }
     public Criteria getCriteriaProductWithIdCriteria(Long idCriteria) {
         Optional<Criteria> c = criteriaRepository.findById(idCriteria);
         if (c.isPresent())
