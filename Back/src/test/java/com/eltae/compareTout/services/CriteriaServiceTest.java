@@ -7,6 +7,10 @@ import com.eltae.compareTout.entities.Criteria;
 import com.eltae.compareTout.repositories.CategoryCriteriaRepository;
 import com.eltae.compareTout.repositories.CategoryRepository;
 import com.eltae.compareTout.repositories.CriteriaRepository;
+import com.opencsv.CSVParser;
+import com.opencsv.CSVParserBuilder;
+import com.opencsv.CSVReader;
+import com.opencsv.CSVReaderBuilder;
 import org.json.simple.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,10 +23,8 @@ import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Optional;
 
