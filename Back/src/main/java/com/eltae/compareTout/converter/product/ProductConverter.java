@@ -40,6 +40,7 @@ public class ProductConverter extends GenericsConverter<Product, ProductDto> {
                 .id(product.getId())
                 .name(product.getName())
                 .category(product.getCategory())
+                .imageLink(product.getImageLink())
                 .criteriaProducts(criteriaProductConverter.entityListToDtoList(product.getCriteriaProducts()))
                 .build();
     }
@@ -50,6 +51,7 @@ public class ProductConverter extends GenericsConverter<Product, ProductDto> {
                 .id(product.getId())
                 .name(product.getName())
                 .category(product.getCategory().getId())
+                .imageLink(product.getImageLink())
                 .supplier(product.getSupplier())
                 .criteriaProducts(criteriaProductConverter.entityListToDtoList(product.getCriteriaProducts()))
                 .build();
