@@ -63,7 +63,7 @@ public class ProductController extends ExceptionCatcher {
             @ApiResponse(code = 200, message = "File is successful imported and treated. You can find in json response" +
                     " number lines added, the lines not added, and the error lines"),
             @ApiResponse(code = 400, message = "Wrong file format"),
-            @ApiResponse(code = 500, message = "Unknown supplier identification number")  })
+            @ApiResponse(code = 404, message = "Unknown supplier identification number")  })
     public ResponseEntity<?> insertProductsFromFile(@ApiParam(value = "Your CSV file with the products to import. Cannot be empty. ",
             required = true)@RequestParam("file") MultipartFile file,
              @ApiParam(value="Your supplier identification number")@RequestParam("supplierId") Long id) {
