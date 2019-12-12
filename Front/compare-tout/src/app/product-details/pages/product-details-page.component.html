@@ -21,11 +21,11 @@
             <tr>
               <div *ngFor="let crit of product.criteriaDtoList" class="all-criterias">
                 <div class="criteria-contener">
-                  <td>
-                    {{ crit.criteriaName }}
+                  <td class="name">
+                    {{ crit.criteriaName | titlecase }}
                   </td>
                   <td>
-                    {{ crit.value }} {{ crit.criteriaUnit }}
+                    {{ crit.value | titlecase }} {{ crit.criteriaUnit }}
                   </td>
                 </div>
               </div>

@@ -12,9 +12,16 @@
     .title {
       font-size: 20px;
       line-height: 30px;
+      display: flex;
+      width: 82vw;
+      margin-left: 20vw;
+      justify-content: space-evenly;
       .seeNext {
           font-size: 14px;
           text-decoration: underline;
+      }
+      div {
+        width: 40%;
       }
     }
   
@@ -28,14 +35,15 @@
   
     table {
       td {
-          min-width: 50%;
-          .name {
-            overflow: hidden;
-            text-overflow: ellipsis;
-          }
+          width: 35%;
+          // .name {
+          //   overflow: hidden;
+          //   text-overflow: ellipsis;
+          // }
       }
       td:first-child {
-          min-width:30%;
+          width:30%;
+          font-weight: bold;
       }
       .all-criterias:nth-child(even) {
           background-color: #d4f3f7;
@@ -44,7 +52,7 @@
           text-align: left;
           padding: 5px;
           display: flex;
-          width: 100%;
+          width: 100vw;
       }
     }
   

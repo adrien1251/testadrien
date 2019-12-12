@@ -1,43 +1,25 @@
 <div *ngIf="this.product" class="product-details-content">
-  <div class="title" *ngIf="product.nameShort">
-    {{product.nameShort}}
-    <div class="seeNext" (click)="seeMoreTitle()">voir la suite</div>
-  </div>
-  <div class="title" *ngIf="!product.nameShort">
-    {{product.name}}
-    <div class="seeNext" *ngIf="product.name.length > 25" (click)="seeLessTitle()">voir moins</div>
+  <div class="title" >
+    <div>
+        {{product.name}}
+    </div>
+    <div>
+        {{product2.name}}
+    </div>
   </div>
   <table>
     <tr>
-      <div *ngFor="let crit of product.criteriaDtoList" class="all-criterias">
+      <div *ngFor="let crit of criteriaValues" class="all-criterias">
         <div class="criteria-contener">
           <td class="name">
-            {{ crit.criteriaName }}
+            {{ crit.criteriaName | titlecase }}
           </td>
           <td>
-            {{ crit.value }} {{ crit.criteriaUnit }}
+            {{ crit.value[0] | titlecase }} {{ crit.criteriaUnit }}
           </td>
-        </div>
-      </div>
-    </tr>
-  </table>
-</div>
-<div *ngIf="this.product2" class="product-details-content">
-  <div class="title" *ngIf="product.nameShort">
-    {{product2.nameShort}}
-    <div class="seeNext" (click)="seeMoreTitle()">voir la suite</div>
-  </div>
-  <div class="title" *ngIf="!product2.nameShort">
-    {{product2.name}}
-    <div class="seeNext" *ngIf="product2.name.length > 25" (click)="seeLessTitle()">voir moins</div>
-  </div>
-  <table>
-    <tr>
-      <div *ngFor="let crit of product2.criteriaDtoList" class="all-criterias">
-        <div class="criteria-contener">
           <td>
-            {{ crit.value }} {{ crit.criteriaUnit }}
-          </td>
+              {{ crit.value[1] | titlecase }} {{ crit.criteriaUnit }}
+            </td>
         </div>
       </div>
     </tr>

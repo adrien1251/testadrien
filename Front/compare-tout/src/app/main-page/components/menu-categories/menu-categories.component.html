@@ -19,13 +19,13 @@
       <div *ngIf="i<5" (click)="goToSubcategory(sub)"> {{ sub.name }}</div>
     </div>
     <div *ngIf="!seeMore">
-      <button id="back" mat-raised-button (click)="displayMore()">
+      <button id="more" mat-raised-button (click)="displayMore()">
         <mat-icon>keyboard_arrow_down</mat-icon>
         Voir plus
       </button>
     </div>
     <div *ngFor="let sub of subCategories; let i = index">
-      <div *ngIf="seeMore && i >= 5" (click)="goToSubcategory(sub)"> {{ sub.name }}</div>
+      <div *ngIf="seeMore && i >= 5" class="sub-category" (click)="goToSubcategory(sub)"> {{ sub.name }}</div>
     </div>
   </div>
 </div>

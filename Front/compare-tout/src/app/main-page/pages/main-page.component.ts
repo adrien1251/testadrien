@@ -189,9 +189,7 @@ export class MainPageComponent implements OnInit, OnChanges, OnDestroy {
 
   goToCategory(f) {
     const i = this.filArianne.findIndex(c => c.id === f.id);
-    console.log(this.filArianne);
     this.filArianne = this.filArianne.reverse().slice(i + 1, this.filArianne.length );
-    console.log(this.filArianne);
     this.productList = null;
     this.currentCategory = f;
     this.fetchCurrentCategory(f);

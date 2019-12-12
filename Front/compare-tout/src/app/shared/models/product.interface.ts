@@ -6,7 +6,7 @@ export interface Product {
     descriptionShort?: string;
     name: string;
     nameShort?: string;
-    imageUrl: string;
+    imageLink?: string;
     criteriaDtoList: Criteria[];
     selected?: boolean;
 }
