@@ -94,7 +94,9 @@ export class MainPageComponent implements OnInit, OnChanges, OnDestroy {
           this.isChildCategory = res.length === 0;
           this.subCategories = res;
           this.categories = [event];
-
+          if (this.criteriaService.getCurrentFilters() != null) {
+            this.sendCriterias(this.criteriaService.currentFilters);
+          }
         });
       } else {
         this.categoryService.getCategoriesChild(event.id).subscribe((res) => {
@@ -155,6 +157,7 @@ export class MainPageComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   sendCriterias(event): void {
+    this.criteriaService.setCurrentFilters(event);
     if (event == null || event.length === 0) { event = null; }
     this.productService.getProductsByCategoryAndCriteria(this.currentCategory.id, event)
       .pipe(debounce(val => timer(1500)))

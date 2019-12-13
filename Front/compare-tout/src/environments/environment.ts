@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   back_url: 'http://localhost:8080/',
+  front_url: 'http://localhost:4200'
 };
 
 /*

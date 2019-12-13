@@ -1,21 +1,21 @@
 <div *ngIf="this.product" class="product-details-content">
-  <div class="title" >
+  <div class="title">
     <div>
-        {{product.name}}
+      {{product.name}}
     </div>
 
     <div>
-        {{product2.name}}
+      {{product2.name}}
     </div>
 
   </div>
-  <div class="title" >
-      <div>
-          <img class="image-product" src="{{product.imageLink}}">
-      </div>
-      <div>
-          <img class="image-product" src="{{product2.imageLink}}">
-      </div>
+  <div class="title">
+    <div>
+      <img class="image-product" src="{{product.imageLink}}">
+    </div>
+    <div>
+      <img class="image-product" src="{{product2.imageLink}}">
+    </div>
   </div>
 
   <table>
@@ -29,15 +29,14 @@
             {{ crit.value[0] | titlecase }} {{ crit.criteriaUnit }}
           </td>
           <td>
-              {{ crit.value[1] | titlecase }} {{ crit.criteriaUnit }}
-            </td>
+            {{ crit.value[1] | titlecase }} {{ crit.criteriaUnit }}
+          </td>
         </div>
       </div>
     </tr>
   </table>
   <div class="title">
-      <button mat-raised-button class="button-confirm" (click)="goToSupplierLink(product)">Acheter le produit</button>
-      <button mat-raised-button class="button-confirm" (click)="goToSupplierLink(product2)">Acheter le produit</button>
-
-    </div>
+    <button mat-raised-button class="button-confirm" (click)="goToSupplierLink(product)">Acheter le produit</button>
+    <button mat-raised-button class="button-confirm" (click)="goToSupplierLink(product2)">Acheter le produit</button>
+  </div>
 </div>
