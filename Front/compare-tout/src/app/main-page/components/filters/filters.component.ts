@@ -19,29 +19,6 @@ import { trigger, transition, style, animate, state, keyframes  } from '@angular
       transition('1 <=> 0', animate('100ms ease-in-out')),
     ]),
   ],
-  // animations: [
-  //   trigger('slideInOut', [
-  //     state('1', style({
-  //       overflow: 'visible',
-  //       opacity: '1',
-  //       height: '*',
-  //     })),
-  //     state('0', style({
-  //       overflow: 'hidden',
-  //       opacity: '0',
-  //       height: '0px',
-  //     })),
-  //     transition('0 => 1', animate('400ms ease-in-out', keyframes([
-  //       style({ height: 0, opacity: 0, offset: 0 }),
-  //       style({ height: '*', opacity: 0, offset: 0.7 }),
-  //       style({ height: '*', opacity: 1, offset: 1 }),
-  //     ]))),
-  //     transition('1 => 0', animate('250ms ease-in-out', keyframes([
-  //       style({ height: '*', opacity: 1, offset: 0 }),
-  //       style({ height: '*', opacity: 0, offset: 0.1 }),
-  //       style({ height: 0, opacity: 0, offset: 1 }),
-  //     ]))),
-  //   ])],
 })
 export class FiltersComponent implements OnInit, OnChanges, OnDestroy {
 
@@ -121,7 +98,15 @@ export class FiltersComponent implements OnInit, OnChanges, OnDestroy {
       }
     } else {
       const i = this.criteriaSelected.findIndex(x => x.idCriteria === event.idCriteria);
-      this.criteriaSelected.splice(i, 1);
+      this.criteriaSelected[i].value = [];
+      event.values.forEach(v => {
+        if (v.selected) {
+          this.criteriaSelected[i].value.push(v.value);
+        }
+      });
+      if (this.criteriaSelected[i].value.length < 1) {
+        this.criteriaSelected.splice(i, 1);
+      }
     }
     this.valueHasChanged.emit(this.criteriaSelected);
     const idx = this.criteriaList.findIndex(c => {
