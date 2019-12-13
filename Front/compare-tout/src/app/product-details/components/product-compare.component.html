@@ -3,10 +3,21 @@
     <div>
         {{product.name}}
     </div>
+
     <div>
         {{product2.name}}
     </div>
+
   </div>
+  <div class="title" >
+      <div>
+          <img class="image-product" src="{{product.imageLink}}">
+      </div>
+      <div>
+          <img class="image-product" src="{{product2.imageLink}}">
+      </div>
+  </div>
+
   <table>
     <tr>
       <div *ngFor="let crit of criteriaValues" class="all-criterias">
@@ -24,4 +35,9 @@
       </div>
     </tr>
   </table>
+  <div class="title">
+      <button mat-raised-button class="button-confirm" (click)="goToSupplierLink(product)">Acheter le produit</button>
+      <button mat-raised-button class="button-confirm" (click)="goToSupplierLink(product2)">Acheter le produit</button>
+
+    </div>
 </div>

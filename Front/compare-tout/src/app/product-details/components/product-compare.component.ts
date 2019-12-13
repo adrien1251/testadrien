@@ -47,4 +47,7 @@ export class ProductCompareComponent implements OnInit, OnDestroy {
   goBack() {
     this.router.navigate(['/category', this.category.id], { state: { cat: this.category } } );
   }
+
+  goToSupplierLink(product) {
+    window.open(product.supplierLink, '_blank');  }
 }

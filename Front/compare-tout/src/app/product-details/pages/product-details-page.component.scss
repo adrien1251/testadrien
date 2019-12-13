@@ -13,6 +13,9 @@
         text-decoration: underline;
     }
   }
+  .image {
+    height:60px;
+  }
 
   .description {
     font-size: 14px;
@@ -39,6 +42,12 @@
         display: flex;
         width: 100%;
     }
+  }
+  
+  .button-confirm {
+    background-color:#a6d6db;
+    margin-top: 5px;
+    margin-right: 5px;
   }
 
   // .price {

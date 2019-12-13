@@ -1,39 +1,43 @@
 <div *ngIf="this.product" class="product-details-content">
-    <div class="go-back" (click)="goBack()">Retour à la liste</div>
-    <div class="single-display" *ngIf="product2 == null; else multipledisplay">
-        <div class="title" *ngIf="product.nameShort">
-            {{product.nameShort}}
-            <div class="seeNext" (click)="seeMoreTitle()">voir la suite</div>
-          </div>
-          <div class="title" *ngIf="!product.nameShort">
-            {{product.name}}
-            <div class="seeNext" *ngIf="product.name.length > 25" (click)="seeLessTitle()">voir moins</div>
-          </div>
-          <div class="description" *ngIf="product.descriptionShort">
-            {{product.descriptionShort}}
-            <div class="seeNext" (click)="seeMoreDesc()">voir la suite</div>
-          </div>
-          <div class="description" *ngIf="!product.descriptionShort">
-            {{product.description}}
-            <div class="seeNext" *ngIf="product.description.length > 250" (click)="seeLessDesc()">voir moins</div>
-          </div>
-          <table>
-            <tr>
-              <div *ngFor="let crit of product.criteriaDtoList" class="all-criterias">
-                <div class="criteria-contener">
-                  <td class="name">
-                    {{ crit.criteriaName | titlecase }}
-                  </td>
-                  <td>
-                    {{ crit.value | titlecase }} {{ crit.criteriaUnit }}
-                  </td>
-                </div>
-              </div>
-            </tr>
-          </table>
+  <div class="go-back" (click)="goBack()">Retour à la liste</div>
+  <div class="single-display" *ngIf="product2 == null; else multipledisplay">
+    <div class="title" *ngIf="product.nameShort">
+      {{product.nameShort}}
+      <div class="seeNext" (click)="seeMoreTitle()">voir la suite</div>
     </div>
- <ng-template #multipledisplay>
-   <app-product-compare [product]="product" [product2]="product2"></app-product-compare>
- </ng-template>
-
+    <div class="title" *ngIf="!product.nameShort">
+      {{product.name}}
+      <div class="seeNext" *ngIf="product.name.length > 25" (click)="seeLessTitle()">voir moins</div>
+    </div>
+    <div>
+      <img class="image" src="{{product.imageLink}}">
+    </div>
+    <div class="description" *ngIf="product.descriptionShort">
+      {{product.descriptionShort}}
+      <div class="seeNext" (click)="seeMoreDesc()">voir la suite</div>
+    </div>
+    <div class="description" *ngIf="!product.descriptionShort">
+      {{product.description}}
+      <div class="seeNext" *ngIf="product.description.length > 250" (click)="seeLessDesc()">voir moins</div>
+    </div>
+    <table>
+      <tr>
+        <div *ngFor="let crit of product.criteriaDtoList" class="all-criterias">
+          <div class="criteria-contener">
+            <td class="name">
+              {{ crit.criteriaName | titlecase }}
+            </td>
+            <td>
+              {{ crit.value | titlecase }} {{ crit.criteriaUnit }}
+            </td>
+          </div>
+        </div>
+      </tr>
+    </table>
+    <button mat-raised-button class="title button-confirm" (click)="goToSupplierLink(product)">Acheter le produit</button>
+  </div>
+  <ng-template #multipledisplay>
+    <app-product-compare [product]="product" [product2]="product2"></app-product-compare>
+  </ng-template>
+ 
 </div>
