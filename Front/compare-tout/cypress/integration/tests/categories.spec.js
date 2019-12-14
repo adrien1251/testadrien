@@ -1,9 +1,6 @@
 import {
   setRoutes
 } from "./routes.spec";
-import {
-  assertPlatform
-} from "@angular/core";
 
 describe('Categories Scenarii', function () {
   beforeEach(function () {

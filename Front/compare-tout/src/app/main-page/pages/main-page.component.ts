@@ -126,6 +126,7 @@ export class MainPageComponent implements OnInit, OnChanges, OnDestroy {
       this.productList = res;
       this.criteriaService.getCriteriasValues(this.currentCategory.id).subscribe(criterias => {
         this.productList.forEach(product => {
+          product.selected = false;
           this.productService.getCriteriasOfProduct(product.id).subscribe(crit => {
             crit.forEach(criteria => {
               const alreadyIn = this.criteriaValues.find(c => c.idCriteria === criteria.id) != null;
@@ -180,7 +181,11 @@ export class MainPageComponent implements OnInit, OnChanges, OnDestroy {
       this.dialogRefCompareProd.afterClosed().subscribe(res => {
         this.numberOfComparison = 0;
         this.comparisonProduct = [];
-        this.fetchProducts();
+        if (this.criteriaService.currentFilters == null) {
+          this.fetchProducts();
+        } else {
+          this.productList.forEach(p => p.selected = false);
+        }
 
       });
     }

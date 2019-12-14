@@ -4,5 +4,13 @@
   "resultNbProducts" : 2,
   "requestTimeout": 15000,
   "viewportWidth": 360,
-  "viewportHeight": 640
+  "viewportHeight": 640,
+  "defaultMsg": "Test Cypress",
+  "defaultEmail": "cypress@test.com",
+  "defaultPhone": "0123456789",
+  "defaultBday": "11/08/1986",
+  "defaultSupplier": "Test Cypress Supplier",
+  "defaultEmailSupplier": "cypress.supplier@test.com",
+  "defaultAdmin": "admin",
+  "defaultAdminPwd": "3ltae"
 }

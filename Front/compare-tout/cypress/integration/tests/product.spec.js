@@ -2,7 +2,7 @@ import {
   setRoutes
 } from "./routes.spec";
 
-describe('Categories Scenarii', function () {
+describe('Product Scenarii', function () {
       beforeEach(function () {
         // Routes definitions
         cy.clearCookies();
@@ -12,7 +12,7 @@ describe('Categories Scenarii', function () {
 
       });
 
-      it('default user filters by price and brand in Mobile category', function () {
+      it('default user compares 2 products', function () {
         cy.visit('/category/all');
         cy.wait('@initCategories')
           .its('status')
