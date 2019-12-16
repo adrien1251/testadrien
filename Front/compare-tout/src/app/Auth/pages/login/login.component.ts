@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
           } else if (error.error.statusErrorCode === 403) {
             this.error = error.error.errorMessage;
           } else {
-            this.error = "Une erreur innatendu s'est produite";
+            this.error = "Une erreur innatendue s'est produite";
           }
           this.isWaiting = false;
         },
@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit {
         }
       );
     } else {
-      this.error = "L'un des champs n'est pas remplit";
+      this.error = "L'un des champs n'est pas rempli";
     }
   }
 }
