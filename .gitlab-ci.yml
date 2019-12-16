@@ -5,8 +5,9 @@ services:
 variables:
   DOCKER_DRIVER: overlay
   SPRING_PROFILES_ACTIVE: gitlab-ci
-  FRONT_IMAGE: repo.treescale.com/deblocka/ctfront
-  BACK_IMAGE: repo.treescale.com/deblocka/back
+  DOCKER_REGISTRY: registry.gitlab.com
+  FRONT_IMAGE: registry.gitlab.com/adrien1251/comparetout/ctfront:01
+  BACK_IMAGE: registry.gitlab.com/adrien1251/comparetout/ctback:01
   PROD_SERVER_ADDRESS: ec2-user@18.190.104.245
 #  DEV_SERVER_ADDRESS: ec2-user@18.190.29.156
   DEV_SERVER_ADDRESS: ec2-user@18.190.104.245
@@ -40,7 +41,7 @@ front-push-image:
   stage: images
   before_script: ['cd $FRONT_DIR']
   script:
-  - echo $TREESCALE_PASS | docker login repo.treescale.com --username=deblocka --password-stdin	
+  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $DOCKER_REGISTRY
   - docker build -t $FRONT_IMAGE .
   - docker push $FRONT_IMAGE
 
@@ -48,7 +49,7 @@ back-push-image:
   stage: images
   before_script: ['cd $BACK_DIR']
   script:
-  - echo $TREESCALE_PASS | docker login repo.treescale.com --username=deblocka --password-stdin	
+  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $DOCKER_REGISTRY	
   - docker build -t $BACK_IMAGE .
   - docker push $BACK_IMAGE
 

@@ -2,12 +2,18 @@
     border: 1px solid grey;
     margin: 10px;
     padding: 5px;
-
+    text-align: center;
     img {
         width: 90px;
+        cursor: pointer;
     }
     .product-name {
-        font-size: 14px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    #check {
+        height: 20px;
+        font-size: 18px;
     }
 
 }

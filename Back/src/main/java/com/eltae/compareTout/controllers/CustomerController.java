@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(Routes.CUSTOMER)
-@Api(value = "Customer", description = "Customer gesture", tags = {"Customer"})
+@Api(value = "Customers", description = "Customers gesture", tags = {"Customers"})
 public class CustomerController extends ExceptionCatcher {
     private CustomerService customerService;
 

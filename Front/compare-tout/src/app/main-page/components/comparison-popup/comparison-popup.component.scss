@@ -1,0 +1,21 @@
+.comparison-title {
+  font-size: 16px;
+  text-align: center;
+
+  .product1,
+  .product2 {
+    text-align: center;
+    font-weight: bold;
+  }
+
+  .button-confirm {
+    background-color:#a6d6db;
+    margin-top: 5px;
+    margin-right: 5px;
+  }
+
+  .button-cancel {
+      margin-top: 5px;
+    margin-left: 5px;
+  }
+}

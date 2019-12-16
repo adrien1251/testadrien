@@ -17,6 +17,7 @@ public class ShortProductDto implements Cloneable {
     private Long id;
     private String name;
     private long category;
+    private String imageLink;
     private List<CriteriaProductDto> criteriaProducts;
     private Supplier supplier;
 

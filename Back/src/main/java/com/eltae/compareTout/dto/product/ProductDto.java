@@ -17,6 +17,7 @@ public class ProductDto implements Cloneable {
     private Long id;
     private String name;
     private Category category;
+    private String imageLink;
     private List<CriteriaProductDto> criteriaProducts;
 
     public ProductDto clone() throws CloneNotSupportedException {

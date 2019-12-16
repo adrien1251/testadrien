@@ -60,56 +60,14 @@ public class CriteriaService {
         this.criteriaProductConverter = criteriaProductConverter;
         this.criteriaProductRepository = criteriaProductRepository;
     }
-    public List<ShortProductDto> getProductsCriteria(Long id, List<Long> crit) {
-        List<Product> myProducts = new ArrayList<Product>();
-        myProducts = productRepository.findAllByCategoryId(id);
-        List<Product> filterProduct = new ArrayList<Product>();
 
-        for (Product p : myProducts)
-
-            if (p.getCrit().containsAll(crit))
-                filterProduct.add(p);
-
-        return productConverter.listEntityToShortDto(filterProduct);
-
-    }
     public Criteria getCriteriaProductWithIdCriteria(Long idCriteria) {
         Optional<Criteria> c = criteriaRepository.findById(idCriteria);
         if (c.isPresent())
             return c.get();
         return null;
     }
-    public List<ShortProductDto> getProductsStrictCriteria(Long id, Long[] idCrit, String[] valuesCrit) {
 
-        if (id == null || idCrit.length != valuesCrit.length)
-            throw new WrongParameters(HttpStatus.resolve(566), "you must define a category id and two list one with " +
-                    "criterias id and another with values of criterias. Both list have same size ");
-        else {
-            List<ShortProductDto> shortProductListFinal = new ArrayList<ShortProductDto>();
-            List<Long> keysList = new ArrayList<>();
-            keysList = new ArrayList(Arrays.asList(idCrit));
-            boolean add = true;
-            List<ShortProductDto> shortProductList = this.getProductsCriteria(id, keysList);
-
-            for (ShortProductDto shortP : shortProductList) {
-                List<CriteriaProductDto> critProd = shortP.getCriteriaProducts();
-                for (CriteriaProductDto p : critProd) {
-                    for (int i = 0; i < idCrit.length; i++) {
-                        if (p.getId() == idCrit[i]) {
-                            if (!valuesCrit[i].equals(p.getValue())) {
-                                add = false;
-                            }
-
-                        }
-
-                    }
-                }
-                if (add)
-                    shortProductListFinal.add(shortP);
-            }
-            return shortProductListFinal;
-        }
-    }
     public JSONObject create(MultipartFile multipartFile) throws ApplicationException {
         try {
             return this.readCSV(multipartFile.getInputStream());

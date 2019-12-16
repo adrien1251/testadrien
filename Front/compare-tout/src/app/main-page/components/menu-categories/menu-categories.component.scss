@@ -7,16 +7,15 @@
         flex-wrap: wrap;
 
     }
-    .back {
-        color: #a6d6db;
-        font-size: 14px;
-        font-weight: bold;
-        cursor: pointer;
-        padding: 8px;
-        border-radius: 5px;
-        width: fit-content;
+    #back, #more {
+        margin-top:5px;
+        padding: 5px !important;
+        line-height: 10px;
+        display: flex;
         background-color: white;
-        margin-top: 10px;
+        .back-text {
+            padding-top:5px;
+        }
     }
     .subcategory-list {
         font-size: 12px;

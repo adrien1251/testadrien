@@ -13,6 +13,7 @@ export class InscriptionCustomerComponent implements OnInit {
   error: string | null;
 
   isWaiting = false;
+  name: string;
 
   sexes = ['Homme', 'Femme', 'Autre'];
 
@@ -52,7 +53,7 @@ export class InscriptionCustomerComponent implements OnInit {
           if (error.error.statusErrorCode === 409) {
             this.error = error.error.errorMessage;
           } else {
-            this.error = "Une erreur innatendu s'est produite";
+            this.error = 'Une erreur innatendue s\'est produite';
           }
           this.isWaiting = false;
         },
@@ -62,7 +63,7 @@ export class InscriptionCustomerComponent implements OnInit {
         }
       );
     } else {
-      this.error = "L'un des champs n'est pas remplit";
+      this.error = 'L\'un des champs n\'est pas rempli';
     }
   }
 

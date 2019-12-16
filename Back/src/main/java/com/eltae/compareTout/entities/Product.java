@@ -31,6 +31,9 @@ public class Product implements Cloneable {
     @Column(length = 750)
     private String supplierLink;
 
+    @Column(length = 750)
+    private String imageLink;
+
     @ManyToOne(fetch = FetchType.LAZY)
     private Category category;
 
@@ -47,6 +50,7 @@ public class Product implements Cloneable {
         this.description = p.description;
         this.name = p.name;
         this.supplierLink = p.supplierLink;
+        this.imageLink=p.imageLink;
         this.supplier=p.supplier;
     }
 

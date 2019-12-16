@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(Routes.ADMIN)
-@Api(value = "Admin", description = "Administrator gesture", tags = {"Admins"})
+@Api(value = "Administrators", description = "Administrator gesture", tags = {"Administrators"})
 public class AdminController extends ExceptionCatcher {
 
     private AdminService adminService;

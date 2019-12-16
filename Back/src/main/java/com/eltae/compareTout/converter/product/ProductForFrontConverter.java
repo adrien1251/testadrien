@@ -24,6 +24,7 @@ public class ProductForFrontConverter extends GenericsConverter<Product, Product
                 .name(product.getName())
                 .description(product.getDescription())
                 .supplierLink(product.getSupplierLink())
+                .imageLink(product.getImageLink())
                 .criteriaDtoList(criteriaProductConverter.entityListToDtoList(product.getCriteriaProducts()))
                 .build();
     }

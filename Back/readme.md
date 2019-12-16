@@ -9,6 +9,19 @@ https://docs.oracle.com/javase/10/install/installation-jdk-and-jre-microsoft-win
 Maven :  
 https://docs.wso2.com/display/IS323/Installing+Apache+Maven+on+Windows  
 
+Sonar :
+mvn sonar:sonar -Dsonar.host.url=URL_SONAR
+
+Vous pouvez lancer un serveur sonar avec docker : 
+`docker run -d --name sonarqube -p 9000:9000 sonarqube`
+
+
+Dans intelliJ, définir les variable d'environnement du projet :
+DATABASE_HOST=192.168.99.100
+DATABASE_PORT=5432
+DATABASE_NAME=compareTout
+DATABASE_USERNAME=postgres
+DATABASE_PASSWORD=compareTout@postgres
 
 IntelliJ :
 ========

@@ -60,7 +60,8 @@ public class SupplierService {
 
 
     public Supplier getEntitySupplier(Long id) {
-        if(supplierExists(id))
+        if((this.supplierRepository
+                .findByIdAndDiscriminatorValue(id, "SUPPLIER").isPresent()))
         return this.supplierRepository.findByIdAndDiscriminatorValue(id, "SUPPLIER").get();
         else
             throw new ApplicationException(HttpStatus.NOT_FOUND, "invalid supplier ID");
@@ -81,8 +82,10 @@ public class SupplierService {
         return this.supplierConverter.entityToDto(this.supplierRepository.save(sup));
     }
 
+
+
     public SupplierDto updateSupplier(SupplierDto supDto) {
-        if (supplierExists(supDto.getId())) {
+        if (this.supplierRepository.findByIdAndDiscriminatorValue(supDto.getId(), "SUPPLIER").isPresent()) {
             Supplier supplier = this.supConv.dtoToEntity(supDto);
             return supplierConverter.entityToDto(this.supplierRepository.save(supplier));
         } else

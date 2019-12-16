@@ -19,7 +19,9 @@
           <a mat-list-item routerLink="/admin/supplier" (click)="sidenav.close()">Gérer les fournisseurs</a>
         </div>
         <div *ngIf="user.type==='supplier'">
+            <p>Id fournisseur : {{user.id}} </p>
           <a mat-list-item routerLink="/supplier/me" (click)="sidenav.close()">Mon profil</a>
+
           <a mat-list-item routerLink="/supplier/sendProduct" (click)="sidenav.close()">Ajouter des produits</a>
         </div>
         <mat-divider></mat-divider>

@@ -18,6 +18,7 @@ public class ProductDtoForFront implements Cloneable {
     private String name;
     private String description;
     private String supplierLink;
+    private String imageLink;
     private List<CriteriaProductDto> criteriaDtoList;
 
     public ProductDtoForFront clone() throws CloneNotSupportedException {

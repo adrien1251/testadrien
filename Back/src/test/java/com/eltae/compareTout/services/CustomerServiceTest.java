@@ -9,6 +9,7 @@ import com.eltae.compareTout.exceptions.ApplicationException;
 import com.eltae.compareTout.repositories.Customer.CustomerRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -193,10 +194,15 @@ public class CustomerServiceTest {
 
 
         //Effective
-        Customer customerReturnByEntity = this.customerConverter.dtoToEntity(customerEntry);
-        Customer customerReturnedBySave = customerReturnByEntity.clone();
+        Optional<Customer> optionalCustomer = Optional.of(Customer.builder()
+                .id(customerIdEntry)
+                .password("mdp")
+                .email("test" + customerIdEntry + "@test" + customerIdEntry + ".fr")
+                .firstName("test" + customerIdEntry)
+                .lastName("TEST" + customerIdEntry)
+                .password("password" + customerIdEntry + "Test").build());
         //Mocks
-        Mockito.when(this.customerRepository.findByIdAndDiscriminatorValue(100L,"CUSTOMER")).thenReturn(Optional.of(Customer.builder().build()));
+        Mockito.when(customerRepository.findById(100L)).thenReturn(optionalCustomer);
         //Call
         CustomerDto customerReturned = customerService.getCustomerInfo(100L);
 

@@ -280,8 +280,8 @@ public class SupplierServiceTest {
         Supplier entrySupplierSave = supplierReturnByEntity.clone();
         Supplier supplierReturnBySave = entrySupplierSave.clone();
         //Mocks
-        Mockito.when(this.supplierRepository.findByIdAndDiscriminatorValue(supplierReturnBySave.getId(), "SUPPLIER"))
-                .thenReturn(null);
+        Mockito.when(this.supplierRepository.findByIdAndDiscriminatorValue(100L, "SUPPLIER"))
+                .thenReturn(Optional.empty());
 
         //Call
         supplierService.updateSupplier(supplierEntry);

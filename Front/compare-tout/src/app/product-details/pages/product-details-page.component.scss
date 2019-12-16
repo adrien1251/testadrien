@@ -13,6 +13,9 @@
         text-decoration: underline;
     }
   }
+  .image {
+    height:60px;
+  }
 
   .description {
     font-size: 14px;
@@ -26,9 +29,12 @@
     width: 100vw;
     td {
         width: 50%;
+        &.name {
+          font-weight: bold;
+        }
     }
     .all-criterias:nth-child(even) {
-        background-color: #a6d6db;
+        background-color: #d4f3f7;
     }
     .criteria-contener {
         text-align: left;
@@ -36,6 +42,12 @@
         display: flex;
         width: 100%;
     }
+  }
+  
+  .button-confirm {
+    background-color:#a6d6db;
+    margin-top: 5px;
+    margin-right: 5px;
   }
 
   // .price {

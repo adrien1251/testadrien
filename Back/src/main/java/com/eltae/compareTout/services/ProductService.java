@@ -213,6 +213,7 @@ public class ProductService {
                 .name(records[0].toLowerCase())
                 .description(records[1])
                 .supplierLink(records[2])
+                .imageLink(records[3])
                 .criteriaProducts(new ArrayList<>())
                 .supplier(supplier)
                 .build();

@@ -5,6 +5,12 @@
         display: flex;
         font-weight: bold;
         font-size: 12px;
+        cursor: pointer;
+        div {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            text-decoration: underline;
+        }
     }
 }
 .result-list {

@@ -19,7 +19,6 @@ export class InscriptionFournComponent implements OnInit {
   isWaiting = false;
 
   form: FormGroup = new FormGroup({
-    firstName: new FormControl('',  [Validators.required]),
     lastName: new FormControl('',  [Validators.required]),
     email: new FormControl('',  [Validators.required, Validators.email]),
     password: new FormControl('',  [Validators.required]),
@@ -50,7 +49,7 @@ export class InscriptionFournComponent implements OnInit {
           if (error.error.statusErrorCode === 409) {
             this.error = error.error.errorMessage;
           } else {
-            this.error = "Une erreur innatendu s'est produite";
+            this.error = "Une erreur innatendue s'est produite";
           }
           this.isWaiting = false;
         },
@@ -60,7 +59,7 @@ export class InscriptionFournComponent implements OnInit {
         }
       );
     } else {
-      this.error = "L'un des champs n'est pas remplit";
+      this.error = "L'un des champs n'est pas rempli";
     }
   }
 

@@ -9,7 +9,7 @@ import {environment} from '../../../environments/environment';
   providedIn: 'root',
 })
 export class ProductService {
-
+  currentProduct: any;
   constructor(
     private httpClient: HttpClient,
   ) {
@@ -24,4 +24,11 @@ export class ProductService {
     return this.httpClient.get<any>(`${environment.back_url}${apiEndpoints.getCriteriasOfProduct(idProduct)}`);
   }
 
+  public getCurrentProduct(): any {
+    return this.currentProduct;
+}
+
+  public setCurrentProduct(cat: any): void {
+      this.currentProduct = cat;
+  }
 }

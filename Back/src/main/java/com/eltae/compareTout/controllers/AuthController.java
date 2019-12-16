@@ -22,8 +22,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping(Routes.LOGIN)
-@Api(value = "Connexion", description = "Connexion", tags = {"Connexion"})
+@RequestMapping(Routes.AUTH)
+@Api(value = "Authentications", description = "User authentications", tags = {"Authentications"})
 public class AuthController extends ExceptionCatcher {
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -37,13 +37,14 @@ public class AuthController extends ExceptionCatcher {
     @Autowired
     private UserService userService;
 
-    @PostMapping()
+    @PostMapping("/_login")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody LoginDto login) {
         authenticate(login.getEmail(), login.getPassword());
         final UserDetails userDetails = userDetailsService.loadUserByUsername(login.getEmail());
         final String token = jwtTokenUtil.generateToken(userDetails);
         return ResponseEntity.ok(new JwtResponse(token, userService.findByEmail(login.getEmail())));
     }
+
     private void authenticate(String username, String password) {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));

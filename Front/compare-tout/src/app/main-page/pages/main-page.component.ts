@@ -29,7 +29,7 @@ export class MainPageComponent implements OnInit, OnChanges, OnDestroy {
   canShowFilters = false;
   fromProduct = false;
   numberOfComparison = 1;
-  filArianne: string[] = [];
+  filArianne: Category[] = [];
 
 
   constructor(
@@ -85,14 +85,18 @@ export class MainPageComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   fetchCurrentCategory(event, fromRoute?: boolean): void {
-    this.filArianne.push(event);
+    if (this.filArianne.find(c => c === event) == null) {
+      this.filArianne.push(event);
+    }
     if (event != null) {
       if (fromRoute) {
         this.categoryService.getCategoriesChild(event.id).subscribe((res) => {
           this.isChildCategory = res.length === 0;
           this.subCategories = res;
           this.categories = [event];
-
+          if (this.criteriaService.getCurrentFilters() != null) {
+            this.sendCriterias(this.criteriaService.currentFilters);
+          }
         });
       } else {
         this.categoryService.getCategoriesChild(event.id).subscribe((res) => {
@@ -122,6 +126,7 @@ export class MainPageComponent implements OnInit, OnChanges, OnDestroy {
       this.productList = res;
       this.criteriaService.getCriteriasValues(this.currentCategory.id).subscribe(criterias => {
         this.productList.forEach(product => {
+          product.selected = false;
           this.productService.getCriteriasOfProduct(product.id).subscribe(crit => {
             crit.forEach(criteria => {
               const alreadyIn = this.criteriaValues.find(c => c.idCriteria === criteria.id) != null;
@@ -153,6 +158,7 @@ export class MainPageComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   sendCriterias(event): void {
+    this.criteriaService.setCurrentFilters(event);
     if (event == null || event.length === 0) { event = null; }
     this.productService.getProductsByCategoryAndCriteria(this.currentCategory.id, event)
       .pipe(debounce(val => timer(1500)))
@@ -175,7 +181,11 @@ export class MainPageComponent implements OnInit, OnChanges, OnDestroy {
       this.dialogRefCompareProd.afterClosed().subscribe(res => {
         this.numberOfComparison = 0;
         this.comparisonProduct = [];
-        this.fetchProducts();
+        if (this.criteriaService.currentFilters == null) {
+          this.fetchProducts();
+        } else {
+          this.productList.forEach(p => p.selected = false);
+        }
 
       });
     }
@@ -186,7 +196,11 @@ export class MainPageComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   goToCategory(f) {
-    console.log(f);
+    const i = this.filArianne.findIndex(c => c.id === f.id);
+    this.filArianne = this.filArianne.reverse().slice(i + 1, this.filArianne.length );
+    this.productList = null;
+    this.currentCategory = f;
+    this.fetchCurrentCategory(f);
     this.router.navigate(['/category', f.id]);
   }
 }

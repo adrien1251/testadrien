@@ -55,7 +55,7 @@ public class ProductServiceTest {
     @MockBean
     CriteriaProductRepository criteriaProductRepository;
 
-    @MockBean
+    @Autowired
     CriteriaProductConverter criteriaProductConverter;
 
     @Test
@@ -225,19 +225,26 @@ public class ProductServiceTest {
         assertTrue(productService.insertProduct(recordsToTest,1,supplier));
     }
 
-    /*
-    @Test
-    public void testInsertProductReturnNullWhenCategoryIsNull(){
-        Map<Integer, String> errorMap;
-        errorMap = new HashMap<>();
-        String recordsToTest[] = {"A","B","C","D","1","1","F","2","G","3"};
-        Supplier supplier = Supplier.builder().build();
-        Mockito.when(this.categoryService.getCategoryWithId(1L)).thenReturn(null);
 
-        assertFalse(this.productService.insertProduct(recordsToTest,1,supplier));
-    }
 
-     */
+
+     @Test
+    public void testGetSupplierProducts(){
+
+        Category c = Category.builder().id(1L).build();
+        List<Product> productList = new ArrayList<>();
+        productList.add(Product.builder().id(1L).category(c).build());
+
+        List<ShortProductDto> listReturnByConverter = new ArrayList<>();
+        listReturnByConverter.add(ShortProductDto.builder().category(1L).id(1L).build());
+
+        Mockito.when(productRepository.findAllBySupplierId(1L)).thenReturn(productList);
+        Mockito.when(productConverter.listEntityToShortDto(productList)).thenReturn(listReturnByConverter);
+
+         List<ShortProductDto> res = this.productService.getSupplierProducts(1L);
+
+        assertEquals(listReturnByConverter, res);
+     }
 
 
 }

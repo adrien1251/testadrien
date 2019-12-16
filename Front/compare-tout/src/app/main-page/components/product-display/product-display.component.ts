@@ -2,6 +2,7 @@
 import { Component, Input, OnInit, Output, EventEmitter, OnChanges } from '@angular/core';
 import { Product } from 'src/app/shared/models/product.interface';
 import { Router } from '@angular/router';
+import { ProductService } from 'src/app/shared/services/product.service';
 
 @Component({
     selector: 'app-product-display',
@@ -17,15 +18,14 @@ export class ProductDisplayComponent implements OnInit, OnChanges {
 
     constructor(
         private router: Router,
+        private productService: ProductService,
     ) { }
 
     ngOnInit(): void {
-        // this.product.selected = this.product.selected != null ? !this.product.selected : true;
-
+        this.product.selected = false;
     }
 
     ngOnChanges(): void {
-        // this.product.selected = this.product.selected != null ? !this.product.selected : true;
 
     }
 
@@ -35,9 +35,9 @@ export class ProductDisplayComponent implements OnInit, OnChanges {
     }
 
     updateComparison(event) {
-        console.log(this.product);
+        // console.log(this.product);
+        this.product.selected = !this.product.selected;
         this.compareProduct.emit(event);
-        this.product.selected = this.product.selected != null ? !this.product.selected : true;
-
     }
+
 }

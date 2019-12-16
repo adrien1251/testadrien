@@ -23,11 +23,15 @@ export class MenuCategoriesComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit(): void {
     this.categoriesDisplay = this.categories;
-    this.isTopCategory = this.router.url.includes('all');
+    this.isTopCategory = this.router.url.includes('all') || this.categories.find(c => c.id === '1') != null;
   }
 
   ngOnChanges(): void {
-    this.isTopCategory = this.router.url.includes('all');
+    let isMain = true;
+    if (this.categoriesDisplay) {
+      isMain = false;
+    }
+    this.isTopCategory = this.router.url.includes('all') || isMain;
   }
 
   ngOnDestroy(): void {

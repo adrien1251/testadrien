@@ -5,7 +5,9 @@ import com.eltae.compareTout.dto.supplier.SupplierDto;
 import com.eltae.compareTout.dto.supplier.SupplierInscriptionDto;
 import com.eltae.compareTout.exceptionHandler.ExceptionCatcher;
 import com.eltae.compareTout.exceptions.ApplicationException;
+import com.eltae.compareTout.security.AuthAuthorityEnum;
 import com.eltae.compareTout.services.SupplierService;
+import com.eltae.compareTout.utils.UtilsAuth;
 import io.swagger.annotations.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(Routes.SUPPLIER)
-@Api(value = "Supplier", description = "Supplier gesture", tags = {"Supplier"})
+@Api(value = "Suppliers", description = "Suppliers gesture", tags = {"Suppliers"})
 public class SupplierController extends ExceptionCatcher {
     private SupplierService supplierService;
 
@@ -72,13 +74,18 @@ public class SupplierController extends ExceptionCatcher {
         if(id==null && filter.equals("All"))
             return ResponseEntity.ok().body(this.supplierService.getAllSuppliers());
         else {
-            if(id==null && filter.equals("notValidate") )
+            if(id==null && filter.equals("notValidate")) {
+                if(!UtilsAuth.actualUserHaveAuthorities(AuthAuthorityEnum.ROLE_ADMIN)){
+                    throw new ApplicationException(HttpStatus.UNAUTHORIZED, "You are not authorized to do this action");
+                }
                 return ResponseEntity.status(201).body(this.supplierService.getAllSuppliersNotValidate());
-            else
-                if(id!=null && filter==null)
+
+            } else {
+                if (id != null && filter == null)
                     return ResponseEntity.ok().body(this.supplierService.getSupplierInfo(id));
-                    else
-                        throw new ApplicationException(HttpStatus.BAD_REQUEST, "Please check your request.");
+                else
+                    throw new ApplicationException(HttpStatus.BAD_REQUEST, "Please check your request.");
+            }
         }
     }
 
